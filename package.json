@@ -1,0 +1,44 @@
+{
+  "name": "front",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "test:e2e": "npx cypress open-ct",
+    "test:unit": "jest tests/jest"
+  },
+  "dependencies": {
+    "@cypress/vite-dev-server": "^2.0.2",
+    "@cypress/vue": "^3.1.1",
+    "@quasar/extras": "^1.13.5",
+    "cypress": "^9.6.0",
+    "quasar": "^2.6.6",
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.14",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@quasar/vite-plugin": "^1.0.9",
+    "@storybook/addon-actions": "^6.4.22",
+    "@storybook/addon-essentials": "^6.4.22",
+    "@storybook/addon-links": "^6.4.22",
+    "@storybook/builder-vite": "^0.1.30",
+    "@storybook/vue3": "^6.4.22",
+    "@types/jest": "^27.4.1",
+    "@vitejs/plugin-vue": "^2.3.1",
+    "@vue/vue3-jest": "^27.0.0",
+    "babel-loader": "^8.2.5",
+    "jest": "^27.5.1",
+    "sass": "^1.32.0",
+    "ts-jest": "^27.1.4",
+    "typescript": "^4.5.4",
+    "vite": "^2.9.5",
+    "vue-loader": "^16.8.3",
+    "vue-tsc": "^0.34.7"
+  }
+}
