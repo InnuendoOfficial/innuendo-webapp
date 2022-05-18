@@ -19,9 +19,8 @@ jobs:
           name: Run Tests
           command: npm run test:unit:cov
           environment:
-            JEST_JUNIT_OUTPUT_DIR: ./reports/jest/
 
       - store_test_results:
-          path: ./reports/jest/
+          path: tests/jest/coverage
       - store_artifacts:
-          path: ./tests/jest/coverage
+          path: tests/jest/coverage
