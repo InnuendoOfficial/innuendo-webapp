@@ -22,7 +22,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - cache-
 
-      - run: npm test
+      - run: npm install
 
       - save_cache:
           key: cache-{{ .Branch }}-{{ checksum "package.json" }}
@@ -61,7 +61,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - cache-
 
-      - run: npm test
+      - run: npm install
 
       - save_cache:
           key: cache-{{ .Branch }}-{{ checksum "package.json" }}
