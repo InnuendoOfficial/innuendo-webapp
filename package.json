@@ -9,7 +9,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test:unit": "jest tests/jest",
-    "test:e2e": "npx cypress open-ct"
+    "test:e2e": "npx cypress open-ct",
+    "ci:unit": "jest tests/jest --coverage --ci"
   },
   "dependencies": {
     "@cypress/vite-dev-server": "^2.0.2",
