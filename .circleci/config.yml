@@ -17,4 +17,6 @@ jobs:
             - /home/circleci/.npm
       - run:
           name: Run Tests
-          command: npm run test:unit
+          command: npm run test:unit:cov
+      - store_test_results:
+        path: unit-test-results
