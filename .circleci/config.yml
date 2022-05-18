@@ -1,0 +1,56 @@
+jobs:
+  unit_tests:
+    working_directory: ~/web-app
+    docker:
+      - image: circleci/node:16
+    steps:
+      - checkout
+      - restore_cache:
+          key: npm-cache-v1-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install Dependencies
+          command: npm ci
+      - save_cache:
+          key: npm-cache-v1-{{ checksum "package-lock.json" }}
+          paths:
+            - /home/circleci/.npm
+      - run:
+          name: Run Tests
+          command: npm run ci:unit
+          environment:
+
+      - store_artifacts:
+          path: tests/jest/coverage
+
+  e2e_tests:
+    docker:
+      - image: cypress/base:14.16.0
+        environment:
+          TERM: xterm
+    working_directory: ~/web-app
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+            - v1-deps-{{ .Branch }}
+            - v1-deps
+      - run:
+          name: Install Dependencies
+          command: npm ci
+      - save_cache:
+          key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - ~/.npm
+            - ~/.cache
+      - run: npm run ci:e2e
+
+      - store_artifacts:
+          path: cypress/videos
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - unit_tests
+      - e2e_tests
