@@ -19,7 +19,7 @@ jobs:
           command: npm run ci:unit
           environment:
 
-      - store_test_results:
+      - store_artifacts:
           path: tests/jest/coverage
 
   e2e_tests:
@@ -45,7 +45,7 @@ jobs:
             - ~/.cache
       - run: npm run ci:e2e
 
-      - store_test_results:
+      - store_artifacts:
           path: cypress/videos
 
 workflows:
