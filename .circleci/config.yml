@@ -19,6 +19,7 @@ jobs:
           name: Run Tests
           command: npm run ci:unit
           environment:
+            JEST_JUNIT_OUTPUT: "tests/jest/reports/test-results.xml"
 
       - store_test_results:
-          path: tests/jest/coverage
+          path: tests/jest/reports/

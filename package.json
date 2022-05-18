@@ -10,11 +10,7 @@
     "build-storybook": "build-storybook",
     "test:unit": "jest tests/jest",
     "test:e2e": "npx cypress open-ct",
-    "ci:unit": "jest tests/jest --coverage --ci --reporters=default --reporters=jest-junit"
-  },
-  "jest-junit": {
-    "outputDirectory": "tests/jest/coverage",
-    "outputName": "coverage.xml"
+    "ci:unit": "jest tests/jest --ci --testResultsProcessor=\"jest-junit\""
   },
   "dependencies": {
     "@cypress/vite-dev-server": "^2.0.2",
