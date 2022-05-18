@@ -16,10 +16,11 @@ jobs:
           paths:
             - /home/circleci/.npm
       - run:
-          name: Run Tests
+          name: "Run tests"
           command: npm run ci:unit
           environment:
-            JEST_JUNIT_OUTPUT: "tests/jest/reports/test-results.xml"
-
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
       - store_test_results:
-          path: tests/jest/reports/
+          path: reports/junit
+      - store_artifacts:
+          path: reports/junit
