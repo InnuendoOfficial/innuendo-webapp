@@ -19,4 +19,4 @@ jobs:
           name: Run Tests
           command: npm run test:unit:cov
       - store_test_results:
-        path: unit-test-results
+          path: test-reports
