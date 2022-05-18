@@ -22,19 +22,6 @@ jobs:
       - store_test_results:
           path: tests/jest/coverage
 
-  e2e_tests:
-    jobs:
-      - cypress/install:
-          build: 'npm run build'
-      - cypress/run:
-          requires:
-            - cypress/install
-          record: true
-          parallel: true
-          parallelism: 4
-          group: 'all tests'
-          start: 'npm start'
-
 orbs:
     cypress: cypress-io/cypress@1
 workflows:
@@ -42,4 +29,3 @@ workflows:
   build_and_test:
     jobs:
       - unit_tests
-      - e2e_tests
