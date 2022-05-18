@@ -18,5 +18,8 @@ jobs:
       - run:
           name: Run Tests
           command: npm run test:unit:cov
+
       - store_test_results:
-          path: test-reports
+          path: tests/jest/coverage
+      - store_artifacts:
+          path: tests/jest/coverage
