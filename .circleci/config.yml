@@ -27,7 +27,7 @@ jobs:
       - image: cypress/base:14.16.0
         environment:
           TERM: xterm
-    working_directory: ~/app
+    working_directory: ~/web-app
     steps:
       - checkout
       - restore_cache:
