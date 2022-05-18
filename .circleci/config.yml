@@ -1,7 +1,3 @@
-version: 2
-orbs:
-  cypress: cypress-io/cypress@1
-
 jobs:
   unit_tests:
     working_directory: ~/web-app
@@ -19,23 +15,31 @@ jobs:
           paths:
             - /home/circleci/.npm
       - run:
-          name: "Run tests"
+          name: Run Tests
           command: npm run ci:unit
-      - store_artifacts:
+          environment:
+
+      - store_test_results:
           path: tests/jest/coverage
 
   e2e_tests:
-  - cypress/run:
+    jobs:
+      - cypress/install:
+          build: 'npm run build'
+      - cypress/run:
           requires:
             - cypress/install
           record: true
           parallel: true
           parallelism: 4
           group: 'all tests'
-          start: 'npm run dev'
+          start: 'npm start'
 
+orbs:
+    cypress: cypress-io/cypress@1
 workflows:
-  test_build_app:
+  version: 2
+  build_and_test:
     jobs:
       - unit_tests
       - e2e_tests
