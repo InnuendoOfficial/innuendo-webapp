@@ -1,6 +1,9 @@
 version: 2
+orbs:
+  cypress: cypress-io/cypress@1
+
 jobs:
-  build:
+  unit_tests:
     working_directory: ~/web-app
     docker:
       - image: circleci/node:16
@@ -20,3 +23,19 @@ jobs:
           command: npm run ci:unit
       - store_artifacts:
           path: tests/jest/coverage
+
+  e2e_tests:
+  - cypress/run:
+          requires:
+            - cypress/install
+          record: true
+          parallel: true
+          parallelism: 4
+          group: 'all tests'
+          start: 'npm run dev'
+
+workflows:
+  test_build_app:
+    jobs:
+      - unit_tests
+      - e2e_tests
