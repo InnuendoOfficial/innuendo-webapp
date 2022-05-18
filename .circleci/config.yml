@@ -18,9 +18,8 @@ jobs:
       - run:
           name: "Run tests"
           command: npm run ci:unit
-          environment:
-            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+
       - store_test_results:
-          path: reports/junit
+          path: ./reports/jest
       - store_artifacts:
-          path: reports/junit
+          path: ./reports/jest
