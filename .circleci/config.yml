@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  unit:
+  build:
     working_directory: ~/web-app
     docker:
       - image: circleci/node:16
@@ -17,7 +17,7 @@ jobs:
             - /home/circleci/.npm
       - run:
           name: Run Tests
-          command: npm run ci:unit
+          command: npm run test:unit:cov
           environment:
 
       - store_test_results:
