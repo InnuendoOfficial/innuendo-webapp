@@ -1,10 +1,92 @@
+defaults: &defaults
+  working_directory: ~/app
+  docker:
+    - image: cypress/browsers:chrome69
+  environment:
+    TZ: "Asia/Yekaterinburg"
+
 version: 2.1
 
-orbs:
-  cypress: cypress-io/cypress@1.29.0
+jobs:
+  unit_tests:
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      # find compatible cache from previous build,
+      # it should have same dependencies installed from package.json checksum
+      - restore_cache:
+          keys:
+            - cache-{{ .Branch }}-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - cache-
+
+      - run: npm test
+
+      - save_cache:
+          key: cache-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+            - ~/.npm
+            - ~/.cache
+
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - .cache/Cypress
+
+      - run:
+          command: npm run test:unit
+          environment:
+            JEST_JUNIT_OUTPUT: "test-reports/jest-junit.xml"
+
+      - store_test_results:
+          path: test-reports
+
+      - store_artifacts:
+          path: test-reports
+
+  e2e_tests:
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      # find compatible cache from previous build,
+      # it should have same dependencies installed from package.json checksum
+      - restore_cache:
+          keys:
+            - cache-{{ .Branch }}-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - cache-
+
+      - run: npm test
+
+      - save_cache:
+          key: cache-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+            - ~/.npm
+            - ~/.cache
+
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - .cache/Cypress
+
+      - run:
+          command: npm run test:e2e
+
+      - store_test_results:
+          path: test-reports
+
+      - store_artifacts:
+          path: test-reports
 
 workflows:
-  tests:
+  version: 2
+  test_build_app:
     jobs:
-      - cypress/run:
-          start: npm run dev
+      - unit_tests
+      - e2e_tests
