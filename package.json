@@ -10,6 +10,7 @@
     "build-storybook": "build-storybook",
     "test:unit": "jest tests/jest",
     "test:e2e": "npx cypress open-ct",
+    "ci:e2e": "npx cypress run-ct",
     "ci:unit": "jest tests/jest --coverage --ci"
   },
   "dependencies": {
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
+    "@cypress/code-coverage": "^3.9.12",
     "@quasar/vite-plugin": "^1.0.9",
     "@storybook/addon-actions": "^6.4.22",
     "@storybook/addon-essentials": "^6.4.22",

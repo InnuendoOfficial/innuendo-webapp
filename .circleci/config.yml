@@ -43,10 +43,11 @@ jobs:
           paths:
             - ~/.npm
             - ~/.cache
-      - run: $(npm bin)/cypress run
+      - run: npm run ci:e2e
 
-orbs:
-    cypress: cypress-io/cypress@1
+      - store_test_results:
+          path: cypress/videos
+
 workflows:
   version: 2
   build_and_test:
