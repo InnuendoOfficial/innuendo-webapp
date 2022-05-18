@@ -22,8 +22,6 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - cache-
 
-      - run: npm install
-
       - save_cache:
           key: cache-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
@@ -37,7 +35,7 @@ jobs:
             - .cache/Cypress
 
       - run:
-          command: npm run test:unit
+          command: npm install && npm run test:unit
           environment:
             JEST_JUNIT_OUTPUT: "test-reports/jest-junit.xml"
 
@@ -61,8 +59,6 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - cache-
 
-      - run: npm install
-
       - save_cache:
           key: cache-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
@@ -76,7 +72,7 @@ jobs:
             - .cache/Cypress
 
       - run:
-          command: npm run test:e2e
+          command: npm install && npm run test:e2e
 
       - store_test_results:
           path: test-reports
