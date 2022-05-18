@@ -22,5 +22,3 @@ jobs:
 
       - store_test_results:
           path: tests/jest/coverage
-      - store_artifacts:
-          path: tests/jest/coverage
