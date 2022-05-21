@@ -8,8 +8,10 @@
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
+    "test:unit": "jest tests/jest",
     "test:e2e": "npx cypress open-ct",
-    "test:unit": "jest tests/jest"
+    "ci:e2e": "npx cypress run-ct",
+    "ci:unit": "jest tests/jest --coverage --ci"
   },
   "dependencies": {
     "@cypress/vite-dev-server": "^2.0.2",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
+    "@cypress/code-coverage": "^3.9.12",
     "@quasar/vite-plugin": "^1.0.9",
     "@storybook/addon-actions": "^6.4.22",
     "@storybook/addon-essentials": "^6.4.22",
@@ -34,6 +37,7 @@
     "@vue/vue3-jest": "^27.0.0",
     "babel-loader": "^8.2.5",
     "jest": "^27.5.1",
+    "jest-junit": "^13.2.0",
     "sass": "^1.32.0",
     "ts-jest": "^27.1.4",
     "typescript": "^4.5.4",

@@ -9,5 +9,6 @@ module.exports = {
         '^.+\\.ts$': 'ts-jest',
         '^.+\\.vue$': '@vue/vue3-jest'
     },
-    testEnvironment: 'jsdom'
+    testEnvironment: 'jsdom',
+    coverageDirectory: "<rootDir>/tests/jest/coverage",
 }
