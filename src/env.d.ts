@@ -1,3 +1,9 @@
+// env.ts
+/**
+ * Configure plungin for server.
+ */
+
+
 /// <reference types="vite/client" />
 
 declare module '*.vue' {
