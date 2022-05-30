@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "start": "serve -s dist -l tcp://0.0.0.0:${PORT:-8080} -n",
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -21,6 +22,7 @@
     "@quasar/extras": "^1.13.5",
     "cypress": "^9.6.0",
     "quasar": "^2.6.6",
+    "serve": "^13.0.2",
     "vue": "^3.2.25",
     "vue-router": "^4.0.14",
     "vuex": "^4.0.2"
