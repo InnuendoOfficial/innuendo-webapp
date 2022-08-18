@@ -1,9 +1,7 @@
-docker/*
-docs/*
-public/*
-tests/*
-typedoc/*
-cypress.json
-jest.config.js
-node_modules/*
-cypress/*
+/dist
+/src-capacitor
+/src-cordova
+/.quasar
+/node_modules
+.eslintrc.js
+/src-ssr
