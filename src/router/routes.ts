@@ -30,6 +30,18 @@ const routes: RouteRecordRaw[] = [
     ],
   },
 
+  {
+    path: '/validation',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'validation',
+        path: '',
+        component: () => import('src/pages/FormValidation.vue'),
+      },
+    ],
+  },
+
 
   {
     path: '/',
