@@ -18,6 +18,7 @@
             secondary
             arrow
             dense
+            @click="goForm"
           />
         </div>
       </div>
@@ -28,6 +29,16 @@
 <script setup lang="ts">
 import LoginForm from 'src/components/organisms/LoginForm.vue';
 import AButton from 'src/components/atoms/AButton.vue';
+
+
+import { useRouter } from 'vue-router';
+
+const _router = useRouter();
+
+async function goForm(){
+    _router.push({name: 'forms'});
+}
+
 </script>
 
 <style scoped>

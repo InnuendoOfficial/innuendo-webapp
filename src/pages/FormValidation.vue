@@ -1,15 +1,19 @@
 <template>
     <main class="bg_innuendo">
         <q-page>
-            <div class="">
+            <div class="row justify-center window-height window-width" style="padding-top: 50px;">
                 <div class="" style="display:inline-block;">
                     <img src="~/assets/logo.png" alt="innuendo logo">
                 </div>
                 <div class="" style="display:inline-block;">
                     <h2 style="color: white">Innuendo</h2>
                 </div>
-                <div class="row window-height absolute-center relative text-white">
-                    <h5>Votre demande a bien été prise en compte, nous reviendrons vers vous dans les plus proches délais. Vous allez être rediriger vers la page d'accueil</h5>
+                <div class="row justify-center window-height window-width items-center absolute-center relative" style="text-align: center; color:#584f95">
+                    <q-card class="my-card">
+                        <q-card-section>
+                            <h5>Votre demande a bien été prise en compte, nous reviendrons vers vous dans les plus proches délais.<br>Vous allez être rediriger vers la page d'accueil.</h5>
+                        </q-card-section>
+                    </q-card>
                 </div>
                 </div>
         </q-page>
@@ -20,26 +24,12 @@
     .bg_innuendo {
         background: #776ccb;
     }
-    .action {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .center {
-        position: relative;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        border: 5px solid #FFFF00;
-    }
-    </style>
+</style>
 
 <script>
-import router from 'src/router';
-
     export default {
         created(){
-        setTimeout( () => this.$router.push('/login'), 15000);
+        setTimeout( () => this.$router.push('/login'), 10000);
         }
     }
 </script>

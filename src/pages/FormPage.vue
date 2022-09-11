@@ -127,7 +127,8 @@
 
 
 import { ref } from 'vue';
-//import emailjs from 'emailjs-com';
+import emailjs from 'emailjs-com';
+import axios from 'axios';
 
 export default {
     data() {
@@ -144,42 +145,48 @@ export default {
             message: ref('msg'),
         };
     },
+
+    created() {
+    this.insertDemande();
+    },
+
     methods: {
-        onSubmit() {
+
+        async insertDemande() {
+            console.log("insert demande called")
+            var sql = "INSERT INTO demande_Pro VALUES ('"+this.nom+"', '"+this.prenom+"', '"+this.pro+"', '"+this.age+"', '"+this.tel+"', '"+this.mail+"', '"+this.type+"', '"+this.abo+"',"+this.licence+", CURDATE());"
+            await axios.post("http://localhost:5000/demande", {
+            data: {sql:sql},
+            });
+        },
+
+        onSubmit(e) {
             var date = new Date();
             var dd = String(date.getDate()).padStart(2, '0');
             var mm = String(date.getMonth() + 1).padStart(2, '0');
             var yyyy = date.getFullYear();
             date = dd + '/' + mm + '/' + yyyy;
-           // this.$router.push('/login');
-            // console.log("ze insane mail", this.message);
-            // console.log("type ", this.type);
-            // console.log("nom ", this.nom);
-            // console.log("prenom ", this.prenom);
-            // console.log("age ", this.age);
-            // console.log("profession ", this.pro);
-            // console.log("mail ", this.mail);
-            // console.log("telephone ", this.tel);
-            // console.log("nb licence ", this.licence);
-            // console.log("type abo ", this.abo);
-            // try {
-            //     emailjs.sendForm('service_ebnk84t', 'template_cfr63fc', e.target,
-            //     'OU7dvnG78nmA7UwHX', {
-            //     type: this.type,
-            //     nom: this.nom,
-            //     prenom: this.prenom, 
-            //     age: this.age,
-            //     profession: this.profession,
-            //     mail: this.mail,
-            //     telephone: this.telephone, 
-            //     licence: this.licence,
-            //     abo: this.abo,
-            //     date: date
-            //     })
-            // } catch(error) {
-            //     console.log({error})
-            // }
+            this.insertDemande();
+            this.$router.push('/validation');
+            try {
+                emailjs.sendForm('service_ebnk84t', 'template_cfr63fc', e.target,
+                'OU7dvnG78nmA7UwHX', {
+                type: this.type,
+                nom: this.nom,
+                prenom: this.prenom, 
+                age: this.age,
+                profession: this.profession,
+                mail: this.mail,
+                telephone: this.telephone, 
+                licence: this.licence,
+                abo: this.abo,
+                date: date
+                })
+            } catch(error) {
+                console.log({error})
+            }
         },
+
         onReset() {
             console.log(this.nom);
             this.nom = null;
