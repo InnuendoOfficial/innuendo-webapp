@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "start": "serve -s dist -l tcp://0.0.0.0:${PORT:-8080} -n",
+    "build": "quasar build",
+    "start": "node server.js",
+    "heroku-postbuild": "yarn && yarn build",
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -19,15 +20,18 @@
   "dependencies": {
     "@cypress/vite-dev-server": "^2.0.2",
     "@cypress/vue": "^3.1.1",
-    "cypress": "^9.6.0",
-    "serve": "^13.0.2",
-    "axios": "^0.21.1",
-    "vue-i18n": "^9.0.0",
     "@quasar/extras": "^1.0.0",
+    "axios": "^0.21.1",
+    "connect-history-api-fallback": "^2.0.0",
+    "cypress": "^9.6.0",
+    "express": "^4.18.1",
+    "pinia": "^2.0.11",
     "quasar": "^2.6.0",
+    "serve": "^13.0.2",
+    "serve-static": "^1.15.0",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0",
-    "pinia": "^2.0.11"
+    "vue-i18n": "^9.0.0",
+    "vue-router": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
