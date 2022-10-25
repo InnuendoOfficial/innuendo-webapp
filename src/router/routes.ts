@@ -42,6 +42,18 @@ const routes: RouteRecordRaw[] = [
     ],
   },
 
+  {
+    path: '/data',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'data',
+        path: '',
+        component: () => import('src/pages/DataPage.vue'),
+      },
+    ],
+  },
+
 
   {
     path: '/',
