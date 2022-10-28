@@ -19,6 +19,43 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
+    path: '/forms',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'forms',
+        path: '',
+        component: () => import('src/pages/FormPage.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/validation',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'validation',
+        path: '',
+        component: () => import('src/pages/FormValidation.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/data',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'data',
+        path: '',
+        component: () => import('src/pages/DataPage.vue'),
+      },
+    ],
+  },
+
+
+  {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
