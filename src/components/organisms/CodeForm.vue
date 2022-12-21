@@ -40,10 +40,11 @@ const _router = useRouter();
 const buttonState: ButtonState = reactive({ loading: false, disabled: true });
 const codeString = ref('');
 const errorMessage = ref(undefined);
+let data = []
 
 
 watch(codeString, (newCodeString: string) => {
-  if (newCodeString.length == 4) {
+  if (newCodeString.length != 0) {
     buttonState.disabled = false;
   } else {
     buttonState.disabled = true;
@@ -52,14 +53,16 @@ watch(codeString, (newCodeString: string) => {
 
 async function verifyCode() {
   if (buttonState.disabled) return;
-
+  
   buttonState.loading = true;
-
+  
   try {
-    await API.auth.verifyCode();
-
+    const _data = await API.auth.verifyCode(codeString.value);
+    console.log(_data)
+    data = _data
+    
     buttonState.loading = false;
-    _router.push({ name: 'home' });
+    _router.push({ name: 'home', params: { SalesInvoice: JSON.stringify(_data) }});
   } catch (error: Error) {
     codeString.value = '';
     errorMessage.value = error.message;

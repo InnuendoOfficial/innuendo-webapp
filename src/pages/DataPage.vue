@@ -116,7 +116,7 @@
 
     methods: {
         logout() {
-            console.log("clicked")
+            console.log('clicked')
             this.$router.push('/login');
         },
 
@@ -135,7 +135,7 @@
             console.log(dataConfig.labels)
 
             //recreate graph with new config
-            let cnv = document.getElementById("myChart")
+            let cnv = document.getElementById('myChart')
             let ctx = cnv.getContext('2d')
             this.myChart = new Chart(ctx, {type: defaultType,
                                             data: dataConfig,
@@ -151,10 +151,10 @@
 
             //change data 
             dataConfig.datasets[0].data = qr
-            dataConfig.datasets[0].label = "Nombre de qrCode flashés"
+            dataConfig.datasets[0].label = 'Nombre de qrCode flashés'
 
             //recreate graph with new config
-            let cnv = document.getElementById("myChart")
+            let cnv = document.getElementById('myChart')
             let ctx = cnv.getContext('2d')
             this.myChart = new Chart(ctx, {type: defaultType,
                                             data: dataConfig,
@@ -170,10 +170,10 @@
 
             //change data 
             dataConfig.datasets[0].data = register
-            dataConfig.datasets[0].label = "Nombre de nouveaux utilisateurs'"
+            dataConfig.datasets[0].label = 'Nombre de nouveaux utilisateurs'
 
             //recreate graph with new config
-            let cnv = document.getElementById("myChart")
+            let cnv = document.getElementById('myChart')
             let ctx = cnv.getContext('2d')
             this.myChart = new Chart(ctx, {type: defaultType,
                                             data: dataConfig,
@@ -189,10 +189,10 @@
 
             //change data 
             dataConfig.datasets[0].data = notified
-            dataConfig.datasets[0].label = "Nombre de cas contact notifiés"
-            console.log("type contact : ", defaultType)
+            dataConfig.datasets[0].label = 'Nombre de cas contact notifiés'
+            console.log('type contact : ', defaultType)
             //recreate graph with new config
-            let cnv = document.getElementById("myChart")
+            let cnv = document.getElementById('myChart')
             let ctx = cnv.getContext('2d')
             this.myChart = new Chart(ctx, {type: defaultType,
                                             data: dataConfig,
@@ -201,11 +201,11 @@
 
 
         async fetchData() {
-            let data = await d3.csv("src/data/anticovid.csv")
+            let data = await d3.csv('src/data/anticovid.csv')
             this.dataLoaded = data
             for (let i = 1; i < (this.dataLoaded.length - 1); i++) {
-                let tmpDate = (this.dataLoaded[i].date).split("-", 2)
-                date.push(tmpDate[0] + "-" + tmpDate[1])
+                let tmpDate = (this.dataLoaded[i].date).split('-', 2)
+                date.push(tmpDate[0] + '-' + tmpDate[1])
                 register.push(parseInt(this.dataLoaded[i].register) - parseInt(this.dataLoaded[i - 1].register))
                 qr.push(parseInt(this.dataLoaded[i].qrCode) - parseInt(this.dataLoaded[i - 1].qrCode))
                 notified.push(parseInt(this.dataLoaded[i].notified) - parseInt(this.dataLoaded[i - 1].notified))
@@ -215,7 +215,7 @@
 
     mounted () {
         this.fetchData()
-        let myChart = document.getElementById("myChart")
+        let myChart = document.getElementById('myChart')
         this.myChart = new Chart(myChart, {type: defaultType,
                                             data: dataConfig,
                                             options: {}});

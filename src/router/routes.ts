@@ -31,6 +31,30 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
+    path: '/patiente',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'patiente',
+        path: '',
+        component: () => import('src/pages/PatientePage.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/contact',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'contact',
+        path: '',
+        component: () => import('src/pages/ContactPage.vue'),
+      },
+    ],
+  },
+
+  {
     path: '/validation',
     component: () => import('layouts/AuthLayout.vue'),
     children: [

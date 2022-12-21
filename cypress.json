@@ -1,4 +1,5 @@
 {
-    "testFiles": "**/*.spec.js",
-    "componentFolder": "tests/cypress"
+  "testFiles": "**/*.spec.js",
+  "componentFolder": "tests/cypress",
+  "projectId": "41kwqv"
 }

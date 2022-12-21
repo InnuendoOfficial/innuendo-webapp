@@ -126,7 +126,6 @@ export default {
             tel: ref(null),
             licence: ref(null),
             abo: ref('Mensuel'),
-            message: ref('msg'),
         };
     },
 

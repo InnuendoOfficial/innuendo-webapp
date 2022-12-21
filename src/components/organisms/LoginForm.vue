@@ -43,6 +43,7 @@ import AErrorMessage from '../atoms/AErrorMessage.vue';
 import Credentials from 'src/interfaces/Credentials';
 import ButtonState from 'src/interfaces/ButtonState';
 import API from 'src/api';
+import axios from 'axios';
 
 const _router = useRouter();
 const _userStore = useUserStore();
@@ -63,8 +64,8 @@ async function login(){
 
   buttonState.loading = true;
   try {
-    const _res = await API.auth.login();
-    
+    const _res = await API.auth.login(credentials.login, credentials.password);
+   // console.log(_res)
 
     buttonState.loading = false;
     _userStore.setUser(_res.user);
