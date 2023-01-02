@@ -12,7 +12,7 @@
                     <q-breadcrumbs active-color="white" style="font-size: 16px">
                         <q-breadcrumbs-el label="Accueil" icon="home" @click='home' />
                         <q-breadcrumbs-el label="Mes patientes" icon="list" @click='patiente'/>
-                        <q-breadcrumbs-el label="Dr Martens" icon="person">
+                        <q-breadcrumbs-el label="Dr Bourgeois" icon="person">
                             <q-menu
                             transition-show="flip-right"
                             transition-hide="flip-left"
@@ -37,7 +37,7 @@
             <!-- CONTENT-->
             <q-page-container>
                 <q-page style="" class="q-pa-md">
-                    <label style="font-size:x-large;color:darkslateblue">Votre patiente : Mx Prénom NOM, XX ans</label>
+                    <label style="font-size:x-large;color:darkslateblue">Votre patiente : Mlle Rachel GLIEM, 23 ans</label>
                     <div class="container column">
                         <div class="main col row">
                                 <div class="main-left col-1 mr-10 column"></div>
@@ -50,9 +50,9 @@
                                     <q-btn outline rounded label="Count down"/>
                                 </div>
                                 <label style="font-size:medium;">Douleur</label>
-                                <q-select outlined v-model="list_douleur" :options="douleur" label="Sélectionnez le type de douleur"/>
+                                <q-select id="douleur" outlined v-model="list_douleur" :options="douleur" label="Sélectionnez le type de douleur"/>
                                 <label style="font-size:medium;">Autre symptôme</label>
-                                <q-select outlined v-model="liste_autre" :options="autres" label="Sélectionnez un autre symptôme"/>
+                                <q-select id="autre" outlined v-model="liste_autre" :options="autres" label="Sélectionnez un autre symptôme"/>
                                 <label style="font-size:medium;">Choisissez une date</label>
                                 <div class="q-pa-md">
                                     <q-date v-model="model" range />
@@ -172,12 +172,11 @@
 
 <script>
     import Chart from 'chart.js/auto';
-    import * as d3 from 'd3';
     import { ref } from 'vue'
-    import API from 'src/api';
-    import {getContraception, getMedication, moyenneEndo, getEndo} from 'src/data_we/dataScript';
-    console.log(API.auth.data)
-    console.log(API.auth.token)
+    import {getContraception, getMedication, moyenneEndo, getEndo, dateSymptome} from 'src/data_we/dataScript';
+    import {getMenstruelle} from 'src/data_we/chartScript.js'
+    const data = JSON.parse(localStorage.getItem('data'))
+    
    // import FooterPage from 'src/components/organisms/FooterPage.vue';
 
     const columns_contraceptions = [
@@ -192,28 +191,22 @@
     { name: 'date', label: 'Date de prise', field: 'date'},
     ]
 
-    const contraception = getContraception(API.auth.data)
-    const rows_med = getMedication(API.auth.data)
+    const contraception = getContraception(data)
+    const rows_med = getMedication(data)
     const rows_contraceptions = contraception[0]
-    const list_endo = getEndo(API.auth.data)
+
+    const list_endo = getEndo(data)
+    const d_menstru = getMenstruelle(data)
+    console.log(d_menstru)
 
     
-    var labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-    ];
-
-    var dataConfig = {
-        labels: labels,
+    var dataConfigMenstru = {
+        labels: d_menstru[1],
         datasets: [{
-        label: 'Nombre de nouveaux utilisateurs',
+        label: 'Douleur Menstruelle',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
-        data: [0, 10, 5, 2, 20, 30, 45],
+        data: d_menstru[0],
         }],
         
     };
@@ -226,27 +219,10 @@
         borderColor: 'rgb(255, 99, 132)',
         data: list_endo[0],
         }],
-       
-        // xAxes: [{
-        //     type: 'time',
-        //     ticks: {
-        //         maxTicksLimit: 20
-        //     }
-        // }],
         pointStyle: 'circle',
     };
 
-    var date = [];
-    var register = [];
-    var qr = [];
-    var notified = [];
     var defaultType = 'line'
-
-    // const config = {
-    //     type: defaultType,
-    //     data: dataConfig,
-    //     options: {}
-    // };
 
     export default {
     setup() {
@@ -269,7 +245,7 @@
             ],
             autres: ['Flux', 'Fatigue'],
             date_sympt: ref('2022/12/01'),
-            events: ['2022/12/01', '2022/12/05', '2022/12/06'],
+            events: dateSymptome(data),
             splitterModel: ref(50),
             model: ref({ from: '2022/12/02', to: '2022/12/17' })
         };
@@ -288,17 +264,6 @@
         logout() {
             this.$router.push('/login');
         },
-        async fetchData() {
-            let data = await d3.csv('src/data/anticovid.csv');
-            this.dataLoaded = data;
-            for (let i = 1; i < (this.dataLoaded.length - 1); i++) {
-                let tmpDate = (this.dataLoaded[i].date).split('-', 2);
-                date.push(tmpDate[0] + '-' + tmpDate[1]);
-                register.push(parseInt(this.dataLoaded[i].register) - parseInt(this.dataLoaded[i - 1].register));
-                qr.push(parseInt(this.dataLoaded[i].qrCode) - parseInt(this.dataLoaded[i - 1].qrCode));
-                notified.push(parseInt(this.dataLoaded[i].notified) - parseInt(this.dataLoaded[i - 1].notified));
-            }
-        },
         contact() {
             this.$router.push('/contact');
         },
@@ -307,13 +272,17 @@
         },
         home() {
             this.$router.push('/')
+        },
+        changeData() {
+            console.log(graph.value)
         }
     },
     mounted() {
-        this.fetchData();
         let myChart = document.getElementById('myChart');
         let endoChart = document.getElementById('endoChart');
-        this.myChart = new Chart(myChart, { type: defaultType, data: dataConfig, options: {} });
+        const graph = document.getElementById("douleur")
+        graph.addEventListener('change', this.changeData)
+        this.myChart = new Chart(myChart, { type: defaultType, data: dataConfigMenstru, options: {} });
         this.endoChart = new Chart(endoChart, { type: defaultType, data: dataConfigEndo, options: {} });
     },
     //components: { FooterPage }

@@ -37,7 +37,6 @@ function getContraception(data) {
         }
     }
 
-    console.log(historic)
     return [historic, historic[historic.length - 1].nom]
 }
 
@@ -72,8 +71,23 @@ function moyenneEndo(endoscore) {
         sum += item;
     });
     var tot = (sum / endoscore.length).toFixed(2);
-    console.log(tot)
     return tot
+}
+
+function dateSymptome(data) {
+    var date = []
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].symptoms.length; j++) {
+            var tmp = data[i].symptoms[j].symptom_type_name
+            if ( tmp == 'localisation douleur' || tmp == 'sang selles' || tmp == 'dyspareunie' || tmp == 'sang urine' || tmp == 'brulure urinaire' || tmp == 'diarrhee' || tmp == 'constipation' || tmp == 'pollakiurie' || tmp == 'dysurie') {
+                var test = new Date(data[i].date)
+                let MyDateString = test.getFullYear() + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + ('0' + test.getDate()).slice(-2);
+                date.push(MyDateString)
+            }
+        }
+    }
+    date = removeDuplicates(date)
+    return date
 }
 
 function getEndo(data) {
@@ -89,7 +103,6 @@ function getEndo(data) {
         let year = test.getFullYear();
         date.push( day + "/" + month + "/" + year)
     }
-    console.log(date)
     date = removeDuplicates(date)
     return [endo, date]
 }
@@ -103,10 +116,4 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
-export {getContraception, getMedication, moyenneEndo, getEndo}
-
-// {
-//         Médicament: 'Efferalgan',
-//         prise: '1',
-//         Date: '01/01/2021',
-// },
+export {getContraception, getMedication, moyenneEndo, getEndo, dateSymptome}

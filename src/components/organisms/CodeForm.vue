@@ -57,12 +57,10 @@ async function verifyCode() {
   buttonState.loading = true;
   
   try {
-    const _data = await API.auth.verifyCode(codeString.value);
-    console.log(_data)
-    data = _data
+    await API.auth.verifyCode(codeString.value);
     
     buttonState.loading = false;
-    _router.push({ name: 'home', params: { SalesInvoice: JSON.stringify(_data) }});
+    _router.push({ name: 'home'});
   } catch (error: Error) {
     codeString.value = '';
     errorMessage.value = error.message;

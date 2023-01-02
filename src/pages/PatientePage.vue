@@ -11,7 +11,7 @@
                     <q-breadcrumbs active-color="white" style="font-size: 16px">
                         <q-breadcrumbs-el label="Accueil" icon="home" @click='home' />
                         <q-breadcrumbs-el label="Mes patientes" icon="list" @click='patiente'/>
-                        <q-breadcrumbs-el label="Dr Martens" icon="person">
+                        <q-breadcrumbs-el label="Dr Bourgeois" icon="person">
                             <q-menu
                             transition-show="flip-right"
                             transition-hide="flip-left"
@@ -32,12 +32,9 @@
                 </q-toolbar>
             </q-header>
             <!-- END HEADER -->
-
-            <p>codeString</p>
+            <!-- <HeaderPage></HeaderPage> -->
             <q-page-container>
                 <q-page style="" class="q-pa-md">
-                    <q-btn flat round dense size="20px" @click="connect" class="q-mr-sm">Connect to bdd</q-btn>
-                    <p>oui</p>
                     <div class="q-pa-md">
                     <q-table title="Patientes" :rows="rows" :columns="columns" row-key="id" :filter="filter" :loading="loading" >
 
@@ -78,6 +75,10 @@
 
 <script>
 import { ref } from 'vue'
+import {getPatiente} from 'src/data_we/patienteScript'
+//import HeaderPage from 'src/components/organisms/HeaderPage.vue'
+const data = localStorage.getItem('patientes')
+console.log("token from patiente : " + localStorage.getItem('token'))
     
         const columns = [
 
@@ -88,80 +89,11 @@ import { ref } from 'vue'
     { name: 'endoscore', label: 'Endoscore', field: 'endoscore' , sortable:true},
     ]
 
-    const originalRows = [
-    {
-        nom: 'EOZ',
-        prenom: 'Zoé',
-        telephone: '0839428439',
-        mail: 'ez@mail.com',
-        endoscore: 1,
-    },
-    {
-        nom: 'EIRAM',
-        prenom: 'Marie',
-        telephone: '473294819',
-        mail: 'em@mail.com',
-        endoscore: 9,
-    },
-    {
-        nom: 'UL',
-        prenom: 'Lu',
-        telephone: '4783478232',
-        mail: 'ul@mail.com',
-        endoscore: 4.3,
-    },
-    {
-        nom: 'ENNAEJ',
-        prenom: 'Jeanne',
-        telephone: '2345345643',
-        mail: 'ej@mail.com',
-        endoscore: 2.9,
-    },
-    {
-        nom: 'ELLIMAC',
-        prenom: 'Camille',
-        telephone: '54378253',
-        mail: 'ec@mail.com',
-        endoscore: 7.7,
-    },
-    {
-        nom: 'ECARG',
-        prenom: 'Grace',
-        telephone: '1121212112',
-        mail: 'eg@mail.com',
-        endoscore: 10,
-    },
-    {
-        nom: 'MIN',
-        prenom: 'Nim',
-        telephone: '7774878484',
-        mail: 'mn@mail.com',
-        endoscore: 3.8,
-    },
-    {
-        nom: 'ASIL',
-        prenom: 'Lisa',
-        telephone: '43437389',
-        mail: 'al@mail.com',
-        endoscore: 5.2,
-    },
-    {
-        nom: 'ANIN',
-        prenom: 'Nina',
-        telephone: '93829832',
-        mail: 'an@mail.com',
-        endoscore: 8.5,
-    },
-    {
-        nom: 'ENIDNAMA',
-        prenom: 'Amandine',
-        telephone: '93829383',
-        mail: 'ea@mail.com',
-        endoscore: 6.6,
-    }
-    ]
+    const originalRows = getPatiente()
 
     export default {
+        //components : {HeaderPage},
+
 
     setup () {
     const loading = ref(false)
@@ -187,23 +119,6 @@ import { ref } from 'vue'
         home() {
             this.$router.push('/')
         },
-
-        connect() {
-            console.log("connexion")
-            // const { Client } = pg
-            // const client = new Client({
-            // user: 'aiyxkkhkyzbzcj',
-            // host: 'ec2-44-205-177-160.compute-1.amazonaws.com',
-            // database: 'aiyxkkhkyzbzcj',
-            // password: 'be3732393f80c2f2cfa73adcc21d2a2a30ea81c6854c4ff6882384d70535e624',
-            // port: 5432,
-            // })
-            // console.log("trying to connect")
-            // client.connect(function(err) {
-            // if (err) throw err;
-            // console.log("Connected!");
-            // });
-        }
     },
 }
 </script>

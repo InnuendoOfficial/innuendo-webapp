@@ -68,7 +68,7 @@ async function login(){
    // console.log(_res)
 
     buttonState.loading = false;
-    _userStore.setUser(_res.user);
+   // _userStore.setUser(_res.user);
     _router.push({name: 'code'});
   } catch (error: Error) {
     credentials.login = '';

@@ -22,7 +22,7 @@ import { useUserStore } from 'src/stores/user';
 const _userStore = useUserStore();
 
 const fullname = computed(() => {
-  return `${_userStore.user.firstName} ${_userStore.user.lastName}`;
+  return `${localStorage.getItem('name')} ${localStorage.getItem('surname')}`;
 })
 </script>
 
