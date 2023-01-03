@@ -50,9 +50,11 @@
                                     <q-btn outline rounded label="Count down"/>
                                 </div>
                                 <label style="font-size:medium;">Douleur</label>
-                                <q-select id="douleur" outlined v-model="list_douleur" :options="douleur" label="Sélectionnez le type de douleur"/>
-                                <label style="font-size:medium;">Autre symptôme</label>
-                                <q-select id="autre" outlined v-model="liste_autre" :options="autres" label="Sélectionnez un autre symptôme"/>
+                                <!-- @update:model-value="test_select()" -->
+                                <q-select id="symptome" outlined name="symptome" v-model="symptome" :options="douleur" :labels="douleur_label" label="Sélectionnez le type de symptôme"/>
+                                <!-- <label style="font-size:medium;">Autre symptôme</label> -->
+                                <!-- <q-select id="autre" outlined v-model="liste_autre" :options="autres" label="Sélectionnez un autre symptôme"/> -->
+                                <q-btn @click="actualisation">ACTUALISER LE GRAPHIQUE</q-btn>
                                 <label style="font-size:medium;">Choisissez une date</label>
                                 <div class="q-pa-md">
                                     <q-date v-model="model" range />
@@ -174,7 +176,7 @@
     import Chart from 'chart.js/auto';
     import { ref } from 'vue'
     import {getContraception, getMedication, moyenneEndo, getEndo, dateSymptome} from 'src/data_we/dataScript';
-    import {getMenstruelle} from 'src/data_we/chartScript.js'
+    import {getSymptome} from 'src/data_we/chartScript.js'
     const data = JSON.parse(localStorage.getItem('data'))
     
    // import FooterPage from 'src/components/organisms/FooterPage.vue';
@@ -194,13 +196,11 @@
     const contraception = getContraception(data)
     const rows_med = getMedication(data)
     const rows_contraceptions = contraception[0]
-
+    const d_menstru = getSymptome('Menstruelle')
     const list_endo = getEndo(data)
-    const d_menstru = getMenstruelle(data)
-    console.log(d_menstru)
 
     
-    var dataConfigMenstru = {
+    var dataConfig = {
         labels: d_menstru[1],
         datasets: [{
         label: 'Douleur Menstruelle',
@@ -232,7 +232,7 @@
         rows,
         rows_med,
         rowCount,
-            list_douleur: ref(null),
+            symptome: ref(null),
             liste_autre: ref(null),
             douleur: [
                 'Menstruelle',
@@ -241,13 +241,15 @@
                 'Défécation',
                 'Urinaire',
                 'Pelvienne',
-                'Abdominale'
+                'Abdominale',
+               // 'Flux',
+                'Fatigue'
             ],
             autres: ['Flux', 'Fatigue'],
             date_sympt: ref('2022/12/01'),
             events: dateSymptome(data),
             splitterModel: ref(50),
-            model: ref({ from: '2022/12/02', to: '2022/12/17' })
+            model: ref({ from: '2022/01/01', to: '2022/12/31' }),
         };
     },
     data() {
@@ -261,6 +263,18 @@
         };
     },
     methods: {
+        actualisation() {
+            const dataset = getSymptome(this.symptome)
+            console.log(dataset[0])
+            this.myChart.destroy();
+            dataConfig.datasets[0].data = dataset[0]
+            let cnv = document.getElementById('myChart')
+            let ctx = cnv.getContext('2d')
+            this.myChart = new Chart(ctx, {type: defaultType,
+                                            data: dataConfig,
+                                            options: {}});
+
+        },
         logout() {
             this.$router.push('/login');
         },
@@ -275,14 +289,17 @@
         },
         changeData() {
             console.log(graph.value)
+            console.log(list_dys)
+            this.myChart.data.datasets[0].data = list_dys
+            this.myChart.update()
         }
     },
     mounted() {
         let myChart = document.getElementById('myChart');
         let endoChart = document.getElementById('endoChart');
-        const graph = document.getElementById("douleur")
-        graph.addEventListener('change', this.changeData)
-        this.myChart = new Chart(myChart, { type: defaultType, data: dataConfigMenstru, options: {} });
+        const graph = document.getElementById("symptome")
+        graph.addEventListener('change', this.actualisation)
+        this.myChart = new Chart(myChart, { type: defaultType, data: dataConfig, options: {} });
         this.endoChart = new Chart(endoChart, { type: defaultType, data: dataConfigEndo, options: {} });
     },
     //components: { FooterPage }
