@@ -34,47 +34,41 @@
             </q-header>
             <q-page-container>
                 <q-page style="" class="q-pa-md">
-                    
-                    
                     <div class="row absolute-center">
                         
                         <!-- formulaire-->
                         <form ref="formulaire" @submit.prevent="onSubmit" @reset="onReset" class="q-gutter-md">
-                            <label class="text-center" style="font-size:x-large;color:darkslateblue">Formulaire de contact</label>
+                            <label class="text-center" style="font-size:xx-large;color:darkslateblue">Formulaire de contact</label>
 
                             <!--type -->
                             <div >
                                 <div class="row items-start">
-                                    <label style="color:black;font-size: larger;">Votre prise de contact concerne</label>
+                                    <label class="text-style">Votre prise de contact concerne</label>
                                 </div>
-                                <div>
+                                <div class="row justify-evenly">
                                     <q-radio id="radio1" name="type" v-model="type" checked-icon="task_alt" unchecked-icon="panorama_fish_eye"  color="black" val="abonnement" label="Abonnement" />
                                     <q-radio id="radio2" name="type" v-model="type" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black" val="bug" label="Bug" />
                                     <q-radio id="radio3" name="type" v-model="type" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black" val="autre" label="Autre" />
                                 </div>
                             </div>
-                                <label style="color:black;">Titre de la demande</label>
-                                <q-input name="titre" outlined v-model="titre" label="Une brève description de votre message" lazy-rules :rules="[ val => val && val.length > 0 || 'Champ obligatoire']"/>
+                            <label class="text-style">Titre de la demande</label>
+                            <q-input name="titre" outlined v-model="titre" label="Une brève description de votre message" lazy-rules :rules="[ val => val && val.length > 0 || 'Champ obligatoire']"/>
 
-                                <label style="color:black;">Votre message</label>
-                                <q-input
-                                name="msg"
-                                v-model="msg"
-                                filled
-                                type="textarea"
-                                lazy-rules :rules="[ val => val && val.length > 0 || 'Champ obligatoire']"
-                                label="Entrez ici votre message"
-                                />
-                            
-                            <div class="q-pa-md">
-                                <label style="font-size: larger;">Souhaitez vous être contacté par mail ou par téléphone ?</label>
-                                <div class="q-gutter-sm">
-                                    <q-radio id="radio4" name="type_contact" v-model="type_contact" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black" val="mail" label="Mail" />
-                                    <q-radio id="radio5" name="type_contact" v-model="type_contact" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black" val="telephone" label="Téléphone" />
-                                </div>
+                            <label class="text-style">Votre message</label>
+                            <q-input
+                            name="msg"
+                            v-model="msg"
+                            filled
+                            type="textarea"
+                            lazy-rules :rules="[ val => val && val.length > 0 || 'Champ obligatoire']"
+                            label="Entrez ici votre message"
+                            />                 
+                            <label class="text-style">Souhaitez vous être contacté par mail ou par téléphone ?</label>
+                            <div class="q-gutter-sm row justify-evenly">
+                                <q-radio id="radio4" name="type_contact" v-model="type_contact" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black" val="mail" label="Mail" />
+                                <q-radio id="radio5" name="type_contact" v-model="type_contact" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black" val="telephone" label="Téléphone" />
                             </div>
-
-                            <div>
+                            <div class="row justify-center">
                                 <q-btn label="Envoyer ma demande" type="submit" text-color="primary"/>
                                 <q-btn label="Effacer" type="reset"  text-color="black" flat class="q-ml-sm" />
                             </div>
@@ -198,5 +192,10 @@
         color: #000000;
         text-align: center;
         font: 32px Arial, sans-serif;
+    }
+
+    .text-style {
+        color:black;
+        font-size: larger;
     }
 </style>
