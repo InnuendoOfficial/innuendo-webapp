@@ -57,7 +57,7 @@
                                 <q-btn @click="actualisation">ACTUALISER LE GRAPHIQUE</q-btn>
                                 <label style="font-size:medium;">Choisissez une date</label>
                                 <div class="q-pa-md">
-                                    <q-date v-model="model" range />
+                                    <q-date v-model="selected_date" range />
                                 </div>
                             </div>
                         </div>
@@ -175,8 +175,8 @@
 <script>
     import Chart from 'chart.js/auto';
     import { ref } from 'vue'
-    import {getContraception, getMedication, moyenneEndo, getEndo, dateSymptome} from 'src/data_we/dataScript';
-    import {getSymptome} from 'src/data_we/chartScript.js'
+    import {getContraception, getMedication, moyenneEndo, getEndo, dateSymptome} from 'src/data/dataScript';
+    import {getSymptome} from 'src/data/chartScript.js'
     const data = JSON.parse(localStorage.getItem('data'))
     
    // import FooterPage from 'src/components/organisms/FooterPage.vue';
@@ -196,7 +196,7 @@
     const contraception = getContraception(data)
     const rows_med = getMedication(data)
     const rows_contraceptions = contraception[0]
-    const d_menstru = getSymptome('Menstruelle')
+    const d_menstru = getSymptome('Menstruelle', '2022/02/15', '2022/02/28')
     const list_endo = getEndo(data)
 
     
@@ -226,32 +226,32 @@
 
     export default {
     setup() {
-    const rowCount = ref(4)
-    const rows = ref([...rows_contraceptions])
-    return {
-        rows,
-        rows_med,
-        rowCount,
-            symptome: ref(null),
-            liste_autre: ref(null),
-            douleur: [
-                'Menstruelle',
-                'Dysmenorrhée',
-                'Digestion',
-                'Défécation',
-                'Urinaire',
-                'Pelvienne',
-                'Abdominale',
-               // 'Flux',
-                'Fatigue'
-            ],
-            autres: ['Flux', 'Fatigue'],
-            date_sympt: ref('2022/12/01'),
-            events: dateSymptome(data),
-            splitterModel: ref(50),
-            model: ref({ from: '2022/01/01', to: '2022/12/31' }),
-        };
-    },
+        const rowCount = ref(4)
+        const rows = ref([...rows_contraceptions])
+        return {
+            rows,
+            rows_med,
+            rowCount,
+                symptome: ref('Menstruelle'),
+                liste_autre: ref(null),
+                douleur: [
+                    'Menstruelle',
+                    'Dysmenorrhée',
+                    'Digestion',
+                    'Défécation',
+                    'Urinaire',
+                    'Pelvienne',
+                    'Abdominale',
+                // 'Flux',
+                    'Fatigue'
+                ],
+                autres: ['Flux', 'Fatigue'],
+                date_sympt: ref('2022/02/20'),
+                events: dateSymptome(data),
+                splitterModel: ref(50),
+                selected_date: ref({ from: '2022/02/15', to: '2022/02/28' }),
+            };
+        },
     data() {
         return {
             endoChart: undefined,
@@ -264,10 +264,11 @@
     },
     methods: {
         actualisation() {
-            const dataset = getSymptome(this.symptome)
-            console.log(dataset[0])
+            const dataset = getSymptome(this.symptome, this.selected_date.from, this.selected_date.to)
             this.myChart.destroy();
+            dataConfig.labels = dataset[1]
             dataConfig.datasets[0].data = dataset[0]
+            dataConfig.datasets[0].label = this.symptome
             let cnv = document.getElementById('myChart')
             let ctx = cnv.getContext('2d')
             this.myChart = new Chart(ctx, {type: defaultType,
