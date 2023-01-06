@@ -3,8 +3,8 @@
     <div class="row window-height">
       <div class="col-12 col-sm-6 bg-primary row justify-center items-center">
         <div class="col-7 column">
-           <h2 class="text-bold q-mb-sm text-white">Bienvenue {{ fullname }}</h2>
-          <img src="~/assets/code-illustration.png" alt="code illustration">
+          <h2 class="text-bold q-mb-sm text-white">Bienvenue {{ fullname }}</h2>
+          <img src="~/assets/code-illustration.png" alt="code illustration" />
         </div>
       </div>
       <div class="col-12 col-sm-6 bg-white row justify-center items-center">
@@ -23,9 +23,7 @@ const _userStore = useUserStore();
 
 const fullname = computed(() => {
   return `${_userStore.user.firstName} ${_userStore.user.lastName}`;
-})
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
