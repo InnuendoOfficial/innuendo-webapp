@@ -2,7 +2,6 @@ function getSymptome(sympt, date_f, date_t) {
     date_f = date_f.replaceAll('/', '-')
     date_t = date_t.replaceAll('/', '-')
     const date_range = getDaysArray(date_f, date_t)
-    console.log(date_range)
     if (sympt == 'Menstruelle')
         return getData('douleur menstruelle', date_range)
     if (sympt == 'Dysmenorrhée')

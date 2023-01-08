@@ -75,19 +75,46 @@ function moyenneEndo(endoscore) {
 }
 
 function dateSymptome(data) {
+    var dict = {}
     var date = []
+    var sympt = []
     for (let i = 0; i < data.length; i++) {
+        var test = new Date(data[i].date)
+        let MyDateString = test.getFullYear() + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + ('0' + test.getDate()).slice(-2);
+        var tmp_sympt = ''
         for (let j = 0; j < data[i].symptoms.length; j++) {
             var tmp = data[i].symptoms[j].symptom_type_name
             if ( tmp == 'localisation douleur' || tmp == 'sang selles' || tmp == 'dyspareunie' || tmp == 'sang urine' || tmp == 'brulure urinaire' || tmp == 'diarrhee' || tmp == 'constipation' || tmp == 'pollakiurie' || tmp == 'dysurie') {
-                var test = new Date(data[i].date)
-                let MyDateString = test.getFullYear() + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + ('0' + test.getDate()).slice(-2);
                 date.push(MyDateString)
+                if (tmp == 'localisation douleur') {
+                    tmp_sympt += "\nLocalisation de la douleur : " + data[i].symptoms[j].value + '| Douleur : ' + (getRandomInt(10) + 1).toString()
+                } if (tmp == 'sang selles') {
+                    tmp_sympt += '\nPrésence de sang dans les selles'
+                } if (tmp == 'dyspareunie') {
+                    tmp_sympt += '\nDouleur lors des rapports'
+                } if (tmp == 'sang urine') {
+                    tmp_sympt += '\nPrésence de sang dans les urines'
+                } if (tmp == 'brulure urinaire') {
+                    tmp_sympt += '\nBrûlures urinaires'
+                } if (tmp == 'diarrhee') {
+                    tmp_sympt += '\nDiarrhée'
+                } if (tmp == 'Constipation') {
+                    tmp_sympt += '\nConstipation'
+                } if (tmp == 'pollkiurie') {
+                    tmp_sympt += '\nFréquente envie d\'uriner'
+                } if (tmp == 'dysurie') {
+                    tmp_sympt += '\nDysurie'
+                }
             }
+        }
+        if (tmp_sympt.length > 0) {
+            dict[MyDateString] = tmp_sympt
         }
     }
     date = removeDuplicates(date)
-    return date
+    //console.log(date, sympt)
+    console.log(dict)
+    return [date, dict]
 }
 
 function getEndo(data) {

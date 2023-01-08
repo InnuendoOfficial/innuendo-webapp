@@ -70,35 +70,13 @@
                         
                         <template v-slot:before>
                             <div class="q-pa-md">
-                                <q-date
-                                v-model="date_sympt"
-                                :events="events"
-                                event-color="red"
-                                />
+                                <q-date v-model="date_sympt" :events="events" event-color="red" />
                             </div>
                         </template>
                         
                         <template v-slot:after>
-                            <q-tab-panels v-model="date_sympt" animated transition-prev="jump-up" transition-next="jump-up" >
-                            <q-tab-panel name="2022/12/01">
-                                <div class="text-h4 q-mb-md">Symptômes du 2022/12/01</div>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                            </q-tab-panel>
-
-                            <q-tab-panel name="2022/12/05">
-                                <div class="text-h4 q-mb-md">Symptômes du 2022/12/05</div>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                            </q-tab-panel>
-
-                            <q-tab-panel name="2022/12/06">
-                                <div class="text-h4 q-mb-md">Symptômes du 2022/12/06</div>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                            </q-tab-panel>
-                        </q-tab-panels>
+                            <div class="text-h4 q-mb-md">Symptômes du {{ date_sympt }}</div>
+                            <div class="text-h7 q-mb-md" style="white-space: pre-line">{{ this.sympt[date_sympt] }}</div>
                     </template>
                 </q-splitter>
             </div>
@@ -198,6 +176,10 @@
     const rows_contraceptions = contraception[0]
     const d_menstru = getSymptome('Menstruelle', '2022/02/15', '2022/02/28')
     const list_endo = getEndo(data)
+    const daily_sympt = dateSymptome(data)
+    const sympt = daily_sympt[1]
+    const tetststs = '2022/02/25'
+    console.log("daily = ", sympt)
 
     
     var dataConfig = {
@@ -229,6 +211,7 @@
         const rowCount = ref(4)
         const rows = ref([...rows_contraceptions])
         return {
+            sympt : daily_sympt[1],
             rows,
             rows_med,
             rowCount,
@@ -246,8 +229,8 @@
                     'Fatigue'
                 ],
                 autres: ['Flux', 'Fatigue'],
-                date_sympt: ref('2022/02/20'),
-                events: dateSymptome(data),
+                date_sympt: ref(daily_sympt[0][0]),
+                events: daily_sympt[0],
                 splitterModel: ref(50),
                 selected_date: ref({ from: '2022/02/15', to: '2022/02/28' }),
             };
