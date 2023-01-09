@@ -12,7 +12,7 @@
                     <q-breadcrumbs active-color="white" style="font-size: 16px">
                         <q-breadcrumbs-el label="Accueil" icon="home" @click='home' />
                         <q-breadcrumbs-el label="Mes patientes" icon="list" @click='patiente'/>
-                        <q-breadcrumbs-el label="Dr Martens" icon="person">
+                        <q-breadcrumbs-el label="Dr Bourgeois" icon="person">
                             <q-menu
                             transition-show="flip-right"
                             transition-hide="flip-left"
@@ -37,7 +37,7 @@
             <!-- CONTENT-->
             <q-page-container>
                 <q-page style="" class="q-pa-md">
-                    <label style="font-size:x-large;color:darkslateblue">Votre patiente : Mx Prénom NOM, XX ans</label>
+                    <label style="font-size:x-large;color:darkslateblue">Votre patiente : Mlle Rachel GLIEM, 23 ans</label>
                     <div class="container column">
                         <div class="main col row">
                                 <div class="main-left col-1 mr-10 column"></div>
@@ -50,12 +50,14 @@
                                     <q-btn outline rounded label="Count down"/>
                                 </div>
                                 <label style="font-size:medium;">Douleur</label>
-                                <q-select outlined v-model="list_douleur" :options="douleur" label="Sélectionnez le type de douleur"/>
-                                <label style="font-size:medium;">Autre symptôme</label>
-                                <q-select outlined v-model="liste_autre" :options="autres" label="Sélectionnez un autre symptôme"/>
+                                <!-- @update:model-value="test_select()" -->
+                                <q-select id="symptome" outlined name="symptome" v-model="symptome" :options="douleur" :labels="douleur_label" label="Sélectionnez le type de symptôme"/>
+                                <!-- <label style="font-size:medium;">Autre symptôme</label> -->
+                                <!-- <q-select id="autre" outlined v-model="liste_autre" :options="autres" label="Sélectionnez un autre symptôme"/> -->
+                                <q-btn @click="actualisation">ACTUALISER LE GRAPHIQUE</q-btn>
                                 <label style="font-size:medium;">Choisissez une date</label>
                                 <div class="q-pa-md">
-                                    <q-date v-model="model" range />
+                                    <q-date v-model="selected_date" range />
                                 </div>
                             </div>
                         </div>
@@ -68,35 +70,13 @@
                         
                         <template v-slot:before>
                             <div class="q-pa-md">
-                                <q-date
-                                v-model="date_sympt"
-                                :events="events"
-                                event-color="red"
-                                />
+                                <q-date v-model="date_sympt" :events="events" event-color="red" />
                             </div>
                         </template>
                         
                         <template v-slot:after>
-                            <q-tab-panels v-model="date_sympt" animated transition-prev="jump-up" transition-next="jump-up" >
-                            <q-tab-panel name="2022/12/01">
-                                <div class="text-h4 q-mb-md">Symptômes du 2022/12/01</div>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                            </q-tab-panel>
-
-                            <q-tab-panel name="2022/12/05">
-                                <div class="text-h4 q-mb-md">Symptômes du 2022/12/05</div>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                            </q-tab-panel>
-
-                            <q-tab-panel name="2022/12/06">
-                                <div class="text-h4 q-mb-md">Symptômes du 2022/12/06</div>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                            </q-tab-panel>
-                        </q-tab-panels>
+                            <div class="text-h4 q-mb-md">Symptômes du {{ date_sympt }}</div>
+                            <div class="text-h7 q-mb-md" style="white-space: pre-line">{{ this.sympt[date_sympt] }}</div>
                     </template>
                 </q-splitter>
             </div>
@@ -172,12 +152,11 @@
 
 <script>
     import Chart from 'chart.js/auto';
-    import * as d3 from 'd3';
     import { ref } from 'vue'
-    import API from 'src/api';
-    import {getContraception, getMedication, moyenneEndo, getEndo} from 'src/data_we/dataScript';
-    console.log(API.auth.data)
-    console.log(API.auth.token)
+    import {getContraception, getMedication, moyenneEndo, getEndo, dateSymptome} from 'src/data/dataScript';
+    import {getSymptome} from 'src/data/chartScript.js'
+    const data = JSON.parse(localStorage.getItem('data'))
+    
    // import FooterPage from 'src/components/organisms/FooterPage.vue';
 
     const columns_contraceptions = [
@@ -192,28 +171,24 @@
     { name: 'date', label: 'Date de prise', field: 'date'},
     ]
 
-    const contraception = getContraception(API.auth.data)
-    const rows_med = getMedication(API.auth.data)
+    const contraception = getContraception(data)
+    const rows_med = getMedication(data)
     const rows_contraceptions = contraception[0]
-    const list_endo = getEndo(API.auth.data)
+    const d_menstru = getSymptome('Menstruelle', '2022/02/15', '2022/02/28')
+    const list_endo = getEndo(data)
+    const daily_sympt = dateSymptome(data)
+    const sympt = daily_sympt[1]
+    const tetststs = '2022/02/25'
+    console.log("daily = ", sympt)
 
     
-    var labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-    ];
-
     var dataConfig = {
-        labels: labels,
+        labels: d_menstru[1],
         datasets: [{
-        label: 'Nombre de nouveaux utilisateurs',
+        label: 'Douleur Menstruelle',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
-        data: [0, 10, 5, 2, 20, 30, 45],
+        data: d_menstru[0],
         }],
         
     };
@@ -226,54 +201,40 @@
         borderColor: 'rgb(255, 99, 132)',
         data: list_endo[0],
         }],
-       
-        // xAxes: [{
-        //     type: 'time',
-        //     ticks: {
-        //         maxTicksLimit: 20
-        //     }
-        // }],
         pointStyle: 'circle',
     };
 
-    var date = [];
-    var register = [];
-    var qr = [];
-    var notified = [];
     var defaultType = 'line'
-
-    // const config = {
-    //     type: defaultType,
-    //     data: dataConfig,
-    //     options: {}
-    // };
 
     export default {
     setup() {
-    const rowCount = ref(4)
-    const rows = ref([...rows_contraceptions])
-    return {
-        rows,
-        rows_med,
-        rowCount,
-            list_douleur: ref(null),
-            liste_autre: ref(null),
-            douleur: [
-                'Menstruelle',
-                'Dysmenorrhée',
-                'Digestion',
-                'Défécation',
-                'Urinaire',
-                'Pelvienne',
-                'Abdominale'
-            ],
-            autres: ['Flux', 'Fatigue'],
-            date_sympt: ref('2022/12/01'),
-            events: ['2022/12/01', '2022/12/05', '2022/12/06'],
-            splitterModel: ref(50),
-            model: ref({ from: '2022/12/02', to: '2022/12/17' })
-        };
-    },
+        const rowCount = ref(4)
+        const rows = ref([...rows_contraceptions])
+        return {
+            sympt : daily_sympt[1],
+            rows,
+            rows_med,
+            rowCount,
+                symptome: ref('Menstruelle'),
+                liste_autre: ref(null),
+                douleur: [
+                    'Menstruelle',
+                    'Dysmenorrhée',
+                    'Digestion',
+                    'Défécation',
+                    'Urinaire',
+                    'Pelvienne',
+                    'Abdominale',
+                // 'Flux',
+                    'Fatigue'
+                ],
+                autres: ['Flux', 'Fatigue'],
+                date_sympt: ref(daily_sympt[0][0]),
+                events: daily_sympt[0],
+                splitterModel: ref(50),
+                selected_date: ref({ from: '2022/02/15', to: '2022/02/28' }),
+            };
+        },
     data() {
         return {
             endoChart: undefined,
@@ -285,19 +246,21 @@
         };
     },
     methods: {
+        actualisation() {
+            const dataset = getSymptome(this.symptome, this.selected_date.from, this.selected_date.to)
+            this.myChart.destroy();
+            dataConfig.labels = dataset[1]
+            dataConfig.datasets[0].data = dataset[0]
+            dataConfig.datasets[0].label = this.symptome
+            let cnv = document.getElementById('myChart')
+            let ctx = cnv.getContext('2d')
+            this.myChart = new Chart(ctx, {type: defaultType,
+                                            data: dataConfig,
+                                            options: {}});
+
+        },
         logout() {
             this.$router.push('/login');
-        },
-        async fetchData() {
-            let data = await d3.csv('src/data/anticovid.csv');
-            this.dataLoaded = data;
-            for (let i = 1; i < (this.dataLoaded.length - 1); i++) {
-                let tmpDate = (this.dataLoaded[i].date).split('-', 2);
-                date.push(tmpDate[0] + '-' + tmpDate[1]);
-                register.push(parseInt(this.dataLoaded[i].register) - parseInt(this.dataLoaded[i - 1].register));
-                qr.push(parseInt(this.dataLoaded[i].qrCode) - parseInt(this.dataLoaded[i - 1].qrCode));
-                notified.push(parseInt(this.dataLoaded[i].notified) - parseInt(this.dataLoaded[i - 1].notified));
-            }
         },
         contact() {
             this.$router.push('/contact');
@@ -307,12 +270,19 @@
         },
         home() {
             this.$router.push('/')
+        },
+        changeData() {
+            console.log(graph.value)
+            console.log(list_dys)
+            this.myChart.data.datasets[0].data = list_dys
+            this.myChart.update()
         }
     },
     mounted() {
-        this.fetchData();
         let myChart = document.getElementById('myChart');
         let endoChart = document.getElementById('endoChart');
+        const graph = document.getElementById("symptome")
+        graph.addEventListener('change', this.actualisation)
         this.myChart = new Chart(myChart, { type: defaultType, data: dataConfig, options: {} });
         this.endoChart = new Chart(endoChart, { type: defaultType, data: dataConfigEndo, options: {} });
     },
