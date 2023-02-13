@@ -110,14 +110,13 @@ console.log("token from patiente : " + localStorage.getItem('token'))
 
     methods: {
         logout() {
-            console.log('clicked')
-            this.$router.push('/login');
+            this.$router.push('/');
         },
         contact() {
             this.$router.push('/contact');
         },
         home() {
-            this.$router.push('/')
+            this.$router.push('/home')
         },
     },
 }

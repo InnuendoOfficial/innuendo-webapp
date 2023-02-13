@@ -75,7 +75,7 @@
                             </div>
 
                             <div>
-                                <q-btn label="Envoyer ma demande" type="submit" text-color="primary"/>
+                                <q-btn label="Envoyer ma demande" type="submit" @click="backHome" text-color="primary"/>
                                 <q-btn label="Effacer" type="reset"  text-color="black" flat class="q-ml-sm" />
                             </div>
                             </form>
@@ -129,8 +129,10 @@
 
     methods: {
         logout() {
-            console.log('clicked')
             this.$router.push('/login');
+        },
+        backHome() {
+            this.$router.push('/contact_validation');
         },
         contact() {
             this.$router.push('/contact')
@@ -139,7 +141,7 @@
             this.$router.push('/patiente')
         },
         home() {
-            this.$router.push('/')
+            this.$router.push('/home')
         },
         onSubmit(e) {
             var date = new Date();

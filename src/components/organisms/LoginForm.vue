@@ -28,6 +28,7 @@
       dense
     />
     <AErrorMessage :message="errorMessage" />
+    <q-btn label="Mot de passe oublié ?" type="submit" @click="retrievePwd" text-color="black"/>
   </div>
 </template>
 
@@ -58,6 +59,11 @@ watch(credentials, (newCredentials: Credentials) => {
     buttonState.disabled = true;
   }
 });
+
+async function retrievePwd(){
+    _router.push({name: 'forgot_pwd'});
+}
+
 
 async function login(){
   if (buttonState.disabled) return;

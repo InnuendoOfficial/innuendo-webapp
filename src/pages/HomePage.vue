@@ -37,7 +37,7 @@
             <!-- CONTENT-->
             <q-page-container>
                 <q-page style="" class="q-pa-md">
-                    <label style="font-size:x-large;color:darkslateblue">Votre patiente : Mlle Rachel GLIEM, 23 ans</label>
+                    <label style="font-size:x-large;color:darkslateblue">Votre patiente : Mlle Natalie MILLER, 23 ans</label>
                     <div class="container column">
                         <div class="main col row">
                                 <div class="main-left col-1 mr-10 column"></div>
@@ -47,11 +47,11 @@
                                 <div class="main-left col-1 mr-10 column"></div>
                             <div class="main-right col-2 inner">
                                 <div>
-                                    <q-btn outline rounded label="Count down"/>
+                                    <q-btn outline rounded label="Nouvelle patiente" @click="toCode"/>
                                 </div>
                                 <label style="font-size:medium;">Douleur</label>
                                 <!-- @update:model-value="test_select()" -->
-                                <q-select id="symptome" outlined name="symptome" v-model="symptome" :options="douleur" :labels="douleur_label" label="Sélectionnez le type de symptôme"/>
+                                <q-select multiple id="symptome" outlined name="symptome" stack-label use-chips v-model="symptome"  :options="douleur" :labels="douleur_label" label="Sélectionnez le type de symptôme"/>
                                 <!-- <label style="font-size:medium;">Autre symptôme</label> -->
                                 <!-- <q-select id="autre" outlined v-model="liste_autre" :options="autres" label="Sélectionnez un autre symptôme"/> -->
                                 <q-btn @click="actualisation">ACTUALISER LE GRAPHIQUE</q-btn>
@@ -68,19 +68,20 @@
                     <div>
                         <q-splitter v-model="splitterModel" style="height: 450px" >
                         
-                        <template v-slot:before>
-                            <div class="q-pa-md">
-                                <q-date v-model="date_sympt" :events="events" event-color="red" />
-                            </div>
-                        </template>
-                        
-                        <template v-slot:after>
-                            <div class="text-h4 q-mb-md">Symptômes du {{ date_sympt }}</div>
-                            <div class="text-h7 q-mb-md" style="white-space: pre-line">{{ this.sympt[date_sympt] }}</div>
-                    </template>
-                </q-splitter>
-            </div>
-            </QPage>
+                            <template v-slot:before>
+                                <div class="q-pa-md">
+                                    <q-date v-model="date_sympt" :events="events" event-color="red" />
+                                </div>
+                            </template>
+                            <template v-slot:after>
+                                <div class="text-h4 q-mb-md">Symptômes du {{ date_sympt }}</div>
+                                <div class="text-h7 q-mb-md" style="white-space: pre-line">{{ this.sympt[date_sympt] }} :</div>
+                                <div class="text-h5 q-mb-md">Symptômes les plus récurrents :</div>
+                                <div class="text-h7 q-mb-md" style="white-space: pre-line">{{ this.occ}}</div>
+                            </template>
+                        </q-splitter>
+                    </div>
+                </QPage>
             <QPage>
             <p></p>
                 <div class="container">
@@ -136,7 +137,7 @@
                     <QSpace>
                         
                     </QSpace>
-                    <a target="_blank" href="https://www.instagram.com/innuendo_official/"><img src="https://javiscomputers.com/wp-content/uploads/2020/06/toppng.com-white-instagram-icon-instagram-logo-instagram-instagram-icon-white-306x304-1.png" width="20" height="20" class="center"/></a>
+                    <a target="_blank" href="https://www.instagram.com/innuendo_official/"><img src="https://www.clipartmax.com/png/small/6-65693_dinner-and-a-cruise-experience-instagram-icon-white-transparent-back.png" width="20" height="20" class="center"/></a>
                     <a target="_blank" href="https://www.facebook.com/profile.php?id=100076102473105"><img src="https://www.clipartmax.com/png/full/416-4169142_facebook-logo-facebook-white-icon-png-2018.png" width="20" height="20" class="center" /></a>
                     <a target="_blank" href="https://www.linkedin.com/company/innuendoeip/"><img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/linkedin-icon-18-256.png" width="20" height="20" class="center"/></a>
                     <q-btn flat @click='contact'>Nous contacter</q-btn>
@@ -153,7 +154,7 @@
 <script>
     import Chart from 'chart.js/auto';
     import { ref } from 'vue'
-    import {getContraception, getMedication, moyenneEndo, getEndo, dateSymptome} from 'src/data/dataScript';
+    import {getContraception, getMedication, moyenneEndo, getEndo, dateSymptome, getMonth, occurenceSympt} from 'src/data/dataScript';
     import {getSymptome} from 'src/data/chartScript.js'
     const data = JSON.parse(localStorage.getItem('data'))
     
@@ -171,24 +172,20 @@
     { name: 'date', label: 'Date de prise', field: 'date'},
     ]
 
-    const contraception = getContraception(data)
-    const rows_med = getMedication(data)
+    const contraception = getContraception(data.data)
+    const rows_med = getMedication(data.data)
     const rows_contraceptions = contraception[0]
-    const d_menstru = getSymptome('Menstruelle', '2022/02/15', '2022/02/28')
-    const list_endo = getEndo(data)
-    const daily_sympt = dateSymptome(data)
-    const sympt = daily_sympt[1]
-    const tetststs = '2022/02/25'
-    console.log("daily = ", sympt)
-
+    const d_menstru = getSymptome(['Menstruelle'], '2022/08/15', '2022/09/15')
+    const list_endo = getEndo(data.data)
+    const daily_sympt = dateSymptome(data.data)
     
     var dataConfig = {
-        labels: d_menstru[1],
+        labels: d_menstru[0][1],
         datasets: [{
         label: 'Douleur Menstruelle',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
-        data: d_menstru[0],
+        data: d_menstru[0][0],
         }],
         
     };
@@ -212,10 +209,11 @@
         const rows = ref([...rows_contraceptions])
         return {
             sympt : daily_sympt[1],
+            occ: occurenceSympt(daily_sympt[1], data.data.length),
             rows,
             rows_med,
             rowCount,
-                symptome: ref('Menstruelle'),
+                symptome: ref(['Menstruelle']),
                 liste_autre: ref(null),
                 douleur: [
                     'Menstruelle',
@@ -225,14 +223,15 @@
                     'Urinaire',
                     'Pelvienne',
                     'Abdominale',
-                // 'Flux',
-                    'Fatigue'
+                    'Flux',
+                    'Fatigue',
                 ],
                 autres: ['Flux', 'Fatigue'],
                 date_sympt: ref(daily_sympt[0][0]),
+                month_sympt: ref(getMonth(daily_sympt[0][0])),
                 events: daily_sympt[0],
                 splitterModel: ref(50),
-                selected_date: ref({ from: '2022/02/15', to: '2022/02/28' }),
+                selected_date: ref({ from: '2022/08/15', to: '2022/09/15' }),
             };
         },
     data() {
@@ -248,10 +247,35 @@
     methods: {
         actualisation() {
             const dataset = getSymptome(this.symptome, this.selected_date.from, this.selected_date.to)
+            console.log(this.symptome)
             this.myChart.destroy();
-            dataConfig.labels = dataset[1]
-            dataConfig.datasets[0].data = dataset[0]
-            dataConfig.datasets[0].label = this.symptome
+            var dataConfig = {
+                labels: dataset[0][1],
+                datasets: [],
+                scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',}
+                }
+            }
+            var datasets = []
+            for (var i = 0; i != dataset.length; i++) {
+                const newDataset = {
+                        label: this.symptome[i],
+                        data: dataset[i][0],
+                    };
+                if (this.symptome[i] == 'Flux') {
+                    newDataset.yAxisID= 'y1'
+                }
+                datasets.push(newDataset);
+            }
+            dataConfig.datasets = datasets
             let cnv = document.getElementById('myChart')
             let ctx = cnv.getContext('2d')
             this.myChart = new Chart(ctx, {type: defaultType,
@@ -260,7 +284,10 @@
 
         },
         logout() {
-            this.$router.push('/login');
+            this.$router.push('/');
+        },
+        toCode() {
+            this.$router.push('/code');
         },
         contact() {
             this.$router.push('/contact');
@@ -269,7 +296,7 @@
             this.$router.push('/patiente');
         },
         home() {
-            this.$router.push('/')
+            this.$router.push('/home')
         },
         changeData() {
             console.log(graph.value)

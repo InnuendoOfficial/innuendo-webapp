@@ -43,6 +43,42 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
+    path: '/admin',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'admin',
+        path: '',
+        component: () => import('src/pages/AdminPage.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/forgot_pwd',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'forgot_pwd',
+        path: '',
+        component: () => import('src/pages/ForgotPwd.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/contact_validation',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: '',
+        path: '',
+        component: () => import('src/pages/ContactValidation.vue'),
+      },
+    ],
+  },
+
+  {
     path: '/contact',
     component: () => import('layouts/AuthLayout.vue'),
     children: [
@@ -67,20 +103,19 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
-    path: '/data',
-    component: () => import('layouts/AuthLayout.vue'),
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
     children: [
       {
-        name: 'data',
+        name: 'login',
         path: '',
-        component: () => import('src/pages/DataPage.vue'),
-      },
-    ],
+        component: () => import('src/pages/LoginPage.vue'),
+      }
+    ]
   },
 
-
   {
-    path: '/',
+    path: '/home',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {

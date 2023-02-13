@@ -36,8 +36,7 @@
 export default {
 
     logout() {
-        console.log('clicked')
-        this.$router.push('/login');
+        this.$router.push('/');
     },
     contact() {
         this.$router.push('/contact');
