@@ -1,25 +1,54 @@
-function getSymptome(sympt, date_f, date_t) {
+ // 0 = null, 1 = Spotting, 2 = Léger, 3 = Moyen, 4 = Abondant, 5 = Très abondant
+const flux = [0, 0, 0, 1, 3, 5, 4, 2, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 4, 2, 1, 3, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 1, 3, 2, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 4, 5, 5, 3, 4, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 2, 1, 3, 4, 5, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    3, 3, 3, 2, 2, 1, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 4, 4, 4, 5, 3, 1, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]
+
+
+function getSymptome(list_sympt, date_f, date_t) {
     date_f = date_f.replaceAll('/', '-')
     date_t = date_t.replaceAll('/', '-')
+    var list_dataset = []
     const date_range = getDaysArray(date_f, date_t)
-    if (sympt == 'Menstruelle')
-        return getData('douleur menstruelle', date_range)
-    if (sympt == 'Dysmenorrhée')
-        return getData('dysmenorrhee', date_range)
-    if (sympt == 'Digestion')
-        return getData('douleur digestion', date_range)
-    if (sympt == 'Défécation')
-        return getData('douleur defecation', date_range)
-    if (sympt == 'Urinaire')
-        return getData('douleur urinaire', date_range)
-    if (sympt == 'Pelvienne')
-        return getData('douleurs pelviennes', date_range)
-    if (sympt == 'Abdominale')
-        return getData('douleur', date_range)
-   // if (sympt == 'Flux')
-   //     getData('douleur menstruelle')
-    if (sympt == 'Fatigue')
-        return getData('fatigue', date_range)
+    for (var i = 0; i <= list_sympt.length; i++) {
+        if (list_sympt[i] == 'Menstruelle')
+            list_dataset.push(getData('douleur menstruelle', date_range))
+        if (list_sympt[i] == 'Dysmenorrhée')
+            list_dataset.push(getData('dysmenorrhee', date_range))
+        if (list_sympt[i] == 'Digestion')
+            list_dataset.push(getData('douleur digestion', date_range))
+        if (list_sympt[i] == 'Défécation')
+            list_dataset.push(getData('douleur defecation', date_range))
+        if (list_sympt[i] == 'Urinaire')
+            list_dataset.push(getData('douleur urinaire', date_range))
+        if (list_sympt[i] == 'Pelvienne')
+            list_dataset.push(getData('douleurs pelviennes', date_range))
+        if (list_sympt[i] == 'Abdominale')
+            list_dataset.push(getData('douleur', date_range))
+        if (list_sympt[i] == 'Flux')
+            list_dataset.push([flux, date_range])
+        if (list_sympt[i] == 'Fatigue')
+            list_dataset.push(getData('fatigue', date_range))
+    }
+
+        console.log(list_dataset)
+        return list_dataset
 }
 
 var getDaysArray = function(start, end) {
@@ -32,7 +61,7 @@ var getDaysArray = function(start, end) {
 };
 
 function getData(symptome, date_range) {
-    const data = JSON.parse(localStorage.getItem('data'))
+    const data = JSON.parse(localStorage.getItem('data')).data
     var user_data = []
     var date = []
     for (let i = 0; i < data.length; i++) {

@@ -20,7 +20,6 @@
 export default {
 
     contact() {
-        console.log("cliqué")
         this.$router.push('/contact')
     }
 }
