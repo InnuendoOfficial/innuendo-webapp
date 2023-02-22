@@ -17,11 +17,8 @@
                             transition-hide="flip-left"
                             >
                             <q-list style="min-width: 100px">
-                                <q-item clickable>
-                                    <q-item-section>Crazy for transitions</q-item-section>
-                                </q-item>
                                 <q-separator />
-                                <q-item clickable>
+                                <q-item clickable @click="params">
                                     <q-item-section>Paramètres</q-item-section>
                                 </q-item>
                             </q-list>
@@ -32,7 +29,6 @@
                 </q-toolbar>
             </q-header>
             <!-- END HEADER -->
-            <!-- <HeaderPage></HeaderPage> -->
             <q-page-container>
                 <q-page style="" class="q-pa-md">
                     <div class="q-pa-md">
@@ -87,7 +83,6 @@ import { ref } from 'vue'
 import axios from 'axios'
 import {updatePro} from '/src/data/userScript.js'
 
-
     export default {
         setup () {
         return {
@@ -104,6 +99,9 @@ import {updatePro} from '/src/data/userScript.js'
 
         resetPwd() {
             console.log('mdp reset')
+        },
+        params() {
+            this.$router.go()
         },
         logout() {
             localStorage.clear();
@@ -139,7 +137,7 @@ import {updatePro} from '/src/data/userScript.js'
 
     beforeMount() {
         this.proData()
-    }
+    },
 }
 </script>
 

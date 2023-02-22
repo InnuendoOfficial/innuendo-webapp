@@ -19,10 +19,6 @@
                             >
                             <q-list style="min-width: 100px">
                                 <q-item clickable>
-                                    <q-item-section>Crazy for transitions</q-item-section>
-                                </q-item>
-                                <q-separator />
-                                <q-item clickable>
                                     <q-item-section @click='params'>Paramètres</q-item-section>
                                 </q-item>
                             </q-list>
@@ -284,6 +280,7 @@
 
         },
         logout() {
+            localStorage.clear()
             this.$router.push('/');
         },
         params() {
@@ -299,7 +296,7 @@
             this.$router.push('/patiente');
         },
         home() {
-            this.$router.push('/home')
+            this.$router.go()
         },
         changeData() {
             console.log(graph.value)
@@ -316,7 +313,6 @@
         this.myChart = new Chart(myChart, { type: defaultType, data: dataConfig, options: {} });
         this.endoChart = new Chart(endoChart, { type: defaultType, data: dataConfigEndo, options: {} });
     },
-    //components: { FooterPage }
 }
 </script>
 

@@ -17,10 +17,6 @@
                             >
                             <q-list style="min-width: 100px">
                                 <q-item clickable>
-                                    <q-item-section>Crazy for transitions</q-item-section>
-                                </q-item>
-                                <q-separator />
-                                <q-item clickable>
                                     <q-item-section>Paramètres</q-item-section>
                                 </q-item>
                             </q-list>
@@ -108,7 +104,6 @@
 
 <script >
     import { ref } from 'vue'
-   // import FooterPage from 'src/components/organisms/FooterPage.vue'
     import emailjs from 'emailjs-com';
     export default {
 
@@ -129,13 +124,14 @@
 
     methods: {
         logout() {
+            localStorage.clear()
             this.$router.push('/login');
         },
         backHome() {
             this.$router.push('/contact_validation');
         },
         contact() {
-            this.$router.push('/contact')
+            this.$router.go()
         },
         patiente() {
             this.$router.push('/patiente')

@@ -18,10 +18,6 @@
                             >
                             <q-list style="min-width: 100px">
                                 <q-item clickable>
-                                    <q-item-section>Crazy for transitions</q-item-section>
-                                </q-item>
-                                <q-separator />
-                                <q-item clickable>
                                     <q-item-section>Paramètres</q-item-section>
                                 </q-item>
                             </q-list>
@@ -76,7 +72,6 @@
 <script>
 import { ref } from 'vue'
 import {getPatiente} from 'src/data/patienteScript'
-//import HeaderPage from 'src/components/organisms/HeaderPage.vue'
 const data = localStorage.getItem('patientes')
 console.log("token from patiente : " + localStorage.getItem('token'))
     
@@ -110,10 +105,14 @@ console.log("token from patiente : " + localStorage.getItem('token'))
 
     methods: {
         logout() {
+            localStorage.clear()
             this.$router.push('/');
         },
         contact() {
             this.$router.push('/contact');
+        },
+        patiente() {
+            this.$router.go()
         },
         home() {
             this.$router.push('/home')
