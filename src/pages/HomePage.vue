@@ -23,7 +23,7 @@
                                 </q-item>
                                 <q-separator />
                                 <q-item clickable>
-                                    <q-item-section>Paramètres</q-item-section>
+                                    <q-item-section @click='params'>Paramètres</q-item-section>
                                 </q-item>
                             </q-list>
                         </q-menu>
@@ -285,6 +285,9 @@
         },
         logout() {
             this.$router.push('/');
+        },
+        params() {
+            this.$router.push('/params');
         },
         toCode() {
             this.$router.push('/code');
