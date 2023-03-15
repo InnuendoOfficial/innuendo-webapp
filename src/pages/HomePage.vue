@@ -1,15 +1,22 @@
 <template>
   <div class="q-pa-md">
     <q-layout view="lHh lpr lFf" class="shadow-2 rounded-borders">
+      
       <!-- HEADER -->
       <q-header elevated style="height: 100px">
         <q-toolbar>
+          <!-- Logo and name -->
           <q-avatar size="90px">
             <img src="~/assets/logo.png" alt="innuendo logo" />
           </q-avatar>
-          <q-toolbar-title class="justify-center" style="font-size: xx-large"
-            >InnuendoPro</q-toolbar-title
-          >
+          <q-toolbar-title class="justify-center" style="font-size: xx-large">
+            InnuendoPro
+          </q-toolbar-title>
+          <!-- Manage new patient -->
+          <div class="main-right col-2 inner">
+            <q-btn outline rounded label="Nouvelle patiente" @click="toCode" />
+          </div>
+          <!-- Settings -->
           <q-breadcrumbs active-color="white" style="font-size: 16px">
             <q-breadcrumbs-el label="Accueil" icon="home" @click="home" />
             <q-breadcrumbs-el
@@ -29,7 +36,7 @@
                   </q-item>
                 </q-list>
               </q-menu> </q-breadcrumbs-el
-            >/>
+            >
             <q-breadcrumbs-el icon="logout" @click="logout" />
           </q-breadcrumbs>
         </q-toolbar>
@@ -46,22 +53,12 @@
               <div class="main-left col-1 mr-10 column"></div>
               <div class="middle col column">
                 <canvas
-                  class="w-100 h-200 mx-auto my-auto"
-                  style="text-align: center"
+                  class="mx-auto my-auto chartStyle"
                   id="myChart"
                 ></canvas>
               </div>
               <div class="main-left col-1 mr-10 column"></div>
               <div class="main-right col-2 inner" style="margin-right: 5%">
-                <div class="row justify-center">
-                  <q-btn
-                    outline
-                    rounded
-                    label="Nouvelle patiente"
-                    @click="toCode"
-                  />
-                </div>
-                <br />
                 <label style="font-size: medium">Douleur</label>
                 <q-select
                   multiple
@@ -76,7 +73,12 @@
                   style="width: 15vw"
                   label="Sélectionnez le type de symptôme"
                 />
-                <q-btn @click="actualisation">ACTUALISER LE GRAPHIQUE</q-btn>
+                <br />
+                <div class="row justify-center">
+                  <q-btn outline rounded @click="actualisation">
+                    ACTUALISER LE GRAPHIQUE
+                  </q-btn>
+                </div>
                 <div>
                   <br />
                   <label style="font-size: medium">Choisissez une date</label>
@@ -93,108 +95,135 @@
           </div>
         </q-page>
 
+        <!-- Symptoms part -->
         <QPage>
-          <div class="main-left col-1 mr-10 column"></div>
-          <div class="row justify-center">
+          <div class="main-left col-1 mr-10 column">
             <q-splitter v-model="splitterModel" style="height: 450px">
               <template v-slot:before>
+                <div class="col">
+                    <div class="q-pa-md symptomStyle">
+                      <q-date
+                        v-model="date_sympt"
+                        :events="events"
+                        event-color="red"
+                        style="width: 50rem; height: 30rem"
+                      />
+                    </div>
+                  </div>
+                  </template>
+
+                  <template v-slot:after>
+                    <div class="col">
+                      <div class="text-h4 q-mb-md symptomStyle">Symptômes du {{ date_sympt }}</div>
+                      <div class="text-h7 q-mb-md symptomStyle" style="white-space: pre-line">
+                        {{ this.sympt[date_sympt] }}.
+                      </div>
+                      <div class="text-h5 q-mb-md symptomStyle">
+                        Symptômes les plus récurrents:
+                      </div>
+                      <div class="text-h7 q-mb-md symptomStyle" style="white-space: pre-line">
+                        {{ this.occ }}
+                      </div>
+                    </div>
+                  </template>
+                </q-splitter>
+          </div>
+        </QPage>
+        
+        <QPage>
+          <!-- Endoscore part -->
+          <div class="container">
+            <div class="main row ">
+              <div class="col">
+                <div class="row justify-center" style="padding-top: 5%;">
+                  <!-- Endorscore -->
+                  <div class="circle">{{ moyenne_endo }}</div>
+                  <p class="endoTextCenter text-style">
+                    L'endoscore correspond à un “indice d'endométriose” qui
+                    permet à la patiente de savoir si elle a une prédisposition
+                    à l'endométriose en fonction de plusieurs paramètres tels de
+                    l'évolution de son flux, de ses douleurs et des symptômes
+                    récurrents au cours de son cycle. Il leur est vivement
+                    conseillé de consulter un spécialiste lorsque le score est
+                    constamment supérieur à 5.
+                  </p>
+                  <!-- Endoscore chart -->
+                  <div class="chartStyle">
+                    <canvas
+                      class=""
+                      style="text-align: center;"
+                      id="endoChart"
+                    >
+                    </canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Medication part -->
+          <div class="row justify-center">
+            <div class="col">
+              <!-- Contraception -->
+              <div class="row justify-center">
+                <q-icon
+                  name="medication"
+                  class="text-primary"
+                  style="font-size: 32px"
+                ></q-icon>
+                <label class="title-style">
+                  Contraception.s utilisée.s : {{ actual_contra }}
+                </label>
+              </div>
+
+              <!-- Last contraception -->
+              <div class="row justify-center">
+                <div class="main row">
+                  <q-list bordered class="rounded-borders">
+                    <q-expansion-item
+                      icon="history"
+                      label="Contraception.s passée.s"
+                      caption="Voir l'historique"
+                      style="width: 50rem"
+                    >
+                      <q-card>
+                        <q-card-section>
+                          <div class="q-pa-md">
+                            <q-table
+                              title="Historique de contraception"
+                              :rows="rows"
+                              :columns="columns_contraceptions"
+                              row-key="id"
+                            />
+                          </div>
+                        </q-card-section>
+                      </q-card>
+                    </q-expansion-item>
+                  </q-list>
+                </div>
+              </div>
+            </div>
+
+            <!-- Medicine -->
+            <div class="col">
+              <div class="row justify-center">
+                <q-icon
+                  name="medical_services"
+                  class="text-primary"
+                  style="font-size: 32px"
+                ></q-icon>
+                <label class="title-style"> Prise de médicament </label>
+              </div>
+              <div class="row justify-center">
                 <div class="q-pa-md">
                   <q-date
                     v-model="date_sympt"
                     :events="events"
                     event-color="red"
+                    style="width: 50rem; height: 30rem"
                   />
                 </div>
-              </template>
-              <template v-slot:after>
-                <div class="text-h4 q-mb-md">Symptômes du {{ date_sympt }}</div>
-                <div class="text-h7 q-mb-md" style="white-space: pre-line">
-                  {{ this.sympt[date_sympt] }} :
-                </div>
-                <div class="text-h5 q-mb-md">
-                  Symptômes les plus récurrents :
-                </div>
-                <div class="text-h7 q-mb-md" style="white-space: pre-line">
-                  {{ this.occ }}
-                </div>
-              </template>
-            </q-splitter>
-          </div>
-        </QPage>
-        <QPage>
-          <p></p>
-          <div class="container">
-            <div class="main col row">
-              <div class="circle">{{ moyenne_endo }}</div>
-              <p>
-                L'endoscore correspond à un “indice d'endométriose” qui permet à
-                la patiente de savoir si elle a une prédisposition à
-                l'endométriose en fonction de plusieurs paramètres tels de
-                l'évolution de son flux, de ses douleurs et des symptômes
-                récurrents au cours de son cycle. Il leur est vivement conseillé
-                de consulter un spécialiste lorsque le score est constamment
-                supérieur à 5.
-              </p>
-              <div class="middle col column" style="">
-                <canvas
-                  class="w-50 h-100"
-                  style="text-align: center"
-                  id="endoChart"
-                ></canvas>
               </div>
             </div>
-          </div>
-          <p></p>
-          <q-icon
-            name="medication"
-            class="text-primary"
-            style="font-size: 32px"
-          ></q-icon>
-          <label style="font-size: large; color: darkslateblue"
-            >Contraception.s utilisée.s : {{ actual_contra }}</label
-          >
-          <p></p>
-          <div class="main col row">
-            <q-list bordered class="rounded-borders">
-              <q-expansion-item
-                icon="history"
-                label="Contraception.s passée.s"
-                caption="Voir l'historique"
-              >
-                <q-card>
-                  <q-card-section>
-                    <div class="q-pa-md">
-                      <q-table
-                        title="Historique de contraception"
-                        :rows="rows"
-                        :columns="columns_contraceptions"
-                        row-key="id"
-                      />
-                    </div>
-                  </q-card-section>
-                </q-card>
-              </q-expansion-item>
-            </q-list>
-          </div>
-          <p></p>
-          <p></p>
-          <p></p>
-          <q-icon
-            name="medical_services"
-            class="text-primary"
-            style="font-size: 32px"
-          ></q-icon>
-          <label style="font-size: large; color: darkslateblue"
-            >Prise de médicament</label
-          >
-          <p></p>
-          <div class="q-pa-md">
-            <q-date
-              v-model="date_sympt"
-              :events="events"
-              event-color="red"
-              style="width: 50rem; height: 30rem"
-            />
           </div>
         </QPage>
       </q-page-container>
@@ -255,7 +284,7 @@ import {
   dateSymptome,
   getMonth,
   occurenceSympt,
-} from 'src/data_we/dataScript';
+} from 'src/data/dataScript';
 import { getSymptome } from 'src/data/chartScript.js';
 const data = JSON.parse(localStorage.getItem('data'));
 // import FooterPage from 'src/components/organisms/FooterPage.vue';
@@ -490,5 +519,20 @@ export default {
 .title-style {
   font-size: x-large;
   color: darkslateblue;
+  padding-bottom: 2%;
+}
+.endoTextCenter {
+  position: relative;
+  top: 50%;
+  padding: 2%;
+}
+
+.chartStyle {
+  width: 60vi;
+  height: 40vi;
+}
+
+.symptomStyle {
+  margin-left: 25%;
 }
 </style>

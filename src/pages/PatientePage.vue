@@ -104,7 +104,7 @@
 
 <script>
 import { ref } from 'vue';
-import { getPatiente } from 'src/data_we/patienteScript';
+import { getPatiente } from 'src/data/patienteScript';
 //import HeaderPage from 'src/components/organisms/HeaderPage.vue'
 const data = localStorage.getItem('patientes');
 console.log('token from patiente : ' + localStorage.getItem('token'));
