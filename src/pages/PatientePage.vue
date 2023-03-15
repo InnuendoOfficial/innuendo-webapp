@@ -142,10 +142,16 @@ export default {
     };
   },
 
-  methods: {
-    logout() {
-      console.log('clicked');
-      this.$router.push('/login');
+    methods: {
+        logout() {
+            this.$router.push('/');
+        },
+        contact() {
+            this.$router.push('/contact');
+        },
+        home() {
+            this.$router.push('/home')
+        },
     },
     contact() {
       this.$router.push('/contact');
@@ -153,8 +159,7 @@ export default {
     home() {
       this.$router.push('/');
     },
-  },
-};
+  }
 </script>
 
 <style lang="postcss" scoped>

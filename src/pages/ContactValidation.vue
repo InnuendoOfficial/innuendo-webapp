@@ -11,7 +11,7 @@
                 <div class="row justify-center window-height window-width items-center absolute-center relative" style="text-align: center; color:#584f95">
                     <q-card class="my-card">
                         <q-card-section>
-                            <h5>Votre demande a bien été prise en compte, nous reviendrons vers vous dans les plus proches délais.<br>Vous allez être redirigé vers la page d'accueil.</h5>
+                            <h5>Votre demande a bien été prise en compte, nous reviendrons vers vous dans les plus proches délais.<br>Vous allez être rediriger vers la page d'accueil.</h5>
                         </q-card-section>
                     </q-card>
                 </div>
@@ -29,7 +29,7 @@
 <script>
     export default {
         created(){
-            setTimeout( () => this.$router.push('/'), 10000);
+        setTimeout( () => this.$router.push('/home'), 5000);
         }
     }
 </script>

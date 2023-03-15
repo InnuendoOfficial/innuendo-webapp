@@ -17,7 +17,7 @@
               icon="list"
               @click="patiente"
             />
-            <q-breadcrumbs-el label="Dr Martens" icon="person">
+            <q-breadcrumbs-el label="Dr Bourgeois" icon="person">
               <q-menu transition-show="flip-right" transition-hide="flip-left">
                 <q-list style="min-width: 100px">
                   <q-item clickable>
@@ -39,8 +39,8 @@
       <!-- CONTENT-->
       <q-page-container>
         <q-page style="" class="q-pa-md">
-          <label class="title-style">Mx Prénom NOM</label>
-          <label class="text-style"><br />XX ans</label>
+          <label class="title-style">Mlle Natalie MILLER</label>
+          <label class="text-style"><br />23 ans</label>
           <div class="container column">
             <div class="main col row">
               <div class="main-left col-1 mr-10 column"></div>
@@ -54,33 +54,36 @@
               <div class="main-left col-1 mr-10 column"></div>
               <div class="main-right col-2 inner" style="margin-right: 5%">
                 <div class="row justify-center">
-                  <q-btn outline rounded label="Count down" />
+                  <q-btn
+                    outline
+                    rounded
+                    label="Nouvelle patiente"
+                    @click="toCode"
+                  />
                 </div>
                 <br />
                 <label style="font-size: medium">Douleur</label>
                 <q-select
+                  multiple
+                  id="symptome"
                   outlined
-                  v-model="list_douleur"
+                  name="symptome"
+                  stack-label
+                  use-chips
+                  v-model="symptome"
                   :options="douleur"
+                  :labels="douleur_label"
                   style="width: 15vw"
-                  label="Sélectionnez le type de douleur"
+                  label="Sélectionnez le type de symptôme"
                 />
-                <br />
-                <label style="font-size: medium">Autre symptôme</label>
-                <q-select
-                  outlined
-                  v-model="liste_autre"
-                  :options="autres"
-                  style="width: 15vw"
-                  label="Sélectionnez un autre symptôme"
-                />
+                <q-btn @click="actualisation">ACTUALISER LE GRAPHIQUE</q-btn>
                 <div>
                   <br />
                   <label style="font-size: medium">Choisissez une date</label>
                 </div>
                 <div class="q-pa-md row justify-start">
                   <q-date
-                    v-model="model"
+                    v-model="selected_date"
                     range
                     style="width: 30rem; height: 25rem"
                   />
@@ -100,93 +103,39 @@
                     v-model="date_sympt"
                     :events="events"
                     event-color="red"
-                    style="width: 50rem; height: 30rem"
                   />
                 </div>
               </template>
-
               <template v-slot:after>
-                <q-tab-panels
-                  v-model="date_sympt"
-                  animated
-                  transition-prev="jump-up"
-                  transition-next="jump-up"
-                >
-                  <q-tab-panel name="2022/12/01">
-                    <div class="text-h4 q-mb-md">Symptômes du 2022/12/01</div>
-                    <p>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Quis praesentium cumque magnam odio iure quidem, quod
-                      illum numquam possimus obcaecati commodi minima assumenda
-                      consectetur culpa fuga nulla ullam. In, libero.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Quis praesentium cumque magnam odio iure quidem, quod
-                      illum numquam possimus obcaecati commodi minima assumenda
-                      consectetur culpa fuga nulla ullam. In, libero.
-                    </p>
-                  </q-tab-panel>
-
-                  <q-tab-panel name="2022/12/05">
-                    <div class="text-h4 q-mb-md">Symptômes du 2022/12/05</div>
-                    <p>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Quis praesentium cumque magnam odio iure quidem, quod
-                      illum numquam possimus obcaecati commodi minima assumenda
-                      consectetur culpa fuga nulla ullam. In, libero.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Quis praesentium cumque magnam odio iure quidem, quod
-                      illum numquam possimus obcaecati commodi minima assumenda
-                      consectetur culpa fuga nulla ullam. In, libero.
-                    </p>
-                  </q-tab-panel>
-
-                  <q-tab-panel name="2022/12/06">
-                    <div class="text-h4 q-mb-md">Symptômes du 2022/12/06</div>
-                    <p>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Quis praesentium cumque magnam odio iure quidem, quod
-                      illum numquam possimus obcaecati commodi minima assumenda
-                      consectetur culpa fuga nulla ullam. In, libero.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Quis praesentium cumque magnam odio iure quidem, quod
-                      illum numquam possimus obcaecati commodi minima assumenda
-                      consectetur culpa fuga nulla ullam. In, libero.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Quis praesentium cumque magnam odio iure quidem, quod
-                      illum numquam possimus obcaecati commodi minima assumenda
-                      consectetur culpa fuga nulla ullam. In, libero.
-                    </p>
-                  </q-tab-panel>
-                </q-tab-panels>
+                <div class="text-h4 q-mb-md">Symptômes du {{ date_sympt }}</div>
+                <div class="text-h7 q-mb-md" style="white-space: pre-line">
+                  {{ this.sympt[date_sympt] }} :
+                </div>
+                <div class="text-h5 q-mb-md">
+                  Symptômes les plus récurrents :
+                </div>
+                <div class="text-h7 q-mb-md" style="white-space: pre-line">
+                  {{ this.occ }}
+                </div>
               </template>
             </q-splitter>
           </div>
         </QPage>
-
         <QPage>
+          <p></p>
           <div class="container">
-            <div class="main row">
-              <div class="col circle">{{ moyenne_endo }}</div>
-              <div class="col">
-                <p>
-                  L'endoscore correspond à un “indice d'endométriose” qui permet
-                  à la patiente de savoir si elle a une prédisposition à
-                  l'endométriose en fonction de plusieurs paramètres tels de
-                  l'évolution de son flux, de ses douleurs et des symptômes
-                  récurrents au cours de son cycle. Il leur est vivement
-                  conseillé de consulter un spécialiste lorsque le score est
-                  constamment supérieur à 5.
-                </p>
-              </div>
-              <div class="col">
+            <div class="main col row">
+              <div class="circle">{{ moyenne_endo }}</div>
+              <p>
+                L'endoscore correspond à un “indice d'endométriose” qui permet à
+                la patiente de savoir si elle a une prédisposition à
+                l'endométriose en fonction de plusieurs paramètres tels de
+                l'évolution de son flux, de ses douleurs et des symptômes
+                récurrents au cours de son cycle. Il leur est vivement conseillé
+                de consulter un spécialiste lorsque le score est constamment
+                supérieur à 5.
+              </p>
+              <div class="middle col column" style="">
                 <canvas
                   class="w-50 h-100"
                   style="text-align: center"
@@ -195,66 +144,57 @@
               </div>
             </div>
           </div>
-
-          <div class="row justify-center">
-            <div class="col">
-              <div class="row">
-                <q-icon
-                  name="medication"
-                  class="text-primary"
-                  style="font-size: 32px"
-                ></q-icon>
-                <label class="title-style"
-                  >Contraception.s utilisée.s : {{ actual_contra }}</label
-                >
-              </div>
-              <div class="row justify-center">
-                <div class="main row">
-                  <q-list bordered class="rounded-borders">
-                    <q-expansion-item
-                      icon="history"
-                      label="Contraceptions passées"
-                      caption="Voir l'historique"
-                      style="width: 50rem;"
-                    >
-                      <q-card>
-                        <q-card-section>
-                          <div class="q-pa-md">
-                            <q-table
-                              title="Historique de contraception"
-                              :rows="rows"
-                              :columns="columns_contraceptions"
-                              row-key="id"
-                            />
-                          </div>
-                        </q-card-section>
-                      </q-card>
-                    </q-expansion-item>
-                  </q-list>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="row">
-                <q-icon
-                  name="medical_services"
-                  class="text-primary"
-                  style="font-size: 32px"
-                ></q-icon>
-                <label class="title-style">Prise de médicament</label>
-              </div>
-              <div class="row justify-center">
-                <div class="q-pa-md">
-                  <q-table
-                    title="Médicaments"
-                    :rows="rows_med"
-                    :columns="columns_med"
-                    row-key="id"
-                    style="width: 50rem; height: 25rem"
-                  />
-                </div>
-              </div>
-            </div>
+          <p></p>
+          <q-icon
+            name="medication"
+            class="text-primary"
+            style="font-size: 32px"
+          ></q-icon>
+          <label style="font-size: large; color: darkslateblue"
+            >Contraception.s utilisée.s : {{ actual_contra }}</label
+          >
+          <p></p>
+          <div class="main col row">
+            <q-list bordered class="rounded-borders">
+              <q-expansion-item
+                icon="history"
+                label="Contraception.s passée.s"
+                caption="Voir l'historique"
+              >
+                <q-card>
+                  <q-card-section>
+                    <div class="q-pa-md">
+                      <q-table
+                        title="Historique de contraception"
+                        :rows="rows"
+                        :columns="columns_contraceptions"
+                        row-key="id"
+                      />
+                    </div>
+                  </q-card-section>
+                </q-card>
+              </q-expansion-item>
+            </q-list>
+          </div>
+          <p></p>
+          <p></p>
+          <p></p>
+          <q-icon
+            name="medical_services"
+            class="text-primary"
+            style="font-size: 32px"
+          ></q-icon>
+          <label style="font-size: large; color: darkslateblue"
+            >Prise de médicament</label
+          >
+          <p></p>
+          <div class="q-pa-md">
+            <q-date
+              v-model="date_sympt"
+              :events="events"
+              event-color="red"
+              style="width: 50rem; height: 30rem"
+            />
           </div>
         </QPage>
       </q-page-container>
@@ -271,7 +211,7 @@
               target="_blank"
               href="https://www.instagram.com/innuendo_official/"
               ><img
-                src="https://javiscomputers.com/wp-content/uploads/2020/06/toppng.com-white-instagram-icon-instagram-logo-instagram-instagram-icon-white-306x304-1.png"
+                src="https://www.clipartmax.com/png/small/6-65693_dinner-and-a-cruise-experience-instagram-icon-white-transparent-back.png"
                 width="20"
                 height="20"
                 class="center"
@@ -306,17 +246,18 @@
 
 <script>
 import Chart from 'chart.js/auto';
-import * as d3 from 'd3';
 import { ref } from 'vue';
-import API from 'src/api';
 import {
   getContraception,
   getMedication,
   moyenneEndo,
   getEndo,
+  dateSymptome,
+  getMonth,
+  occurenceSympt,
 } from 'src/data_we/dataScript';
-console.log(API.auth.data);
-console.log(API.auth.token);
+import { getSymptome } from 'src/data/chartScript.js';
+const data = JSON.parse(localStorage.getItem('data'));
 // import FooterPage from 'src/components/organisms/FooterPage.vue';
 
 const columns_contraceptions = [
@@ -361,21 +302,23 @@ const columns_med = [
   { name: 'date', label: 'Date de prise', field: 'date' },
 ];
 
-const contraception = getContraception(API.auth.data);
-const rows_med = getMedication(API.auth.data);
+const contraception = getContraception(data.data);
+const rows_med = getMedication(data.data);
 const rows_contraceptions = contraception[0];
-const list_endo = getEndo(API.auth.data);
+const d_menstru = getSymptome(['Menstruelle'], '2022/08/15', '2022/09/15');
+const list_endo = getEndo(data.data);
+const daily_sympt = dateSymptome(data.data);
 
 var labels = ['January', 'February', 'March', 'April', 'May', 'June'];
 
 var dataConfig = {
-  labels: labels,
+  labels: d_menstru[0][1],
   datasets: [
     {
-      label: 'Nombre de nouveaux utilisateurs',
+      label: 'Douleur Menstruelle',
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgb(255, 99, 132)',
-      data: [0, 10, 5, 2, 20, 30, 45],
+      data: d_menstru[0][0],
     },
   ],
 };
@@ -390,37 +333,22 @@ var dataConfigEndo = {
       data: list_endo[0],
     },
   ],
-
-  // xAxes: [{
-  //     type: 'time',
-  //     ticks: {
-  //         maxTicksLimit: 20
-  //     }
-  // }],
   pointStyle: 'circle',
 };
 
-var date = [];
-var register = [];
-var qr = [];
-var notified = [];
 var defaultType = 'line';
-
-// const config = {
-//     type: defaultType,
-//     data: dataConfig,
-//     options: {}
-// };
 
 export default {
   setup() {
     const rowCount = ref(4);
     const rows = ref([...rows_contraceptions]);
     return {
+      sympt: daily_sympt[1],
+      occ: occurenceSympt(daily_sympt[1], data.data.length),
       rows,
       rows_med,
       rowCount,
-      list_douleur: ref(null),
+      symptome: ref(['Menstruelle']),
       liste_autre: ref(null),
       douleur: [
         'Menstruelle',
@@ -430,12 +358,15 @@ export default {
         'Urinaire',
         'Pelvienne',
         'Abdominale',
+        'Flux',
+        'Fatigue',
       ],
       autres: ['Flux', 'Fatigue'],
-      date_sympt: ref('2022/12/01'),
-      events: ['2022/12/01', '2022/12/05', '2022/12/06'],
+      date_sympt: ref(daily_sympt[0][0]),
+      month_sympt: ref(getMonth(daily_sympt[0][0])),
+      events: daily_sympt[0],
       splitterModel: ref(50),
-      model: ref({ from: '2022/12/02', to: '2022/12/17' }),
+      selected_date: ref({ from: '2022/08/15', to: '2022/09/15' }),
     };
   },
   data() {
@@ -449,28 +380,55 @@ export default {
     };
   },
   methods: {
+    actualisation() {
+      const dataset = getSymptome(
+        this.symptome,
+        this.selected_date.from,
+        this.selected_date.to
+      );
+      console.log(this.symptome);
+      this.myChart.destroy();
+      var dataConfig = {
+        labels: dataset[0][1],
+        datasets: [],
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+          },
+        },
+      };
+      var datasets = [];
+      for (var i = 0; i != dataset.length; i++) {
+        const newDataset = {
+          label: this.symptome[i],
+          data: dataset[i][0],
+        };
+        if (this.symptome[i] == 'Flux') {
+          newDataset.yAxisID = 'y1';
+        }
+        datasets.push(newDataset);
+      }
+      dataConfig.datasets = datasets;
+      let cnv = document.getElementById('myChart');
+      let ctx = cnv.getContext('2d');
+      this.myChart = new Chart(ctx, {
+        type: defaultType,
+        data: dataConfig,
+        options: {},
+      });
+    },
     logout() {
       this.$router.push('/login');
     },
-    async fetchData() {
-      let data = await d3.csv('src/data/anticovid.csv');
-      this.dataLoaded = data;
-      for (let i = 1; i < this.dataLoaded.length - 1; i++) {
-        let tmpDate = this.dataLoaded[i].date.split('-', 2);
-        date.push(tmpDate[0] + '-' + tmpDate[1]);
-        register.push(
-          parseInt(this.dataLoaded[i].register) -
-            parseInt(this.dataLoaded[i - 1].register)
-        );
-        qr.push(
-          parseInt(this.dataLoaded[i].qrCode) -
-            parseInt(this.dataLoaded[i - 1].qrCode)
-        );
-        notified.push(
-          parseInt(this.dataLoaded[i].notified) -
-            parseInt(this.dataLoaded[i - 1].notified)
-        );
-      }
+    toCode() {
+      this.$router.push('/code');
     },
     contact() {
       this.$router.push('/contact');
@@ -479,13 +437,20 @@ export default {
       this.$router.push('/patiente');
     },
     home() {
-      this.$router.push('/');
+      this.$router.push('/home');
+    },
+    changeData() {
+      console.log(graph.value);
+      console.log(list_dys);
+      this.myChart.data.datasets[0].data = list_dys;
+      this.myChart.update();
     },
   },
   mounted() {
-    this.fetchData();
     let myChart = document.getElementById('myChart');
     let endoChart = document.getElementById('endoChart');
+    const graph = document.getElementById('symptome');
+    graph.addEventListener('change', this.actualisation);
     this.myChart = new Chart(myChart, {
       type: defaultType,
       data: dataConfig,

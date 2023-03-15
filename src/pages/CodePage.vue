@@ -17,13 +17,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import CodeForm from 'src/components/organisms/CodeForm.vue';
-import { useUserStore } from 'src/stores/user';
+//import { useUserStore } from 'src/stores/user';
 
-const _userStore = useUserStore();
+//const _userStore = useUserStore();
 
 const fullname = computed(() => {
-  return `${_userStore.user.firstName} ${_userStore.user.lastName}`;
-});
+  return `${localStorage.getItem('name')} ${localStorage.getItem('surname')}`;
+})
 </script>
 
 <style scoped></style>

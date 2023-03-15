@@ -1,4 +1,6 @@
 import axios from 'axios'
+import * as fs from 'fs';
+
 
 export default class APIAuth {
   public constructor(baseUrl: string) {
@@ -12,30 +14,30 @@ export default class APIAuth {
   }
   )
     // throw new Error('Le mot de passe est incorrect.');
-    this.token = res.data.access_token
-    return {
-      access_token: this.token,
-      user: {
-        firstName: 'Tristan',
-        lastName: 'Dustier',
-      }
-    };
+    localStorage.setItem('token', res.data.access_token)
+    localStorage.setItem('name', 'Tristan')
+    localStorage.setItem('surname', 'Bourgeois')
   };
 
   public async verifyCode(code: string) {
     // throw new Error('Le code a expiré.');
     const config = {
-      headers: {'Authorization': 'Bearer ' + this.token},
+      headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
       params: {
         'code': code
       },
     }
-    const _res = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patient/datas', config)
-    this.data = _res.data
-    return  this.data
+
+    const config_patiente = {
+      headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}}
+    
+    const _data = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patient/datas', config)
+    localStorage.setItem('data', JSON.stringify(_data.data))
+    const _profile = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patient/profile', config)
+    localStorage.setItem('profile', JSON.stringify(_profile.data))
+    const _patientes = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patients', config_patiente)
+    localStorage.setItem('patientes', JSON.stringify(_patientes.data))
   }
 
     private baseUrl = 'https://innuendo-webapi.herokuapp.com/';
-    public token = '';
-    public data = [];
 };

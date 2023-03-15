@@ -51,11 +51,7 @@
 
               <!--type -->
               <div>
-                <div class="row items-start">
-                  <label class="text-style"
-                    >Votre prise de contact concerne</label
-                  >
-                </div>
+                  
                 <div class="row justify-evenly">
                   <q-radio
                     id="radio1"
@@ -263,11 +259,58 @@ export default {
       }
     },
 
-    onReset() {
-      this.type = 'abonnement';
-      this.titre = null;
-      this.msg = null;
-      this.type_contact = 'mail';
+    methods: {
+        logout() {
+            this.$router.push('/login');
+        },
+        backHome() {
+            this.$router.push('/contact_validation');
+        },
+        contact() {
+            this.$router.push('/contact')
+        },
+        patiente() {
+            this.$router.push('/patiente')
+        },
+        home() {
+            this.$router.push('/home')
+        },
+        onSubmit(e) {
+            var date = new Date();
+            var dd = String(date.getDate()).padStart(2, '0');
+            var mm = String(date.getMonth() + 1).padStart(2, '0');
+            var yyyy = date.getFullYear();
+            date = dd + '/' + mm + '/' + yyyy;
+            //            this.$router.push('/validation');
+            try {
+                    // user: 'innuendo.contact@gmail.com',
+                    // pass: '42ltvdnsjt'
+ 
+                console.log(this.titre, this.type, this.type_contact, this.msg, date)
+                emailjs.sendForm('service_ebnk84t', 'template_4i9hsh8', e.target,
+                'OU7dvnG78nmA7UwHX', {
+                random: this.type,
+                nom: this.nom,
+                prenom: this.prenom, 
+                mail: this.mail,
+                telephone: this.telephone, 
+                preference: this.type_contact,
+                titre: this.titre,
+                msg: this.msg,
+                date: date
+                })
+                
+            } catch(error) {
+                console.log({error})
+            }
+        },
+
+        onReset() {
+            this.type = 'abonnement'
+            this.titre = null;
+            this.msg = null;
+            this.type_contact = 'mail';
+        }
     },
   },
 
