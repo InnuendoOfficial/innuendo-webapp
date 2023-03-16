@@ -42,7 +42,6 @@
         </q-toolbar>
       </q-header>
       <!-- END HEADER -->
-
       <!-- CONTENT-->
       <q-page-container>
         <q-page style="" class="q-pa-md">
@@ -232,8 +231,6 @@
         </QPage>
       </q-page-container>
       <!-- END CONTENT-->
-
-      <!-- <FooterPage></FooterPage> -->
 
       <!-- FOOTER -->
       <q-footer elevated>
@@ -458,6 +455,7 @@ export default {
         options: {},
       });
     },
+    
     logout() {
       this.$router.push('/login');
     },
@@ -497,7 +495,7 @@ export default {
       options: {},
     });
   },
-  //components: { FooterPage }
+
 };
 
 </script>

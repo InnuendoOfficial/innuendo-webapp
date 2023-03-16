@@ -170,7 +170,7 @@
               target="_blank"
               href="https://www.facebook.com/profile.php?id=100076102473105"
               ><img
-                src="https://www.clipartmax.com/png/full/416-4169142_facebook-logo-facebook-white-icon-png-2018.png"
+                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/instagram-icon-256.png"
                 width="20"
                 height="20"
                 class="center"
@@ -195,7 +195,6 @@
 
 <script>
 import { ref } from 'vue';
-// import FooterPage from 'src/components/organisms/FooterPage.vue'
 import emailjs from 'emailjs-com';
 export default {
   data() {
@@ -210,54 +209,6 @@ export default {
       telephone: '0692012345',
     };
   },
-
-  methods: {
-    logout() {
-      console.log('clicked');
-      this.$router.push('/login');
-    },
-    contact() {
-      this.$router.push('/contact');
-    },
-    patiente() {
-      this.$router.push('/patiente');
-    },
-    home() {
-      this.$router.push('/');
-    },
-    onSubmit(e) {
-      var date = new Date();
-      var dd = String(date.getDate()).padStart(2, '0');
-      var mm = String(date.getMonth() + 1).padStart(2, '0');
-      var yyyy = date.getFullYear();
-      date = dd + '/' + mm + '/' + yyyy;
-      //            this.$router.push('/validation');
-      try {
-        // user: 'innuendo.contact@gmail.com',
-        // pass: '42ltvdnsjt'
-
-        console.log(this.titre, this.type, this.type_contact, this.msg, date);
-        emailjs.sendForm(
-          'service_ebnk84t',
-          'template_4i9hsh8',
-          e.target,
-          'OU7dvnG78nmA7UwHX',
-          {
-            random: this.type,
-            nom: this.nom,
-            prenom: this.prenom,
-            mail: this.mail,
-            telephone: this.telephone,
-            preference: this.type_contact,
-            titre: this.titre,
-            msg: this.msg,
-            date: date,
-          }
-        );
-      } catch (error) {
-        console.log({ error });
-      }
-    },
 
     methods: {
         logout() {
@@ -282,11 +233,7 @@ export default {
             var mm = String(date.getMonth() + 1).padStart(2, '0');
             var yyyy = date.getFullYear();
             date = dd + '/' + mm + '/' + yyyy;
-            //            this.$router.push('/validation');
             try {
-                    // user: 'innuendo.contact@gmail.com',
-                    // pass: '42ltvdnsjt'
- 
                 console.log(this.titre, this.type, this.type_contact, this.msg, date)
                 emailjs.sendForm('service_ebnk84t', 'template_4i9hsh8', e.target,
                 'OU7dvnG78nmA7UwHX', {
@@ -315,7 +262,6 @@ export default {
     },
   },
 
-  //  components: {FooterPage}
 };
 </script>
 
