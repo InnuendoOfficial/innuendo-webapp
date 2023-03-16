@@ -113,6 +113,9 @@ import {updatePro} from '/src/data/userScript.js'
             localStorage.clear();
             this.$router.push('/');
         },
+        patiente() {
+        this.$router.push('/patiente');
+        },
         contact() {
             this.$router.push('/contact');
         },
@@ -127,7 +130,7 @@ import {updatePro} from '/src/data/userScript.js'
         },
         async proData() {
             const config = {
-            headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+                headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
             }
             const _data = await axios.get('https://innuendo-webapi.herokuapp.com/pro', config)
             localStorage.setItem('proData', JSON.stringify(_data.data))
