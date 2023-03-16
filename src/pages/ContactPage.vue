@@ -261,13 +261,14 @@ export default {
 
     methods: {
         logout() {
+            localStorage.clear()
             this.$router.push('/login');
         },
         backHome() {
             this.$router.push('/contact_validation');
         },
         contact() {
-            this.$router.push('/contact')
+            this.$router.go()
         },
         patiente() {
             this.$router.push('/patiente')

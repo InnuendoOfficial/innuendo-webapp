@@ -445,6 +445,7 @@ export default {
         };
         if (this.symptome[i] == 'Flux') {
           newDataset.yAxisID = 'y1';
+
         }
         datasets.push(newDataset);
       }
@@ -460,6 +461,7 @@ export default {
     logout() {
       this.$router.push('/login');
     },
+
     toCode() {
       this.$router.push('/code');
     },
@@ -497,6 +499,7 @@ export default {
   },
   //components: { FooterPage }
 };
+
 </script>
 
 <style lang="postcss" scoped>

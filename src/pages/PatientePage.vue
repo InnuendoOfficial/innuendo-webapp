@@ -144,10 +144,14 @@ export default {
 
     methods: {
         logout() {
+            localStorage.clear()
             this.$router.push('/');
         },
         contact() {
             this.$router.push('/contact');
+        },
+        patiente() {
+            this.$router.go()
         },
         home() {
             this.$router.push('/home')

@@ -43,6 +43,18 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
+    path: '/params',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'params',
+        path: '',
+        component: () => import('src/pages/UserPage.vue'),
+      },
+    ],
+  },
+
+  {
     path: '/admin',
     component: () => import('layouts/AuthLayout.vue'),
     children: [
