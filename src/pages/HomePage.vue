@@ -24,15 +24,12 @@
               icon="list"
               @click="patiente"
             />
-            <q-breadcrumbs-el label="Dr Bourgeois" icon="person">
+            <q-breadcrumbs-el label="Paramètres" icon="person">
               <q-menu transition-show="flip-right" transition-hide="flip-left">
                 <q-list style="min-width: 100px">
-                  <q-item clickable>
-                    <q-item-section>Crazy for transitions</q-item-section>
-                  </q-item>
                   <q-separator />
-                  <q-item clickable>
-                    <q-item-section>Paramètres</q-item-section>
+                  <q-item clickable @click="params">
+                      <q-item-section>Paramètres</q-item-section>
                   </q-item>
                 </q-list>
               </q-menu> </q-breadcrumbs-el
@@ -46,7 +43,7 @@
       <!-- CONTENT-->
       <q-page-container>
         <q-page style="" class="q-pa-md">
-          <label class="title-style">Mlle Natalie MILLER</label>
+          <label class="title-style"> {{this.p_name}} {{this.p_sname}}</label>
           <label class="text-style"><br />23 ans</label>
           <div class="container column">
             <div class="main col row">
@@ -244,7 +241,7 @@
               target="_blank"
               href="https://www.instagram.com/innuendo_official/"
               ><img
-                src="https://www.clipartmax.com/png/small/6-65693_dinner-and-a-cruise-experience-instagram-icon-white-transparent-back.png"
+                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/instagram-icon-256.png"
                 width="20"
                 height="20"
                 class="center"
@@ -376,6 +373,8 @@ export default {
     const rowCount = ref(4);
     const rows = ref([...rows_contraceptions]);
     return {
+      p_name: '',
+      p_sname: '',
       sympt: daily_sympt[1],
       occ: occurenceSympt(daily_sympt[1], data.data.length),
       rows,
@@ -414,6 +413,9 @@ export default {
   },
   methods: {
     actualisation() {
+      if (this.symptome.length == 0) {
+        this.symptome.push('Menstruelle')
+      }
       const dataset = getSymptome(
         this.symptome,
         this.selected_date.from,
@@ -459,7 +461,8 @@ export default {
       });
     },
     logout() {
-      this.$router.push('/login');
+      localStorage.clear()
+      this.$router.push('/');
     },
 
     toCode() {
@@ -474,6 +477,9 @@ export default {
     home() {
       this.$router.push('/home');
     },
+    params() {
+      this.$router.push('/params')
+    },
     changeData() {
       console.log(graph.value);
       console.log(list_dys);
@@ -482,6 +488,9 @@ export default {
     },
   },
   mounted() {
+    let patiente = JSON.parse(localStorage.getItem('profile'))
+    this.p_name = patiente.firstname
+    this.p_sname = patiente.lastname
     let myChart = document.getElementById('myChart');
     let endoChart = document.getElementById('endoChart');
     const graph = document.getElementById('symptome');

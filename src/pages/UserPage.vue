@@ -11,7 +11,7 @@
                     <q-breadcrumbs active-color="white" style="font-size: 16px">
                         <q-breadcrumbs-el label="Accueil" icon="home" @click='home' />
                         <q-breadcrumbs-el label="Mes patientes" icon="list" @click='patiente'/>
-                        <q-breadcrumbs-el label="Dr Bourgeois" icon="person">
+                        <q-breadcrumbs-el label="Paramètres" icon="person">
                             <q-menu
                             transition-show="flip-right"
                             transition-hide="flip-left"
@@ -50,7 +50,7 @@
                             <p> Prochain paiement à venir : 01/02/2023 </p>
 
                             <div>
-                                <q-btn label="Submit" type="submit" color="primary"/>
+                                <q-btn label="Enregistrer mes informations" type="submit" color="primary"/>
                             </div>
                             </q-form>
                     </div>
@@ -64,7 +64,7 @@
                         <QSpace>
                             
                         </QSpace>
-                        <a target="_blank" href="https://www.instagram.com/innuendo_official/"><img src="https://javiscomputers.com/wp-content/uploads/2020/06/toppng.com-white-instagram-icon-instagram-logo-instagram-instagram-icon-white-306x304-1.png" width="20" height="20" class="center"/></a>
+                        <a target="_blank" href="https://www.instagram.com/innuendo_official/"><img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/instagram-icon-256.png" width="20" height="20" class="center"/></a>
                         <a target="_blank" href="https://www.facebook.com/profile.php?id=100076102473105"><img src="https://www.clipartmax.com/png/full/416-4169142_facebook-logo-facebook-white-icon-png-2018.png" width="20" height="20" class="center" /></a>
                         <a target="_blank" href="https://www.linkedin.com/company/innuendoeip/"><img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/linkedin-icon-18-256.png" width="20" height="20" class="center"/></a>
                         <q-btn flat @click='contact'>Nous contacter</q-btn>
@@ -107,6 +107,9 @@ import {updatePro} from '/src/data/userScript.js'
             localStorage.clear();
             this.$router.push('/');
         },
+        patiente() {
+        this.$router.push('/patiente');
+        },
         contact() {
             this.$router.push('/contact');
         },
@@ -121,7 +124,7 @@ import {updatePro} from '/src/data/userScript.js'
         },
         async proData() {
             const config = {
-              headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+                headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
             }
             const _data = await axios.get('https://innuendo-webapi.herokuapp.com/pro', config)
             localStorage.setItem('proData', JSON.stringify(_data.data))

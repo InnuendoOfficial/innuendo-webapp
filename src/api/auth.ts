@@ -15,9 +15,16 @@ export default class APIAuth {
   )
     // throw new Error('Le mot de passe est incorrect.');
     localStorage.setItem('token', res.data.access_token)
-    localStorage.setItem('name', 'Tristan')
-    localStorage.setItem('surname', 'Bourgeois')
+    const config = {
+      headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+      }
+      const _user = await axios.get('https://innuendo-webapi.herokuapp.com/pro', config)
+      localStorage.setItem('name', _user.data.first_name);
+      localStorage.setItem('surname', _user.data.last_name);
+
   };
+
+  
 
   public async verifyCode(code: string) {
     // throw new Error('Le code a expiré.');
@@ -30,7 +37,6 @@ export default class APIAuth {
 
     const config_patiente = {
       headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}}
-    
     const _data = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patient/datas', config)
     localStorage.setItem('data', JSON.stringify(_data.data))
     const _profile = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patient/profile', config)

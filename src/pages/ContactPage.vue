@@ -16,15 +16,12 @@
               icon="list"
               @click="patiente"
             />
-            <q-breadcrumbs-el label="Dr Martens" icon="person">
+            <q-breadcrumbs-el label="Paramètres" icon="person">
               <q-menu transition-show="flip-right" transition-hide="flip-left">
                 <q-list style="min-width: 100px">
-                  <q-item clickable>
-                    <q-item-section>Crazy for transitions</q-item-section>
-                  </q-item>
                   <q-separator />
-                  <q-item clickable>
-                    <q-item-section>Paramètres</q-item-section>
+                  <q-item clickable @click="params">
+                      <q-item-section>Paramètres</q-item-section>
                   </q-item>
                 </q-list>
               </q-menu> </q-breadcrumbs-el
@@ -161,7 +158,7 @@
               target="_blank"
               href="https://www.instagram.com/innuendo_official/"
               ><img
-                src="https://javiscomputers.com/wp-content/uploads/2020/06/toppng.com-white-instagram-icon-instagram-logo-instagram-instagram-icon-white-306x304-1.png"
+                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/instagram-icon-256.png"
                 width="20"
                 height="20"
                 class="center"
@@ -262,7 +259,7 @@ export default {
     methods: {
         logout() {
             localStorage.clear()
-            this.$router.push('/login');
+            this.$router.push('/');
         },
         backHome() {
             this.$router.push('/contact_validation');
@@ -275,6 +272,9 @@ export default {
         },
         home() {
             this.$router.push('/home')
+        },
+        params() {
+            this.$router.push('/params')
         },
         onSubmit(e) {
             var date = new Date();

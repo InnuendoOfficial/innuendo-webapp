@@ -1,3 +1,26 @@
+function contraceptionName(name) {
+    if (name == 'diu_cuivre')
+        return 'DIU cuivre'
+    if (name == 'patch_contraceptif')
+        return 'Patch contraceptif'
+    if (name == 'spermicide')
+        return 'Spermicide'
+    if (name == 'implant_contraceptif')
+        return 'Implant contraceptif'
+    if (name == 'pillule_microprogestative')
+        return 'Pillule Microprogestative'
+    if (name == 'anneau_vaginal')
+        return 'Anneau vaginal'
+    if (name == 'preservatif')
+        return 'Preservatif'
+    if (name == 'contraception_naturelle')
+        return 'Contraception naturelle'
+    if (name == 'retrait')
+        return 'Retrait'
+    if (name == 'diu_hormonal')
+        return 'DIU hormonal'
+}
+
 function getContraception(data) {
     var historic = []
     var debut = []
@@ -30,14 +53,14 @@ function getContraception(data) {
     for (let i = 0; i < nom.length; i++) {
         if (i == nom.length -1) {
             historic.push({
-                'nom':nom[i],
+                'nom':contraceptionName(nom[i]),
                 'debut': debut[i],
                 'fin': 'Prise en cours'
             })
         }
         else {
             historic.push({
-                'nom':nom[i],
+                'nom':contraceptionName(nom[i]),
                 'debut': debut[i],
                 'fin': fin[i]
             })
