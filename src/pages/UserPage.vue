@@ -17,7 +17,8 @@
                             transition-hide="flip-left"
                             >
                             <q-list style="min-width: 100px">
-                                <q-item clickable>
+                                <q-separator />
+                                <q-item clickable @click="params">
                                     <q-item-section>Paramètres</q-item-section>
                                 </q-item>
                             </q-list>
@@ -28,7 +29,6 @@
                 </q-toolbar>
             </q-header>
             <!-- END HEADER -->
-            <!-- <HeaderPage></HeaderPage> -->
             <q-page-container>
                 <q-page>
                     <div class="row window-height">
@@ -89,7 +89,6 @@ import { ref } from 'vue'
 import axios from 'axios'
 import {updatePro} from '/src/data/userScript.js'
 
-
     export default {
         setup () {
         return {
@@ -106,6 +105,9 @@ import {updatePro} from '/src/data/userScript.js'
 
         resetPwd() {
             console.log('mdp reset')
+        },
+        params() {
+            this.$router.go()
         },
         logout() {
             localStorage.clear();
@@ -141,7 +143,7 @@ import {updatePro} from '/src/data/userScript.js'
 
     beforeMount() {
         this.proData()
-    }
+    },
 }
 </script>
 
