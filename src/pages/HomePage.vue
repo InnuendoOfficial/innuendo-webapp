@@ -51,6 +51,7 @@
           <div class="container column">
             <div class="main col row">
               <div class="main-left col-1 mr-10 column"></div>
+              <!-- Symptom chart -->
               <div class="middle col column">
                 <canvas
                   class="mx-auto my-auto chartStyle"
@@ -58,6 +59,7 @@
                 ></canvas>
               </div>
               <div class="main-left col-1 mr-10 column"></div>
+              <!-- Symptom selection -->
               <div class="main-right col-2 inner" style="margin-right: 5%">
                 <label style="font-size: medium">Douleur</label>
                 <q-select
@@ -74,11 +76,13 @@
                   label="Sélectionnez le type de symptôme"
                 />
                 <br />
+                <!-- Chart refresh button -->
                 <div class="row justify-center">
                   <q-btn outline rounded @click="actualisation">
                     ACTUALISER LE GRAPHIQUE
                   </q-btn>
                 </div>
+                <!-- Symptom calendar -->
                 <div>
                   <br />
                   <label style="font-size: medium">Choisissez une date</label>
