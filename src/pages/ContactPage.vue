@@ -1,125 +1,262 @@
 <template>
-    <div class="q-pa-md">
-        <q-layout view="lHh lpr lFf"  class="shadow-2 rounded-borders">
-            <q-header elevated style="height: 100px">
-                <q-toolbar>
-                    <q-avatar size="90px">
-                        <img src="~/assets/logo.png" alt="innuendo logo" >
-                    </q-avatar>
-                    <q-toolbar-title class="justify-center" style="font-size: xx-large;">InnuendoPro</q-toolbar-title>
-                    <q-breadcrumbs active-color="white" style="font-size: 16px">
-                        <q-breadcrumbs-el label="Accueil" icon="home" @click='home' />
-                        <q-breadcrumbs-el label="Mes patientes" icon="list" @click='patiente'/>
-                        <q-breadcrumbs-el label="Dr Martens" icon="person">
-                            <q-menu
-                            transition-show="flip-right"
-                            transition-hide="flip-left"
-                            >
-                            <q-list style="min-width: 100px">
-                                <q-item clickable>
-                                    <q-item-section>Paramètres</q-item-section>
-                                </q-item>
-                            </q-list>
-                        </q-menu>
-                        </q-breadcrumbs-el>/>
-                        <q-breadcrumbs-el icon="logout" @click="logout"/>
-                    </q-breadcrumbs>
-                </q-toolbar>
-                        
+  <div class="q-pa-md">
+    <q-layout view="lHh lpr lFf" class="shadow-2 rounded-borders">
+      <q-header elevated style="height: 100px">
+        <q-toolbar>
+          <q-avatar size="90px">
+            <img src="~/assets/logo.png" alt="innuendo logo" />
+          </q-avatar>
+          <q-toolbar-title class="justify-center" style="font-size: xx-large"
+            >InnuendoPro</q-toolbar-title
+          >
+          <q-breadcrumbs active-color="white" style="font-size: 16px">
+            <q-breadcrumbs-el label="Accueil" icon="home" @click="home" />
+            <q-breadcrumbs-el
+              label="Mes patientes"
+              icon="list"
+              @click="patiente"
+            />
+            <q-breadcrumbs-el label="Dr Martens" icon="person">
+              <q-menu transition-show="flip-right" transition-hide="flip-left">
+                <q-list style="min-width: 100px">
+                  <q-item clickable>
+                    <q-item-section>Crazy for transitions</q-item-section>
+                  </q-item>
+                  <q-separator />
+                  <q-item clickable>
+                    <q-item-section>Paramètres</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu> </q-breadcrumbs-el
+            >/>
+            <q-breadcrumbs-el icon="logout" @click="logout" />
+          </q-breadcrumbs>
+        </q-toolbar>
+      </q-header>
+      <q-page-container>
+        <q-page style="" class="q-pa-md">
+          <div class="row absolute-center">
+            <!-- formulaire-->
+            <form
+              ref="formulaire"
+              @submit.prevent="onSubmit"
+              @reset="onReset"
+              class="q-gutter-md"
+            >
+              <label
+                class="text-center"
+                style="font-size: xx-large; color: darkslateblue"
+                >Formulaire de contact</label
+              >
 
-            </q-header>
-            <q-page-container>
-                <q-page style="" class="q-pa-md">
-                    
-                    
-                    <div class="row absolute-center">
-                        
-                        <!-- formulaire-->
-                        <form ref="formulaire" @submit.prevent="onSubmit" @reset="onReset" class="q-gutter-md">
-                            <label class="text-center" style="font-size:x-large;color:darkslateblue">Formulaire de contact</label>
-
-                            <!--type -->
-                            <div >
-                                <div class="row items-start">
-                                    <label style="color:black;font-size: larger;">Votre prise de contact concerne</label>
-                                </div>
-                                <div>
-                                    <q-radio id="radio1" name="type" v-model="type" checked-icon="task_alt" unchecked-icon="panorama_fish_eye"  color="black" val="abonnement" label="Abonnement" />
-                                    <q-radio id="radio2" name="type" v-model="type" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black" val="bug" label="Bug" />
-                                    <q-radio id="radio3" name="type" v-model="type" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black" val="autre" label="Autre" />
-                                </div>
-                            </div>
-                                <label style="color:black;">Titre de la demande</label>
-                                <q-input name="titre" outlined v-model="titre" label="Une brève description de votre message" lazy-rules :rules="[ val => val && val.length > 0 || 'Champ obligatoire']"/>
-
-                                <label style="color:black;">Votre message</label>
-                                <q-input
-                                name="msg"
-                                v-model="msg"
-                                filled
-                                type="textarea"
-                                lazy-rules :rules="[ val => val && val.length > 0 || 'Champ obligatoire']"
-                                label="Entrez ici votre message"
-                                />
-                            
-                            <div class="q-pa-md">
-                                <label style="font-size: larger;">Souhaitez vous être contacté par mail ou par téléphone ?</label>
-                                <div class="q-gutter-sm">
-                                    <q-radio id="radio4" name="type_contact" v-model="type_contact" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black" val="mail" label="Mail" />
-                                    <q-radio id="radio5" name="type_contact" v-model="type_contact" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="black" val="telephone" label="Téléphone" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <q-btn label="Envoyer ma demande" type="submit" @click="backHome" text-color="primary"/>
-                                <q-btn label="Effacer" type="reset"  text-color="black" flat class="q-ml-sm" />
-                            </div>
-                            </form>
-                        </div>
-
-
-                </q-page>
-        </q-page-container>
-
-
-        <!-- <FooterPage></FooterPage> -->
-        <q-footer elevated>
-            <q-toolbar>
-                <div style="text-align: center">
-                    <QSpace>
-                        
-                    </QSpace>
-                    <a target="_blank" href="https://www.instagram.com/innuendo_official/"><img src="https://javiscomputers.com/wp-content/uploads/2020/06/toppng.com-white-instagram-icon-instagram-logo-instagram-instagram-icon-white-306x304-1.png" width="20" height="20" class="center"/></a>
-                    <a target="_blank" href="https://www.facebook.com/profile.php?id=100076102473105"><img src="https://www.clipartmax.com/png/full/416-4169142_facebook-logo-facebook-white-icon-png-2018.png" width="20" height="20" class="center" /></a>
-                    <a target="_blank" href="https://www.linkedin.com/company/innuendoeip/"><img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/linkedin-icon-18-256.png" width="20" height="20" class="center"/></a>
-                    <q-btn flat @click='contact'>Nous contacter</q-btn>
+              <!--type -->
+              <div>
+                  
+                <div class="row justify-evenly">
+                  <q-radio
+                    id="radio1"
+                    name="type"
+                    v-model="type"
+                    checked-icon="task_alt"
+                    unchecked-icon="panorama_fish_eye"
+                    color="black"
+                    val="abonnement"
+                    label="Abonnement"
+                  />
+                  <q-radio
+                    id="radio2"
+                    name="type"
+                    v-model="type"
+                    checked-icon="task_alt"
+                    unchecked-icon="panorama_fish_eye"
+                    color="black"
+                    val="bug"
+                    label="Bug"
+                  />
+                  <q-radio
+                    id="radio3"
+                    name="type"
+                    v-model="type"
+                    checked-icon="task_alt"
+                    unchecked-icon="panorama_fish_eye"
+                    color="black"
+                    val="autre"
+                    label="Autre"
+                  />
                 </div>
-                <q-toolbar-title></q-toolbar-title>
-            </q-toolbar>
-        </q-footer>
+              </div>
+              <label class="text-style">Titre de la demande</label>
+              <q-input
+                name="titre"
+                outlined
+                v-model="titre"
+                label="Une brève description de votre message"
+                lazy-rules
+                :rules="[
+                  (val) => (val && val.length > 0) || 'Champ obligatoire',
+                ]"
+              />
 
+              <label class="text-style">Votre message</label>
+              <q-input
+                name="msg"
+                v-model="msg"
+                filled
+                type="textarea"
+                lazy-rules
+                :rules="[
+                  (val) => (val && val.length > 0) || 'Champ obligatoire',
+                ]"
+                label="Entrez ici votre message"
+              />
+              <label class="text-style"
+                >Souhaitez vous être contacté par mail ou par téléphone ?</label
+              >
+              <div class="q-gutter-sm row justify-evenly">
+                <q-radio
+                  id="radio4"
+                  name="type_contact"
+                  v-model="type_contact"
+                  checked-icon="task_alt"
+                  unchecked-icon="panorama_fish_eye"
+                  color="black"
+                  val="mail"
+                  label="Mail"
+                />
+                <q-radio
+                  id="radio5"
+                  name="type_contact"
+                  v-model="type_contact"
+                  checked-icon="task_alt"
+                  unchecked-icon="panorama_fish_eye"
+                  color="black"
+                  val="telephone"
+                  label="Téléphone"
+                />
+              </div>
+              <div class="row justify-center">
+                <q-btn
+                  label="Envoyer ma demande"
+                  type="submit"
+                  text-color="primary"
+                />
+                <q-btn
+                  label="Effacer"
+                  type="reset"
+                  text-color="black"
+                  flat
+                  class="q-ml-sm"
+                />
+              </div>
+            </form>
+          </div>
+        </q-page>
+      </q-page-container>
+
+      <!-- <FooterPage></FooterPage> -->
+      <q-footer elevated>
+        <q-toolbar>
+          <div style="text-align: center">
+            <a
+              target="_blank"
+              href="https://www.instagram.com/innuendo_official/"
+              ><img
+                src="https://javiscomputers.com/wp-content/uploads/2020/06/toppng.com-white-instagram-icon-instagram-logo-instagram-instagram-icon-white-306x304-1.png"
+                width="20"
+                height="20"
+                class="center"
+            /></a>
+            <a
+              target="_blank"
+              href="https://www.facebook.com/profile.php?id=100076102473105"
+              ><img
+                src="https://www.clipartmax.com/png/full/416-4169142_facebook-logo-facebook-white-icon-png-2018.png"
+                width="20"
+                height="20"
+                class="center"
+            /></a>
+            <a
+              target="_blank"
+              href="https://www.linkedin.com/company/innuendoeip/"
+              ><img
+                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/linkedin-icon-18-256.png"
+                width="20"
+                height="20"
+                class="center"
+            /></a>
+            <q-btn flat @click="contact">Nous contacter</q-btn>
+          </div>
+          <q-toolbar-title></q-toolbar-title>
+        </q-toolbar>
+      </q-footer>
     </q-layout>
-    </div>
+  </div>
 </template>
 
-<script >
-    import { ref } from 'vue'
-    import emailjs from 'emailjs-com';
-    export default {
+<script>
+import { ref } from 'vue';
+// import FooterPage from 'src/components/organisms/FooterPage.vue'
+import emailjs from 'emailjs-com';
+export default {
+  data() {
+    return {
+      type: 'abonnement',
+      titre: '',
+      msg: '',
+      type_contact: 'mail',
+      nom: 'NAEJ',
+      prenom: 'Jean',
+      mail: 'jeannaej@mail.com',
+      telephone: '0692012345',
+    };
+  },
 
+  methods: {
+    logout() {
+      console.log('clicked');
+      this.$router.push('/login');
+    },
+    contact() {
+      this.$router.push('/contact');
+    },
+    patiente() {
+      this.$router.push('/patiente');
+    },
+    home() {
+      this.$router.push('/');
+    },
+    onSubmit(e) {
+      var date = new Date();
+      var dd = String(date.getDate()).padStart(2, '0');
+      var mm = String(date.getMonth() + 1).padStart(2, '0');
+      var yyyy = date.getFullYear();
+      date = dd + '/' + mm + '/' + yyyy;
+      //            this.$router.push('/validation');
+      try {
+        // user: 'innuendo.contact@gmail.com',
+        // pass: '42ltvdnsjt'
 
-
-    data() {
-        return {
-            type: 'abonnement',
-            titre: '',
-            msg: '',
-            type_contact: 'mail',
-            nom: 'NAEJ',
-            prenom: 'Jean', 
-            mail: 'jeannaej@mail.com',
-            telephone: '0692012345', 
-        }
+        console.log(this.titre, this.type, this.type_contact, this.msg, date);
+        emailjs.sendForm(
+          'service_ebnk84t',
+          'template_4i9hsh8',
+          e.target,
+          'OU7dvnG78nmA7UwHX',
+          {
+            random: this.type,
+            nom: this.nom,
+            prenom: this.prenom,
+            mail: this.mail,
+            telephone: this.telephone,
+            preference: this.type_contact,
+            titre: this.titre,
+            msg: this.msg,
+            date: date,
+          }
+        );
+      } catch (error) {
+        console.log({ error });
+      }
     },
 
     methods: {
@@ -176,25 +313,30 @@
             this.type_contact = 'mail';
         }
     },
+  },
 
   //  components: {FooterPage}
-}
+};
 </script>
 
-
 <style lang="postcss" scoped>
-    .bg_innuendo {
-        background: #776ccb;
-    }
-    .circle {
-        border-radius: 100%;
-        width:150px ;
-        height: 150px;
-        padding: 10px;
-        background: #fff;
-        border: 10px solid #776ccb;
-        color: #000000;
-        text-align: center;
-        font: 32px Arial, sans-serif;
-    }
+.bg_innuendo {
+  background: #776ccb;
+}
+.circle {
+  border-radius: 100%;
+  width: 150px;
+  height: 150px;
+  padding: 10px;
+  background: #fff;
+  border: 10px solid #776ccb;
+  color: #000000;
+  text-align: center;
+  font: 32px Arial, sans-serif;
+}
+
+.text-style {
+  color: black;
+  font-size: larger;
+}
 </style>
