@@ -12,15 +12,12 @@
                     <q-breadcrumbs active-color="white" style="font-size: 16px">
                         <q-breadcrumbs-el label="Accueil" icon="home" @click='home' />
                         <q-breadcrumbs-el label="Mes patientes" icon="list" @click='patiente'/>
-                        <q-breadcrumbs-el label="Dr Bourgeois" icon="person">
+                        <q-breadcrumbs-el label="Paramètres" icon="person">
                             <q-menu
                             transition-show="flip-right"
                             transition-hide="flip-left"
                             >
                             <q-list style="min-width: 100px">
-                                <q-item clickable>
-                                    <q-item-section>Crazy for transitions</q-item-section>
-                                </q-item>
                                 <q-separator />
                                 <q-item clickable>
                                     <q-item-section @click='params'>Paramètres</q-item-section>
@@ -37,7 +34,7 @@
             <!-- CONTENT-->
             <q-page-container>
                 <q-page style="" class="q-pa-md">
-                    <label style="font-size:x-large;color:darkslateblue">Votre patiente : Mlle Natalie MILLER, 23 ans</label>
+                    <label style="font-size:x-large;color:darkslateblue">Votre patiente : {{this.p_name}} {{this.p_sname}}, 23 ans</label>
                     <div class="container column">
                         <div class="main col row">
                                 <div class="main-left col-1 mr-10 column"></div>
@@ -137,7 +134,7 @@
                     <QSpace>
                         
                     </QSpace>
-                    <a target="_blank" href="https://www.instagram.com/innuendo_official/"><img src="https://www.clipartmax.com/png/small/6-65693_dinner-and-a-cruise-experience-instagram-icon-white-transparent-back.png" width="20" height="20" class="center"/></a>
+                    <a target="_blank" href="https://www.instagram.com/innuendo_official/"><img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/instagram-icon-256.png" width="20" height="20" class="center"/></a>
                     <a target="_blank" href="https://www.facebook.com/profile.php?id=100076102473105"><img src="https://www.clipartmax.com/png/full/416-4169142_facebook-logo-facebook-white-icon-png-2018.png" width="20" height="20" class="center" /></a>
                     <a target="_blank" href="https://www.linkedin.com/company/innuendoeip/"><img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/linkedin-icon-18-256.png" width="20" height="20" class="center"/></a>
                     <q-btn flat @click='contact'>Nous contacter</q-btn>
@@ -208,6 +205,8 @@
         const rowCount = ref(4)
         const rows = ref([...rows_contraceptions])
         return {
+            p_name: '',
+            p_sname: '',
             sympt : daily_sympt[1],
             occ: occurenceSympt(daily_sympt[1], data.data.length),
             rows,
@@ -246,23 +245,31 @@
     },
     methods: {
         actualisation() {
+            if (this.symptome.length == 0) {
+                this.symptome.push('Menstruelle')
+            }
             const dataset = getSymptome(this.symptome, this.selected_date.from, this.selected_date.to)
             console.log(this.symptome)
             this.myChart.destroy();
             var dataConfig = {
                 labels: dataset[0][1],
                 datasets: [],
-                scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                },
-                y1: {
-                    type: 'linear',
-                    display: true,
-                    position: 'right',}
+                options : {
+                    scales: {
+                        yAxis: [{
+                            id: 'A',
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                        }, {
+                            id: 'B',
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                        }]
+                    }
                 }
+
             }
             var datasets = []
             for (var i = 0; i != dataset.length; i++) {
@@ -271,11 +278,16 @@
                         data: dataset[i][0],
                     };
                 if (this.symptome[i] == 'Flux') {
-                    newDataset.yAxisID= 'y1'
+                    console.log("el fluxo")
+                    newDataset.yAxisID= 'B'
+                }
+                else {
+                    newDataset.yAxisID= 'A'
                 }
                 datasets.push(newDataset);
             }
             dataConfig.datasets = datasets
+            console.log(dataConfig)
             let cnv = document.getElementById('myChart')
             let ctx = cnv.getContext('2d')
             this.myChart = new Chart(ctx, {type: defaultType,
@@ -309,6 +321,9 @@
         }
     },
     mounted() {
+        let patiente = JSON.parse(localStorage.getItem('profile'))
+        this.p_name = patiente.firstname
+        this.p_sname = patiente.lastname
         let myChart = document.getElementById('myChart');
         let endoChart = document.getElementById('endoChart');
         const graph = document.getElementById("symptome")
