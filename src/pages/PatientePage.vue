@@ -122,7 +122,6 @@ const columns = [
 const originalRows = getPatiente();
 
 export default {
-  //components : {HeaderPage},
 
   setup() {
     const loading = ref(false);

@@ -30,29 +30,35 @@
             </q-header>
             <!-- END HEADER -->
             <q-page-container>
-                <q-page style="" class="q-pa-md">
-                    <div class="q-pa-md">
-                        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md" >
+                <q-page>
+                    <div class="row window-height">
+                        <div class="col-sm-6 bg-white row justify-center items-center" style="text-align: center;">
+                            <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md" >
+                                <h4>Mes informations personnelles</h4>
                             <q-input clearable filled v-model="name" label="Prénom"/>
                             <q-input clearable filled v-model="surname" label="Nom"/>
                             <q-input clearable filled v-model="mail" label="Adresse mail"/>
                             <q-input clearable filled v-model="adresse" label="Adresse"/>
                             <q-input clearable filled v-model="tel" label="Numéro de téléphone"/>
-                            <div>
+                            <div style="text-align: center;">
                                 <q-btn label="Demander un nouveau mot de passe"  @click="resetPwd" color="primary"/>
                             </div>
-                            <div class="q-gutter-sm">
+                            <div class="q-gutter-sm" style="text-align: center;">
                                 <label style="color:Black;font-size: larger;">Type d'abonnement : </label>
                                 <q-radio id="radio1" name="abo" v-model="abo" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="monthly" label="Mensuel" />
                                 <q-radio id="radio2" name="abo" v-model="abo" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="annual" label="Annuel" />
+                                <p> Dernier paiement effectué : 01/01/2023 </p>
+                                <p> Prochain paiement à venir : 01/02/2023 </p>
+                                
                             </div>
-                            <p> Dernier paiement effectué : 01/01/2023 </p>
-                            <p> Prochain paiement à venir : 01/02/2023 </p>
-
-                            <div>
+                            <div style="text-align: center;">
                                 <q-btn label="Enregistrer mes informations" type="submit" color="primary"/>
                             </div>
                             </q-form>
+                        </div>
+                        <div class="col-sm-6">
+                            <img class="logo1" src="~/assets/info.svg" alt="infos illustration">
+                        </div>
                     </div>
                 </q-page>
             </q-page-container>
@@ -146,7 +152,13 @@ import {updatePro} from '/src/data/userScript.js'
 
 
 <style lang="postcss" scoped>
-    .bg_innuendo {
-        background: #776ccb;
-    }
+.bg_innuendo {
+    background: #776ccb;
+}
+
+.logo1 {
+    margin-top: 150px;
+    width:90%;
+}
+
 </style>
