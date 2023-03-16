@@ -191,21 +191,20 @@
 </template>
 
 <script>
-import { ref } from 'vue';
 import emailjs from 'emailjs-com';
 export default {
-  data() {
+    data() {
     return {
-      type: 'abonnement',
-      titre: '',
-      msg: '',
-      type_contact: 'mail',
-      nom: 'NAEJ',
-      prenom: 'Jean',
-      mail: 'jeannaej@mail.com',
-      telephone: '0692012345',
+        type: 'abonnement',
+        titre: '',
+        msg: '',
+        type_contact: 'mail',
+        nom: 'NAEJ',
+        prenom: 'Jean',
+        mail: 'jeannaej@mail.com',
+        telephone: '0692012345',
     };
-  },
+    },
 
     methods: {
         logout() {
@@ -260,9 +259,8 @@ export default {
             this.type_contact = 'mail';
         }
     },
-  },
+}
 
-};
 </script>
 
 <style lang="postcss" scoped>
