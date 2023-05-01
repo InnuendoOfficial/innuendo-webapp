@@ -12,8 +12,8 @@
                     <q-card class="my-card">
                         <q-card-section>
                             <h5>Votre paiement a échoué, nous vous invitons à renouveler l'opération.
-                                <br>Si le problème persiste contactez votre banque ou envoyez un mail à contact@innuendo.com.
-                                <br><br>Vous allez être redirigé vers la page de paiement.
+                                <br> Veuillez réessayer d'ouvrir le lien reçu par mail.
+                                <br><br>Si le problème persiste contactez votre banque ou envoyez un mail à innuendo.contact@gmail.com.
                             </h5>
                         </q-card-section>
                     </q-card>
@@ -32,7 +32,7 @@
 <script>
     export default {
         created(){
-            setTimeout( () => this.$router.push('/'), 10000);
+            setTimeout( () => this.$router.push('/'), 20000);
         }
     }
 </script>
