@@ -39,6 +39,7 @@
         </q-toolbar>
       </q-header>
       <!-- END HEADER -->
+      
       <!-- CONTENT-->
       <q-page-container>
         <q-page style="" class="q-pa-md">
@@ -211,7 +212,7 @@
                   class="text-primary"
                   style="font-size: 32px"
                 ></q-icon>
-                <label class="title-style"> Prise de médicament </label>
+                <label class="title-style" style="padding-bottom: 0%;"> Prise de médicament </label>
               </div>
               <div class="row justify-center">
                 <div class="q-pa-md">

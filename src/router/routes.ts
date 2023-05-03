@@ -151,6 +151,30 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
+    path: '/paiementsucceed',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        name: 'paiement_succeed',
+        path: '',
+        component: () => import('src/pages/PaiementSucceed.vue'),
+      }
+    ]
+  },
+
+  {
+    path: '/paiementfailed',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        name: 'paiement_failed',
+        path: '',
+        component: () => import('src/pages/PaiementFailed.vue'),
+      }
+    ]
+  },
+
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },

@@ -9,9 +9,7 @@
             style="width: 15rem"
           />
         </div>
-        <!-- <div class="" style="display:inline-block;">
-                    <h2 style="color: white">Innuendo</h2>
-                </div> -->
+
         <div class="row window-height justify-center relative">
           <!-- formulaire-->
           <form
@@ -48,7 +46,7 @@
                   unchecked-icon="panorama_fish_eye"
                   color="white"
                   val="hopital"
-                  label="Groupe hôspitalier"
+                  label="Groupe hospitalier"
                 />
               </div>
             </div>
