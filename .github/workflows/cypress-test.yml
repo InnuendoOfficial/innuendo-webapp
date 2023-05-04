@@ -18,6 +18,5 @@ jobs:
       run: npm ci
     - name: Start server
       run: npm run start &
-      background: true
     - name: Run Cypress tests
       run: npm run cypress:run
