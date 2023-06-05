@@ -56,6 +56,7 @@
 
 <script>
 import { ref } from 'vue';
+import axios from 'axios';
 
 export default {
   data() {
@@ -63,13 +64,34 @@ export default {
       mail: ref(null),
     };
   },
-  methods: {
-    resetPwd() {
-      this.$router.push('/validation');
-    },
-  },
-};
+
+    methods: {
+        async resetPwd() {
+            var data = JSON.stringify({"email": this.mail});
+            var config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'https://innuendo-webapi.herokuapp.com/pro/forgotten_password',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                data : data
+                };
+            console.log(data)
+            axios(config)
+            .then(function (response) {
+                console.log("rep = ", JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                console.log(error);
+                return
+            });
+            this.$router.push('/validation')
+        }
+        }
+    }
 </script>
+
 
 <style lang="postcss" scoped>
 .bg_innuendo {

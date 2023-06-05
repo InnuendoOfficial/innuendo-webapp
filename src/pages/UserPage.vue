@@ -180,15 +180,44 @@ export default {
 
   methods: {
     resetPwd() {
-      console.log('mdp reset');
-    },
+            var data = JSON.stringify({"email": this.mail});
+            var config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'https://innuendo-webapi.herokuapp.com/pro/forgotten_password',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                data : data
+                };
+            console.log(data)
+            axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                console.log(error);
+                return
+            });
+        },
     params() {
       this.$router.go();
     },
     logout() {
-      localStorage.clear();
-      this.$router.push('/');
-    },
+            const specialItem = localStorage.getItem('first_co');
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key !== 'first_co') {
+                console.log('item removed')
+                localStorage.removeItem(key);
+                }
+            }
+            if (specialItem !== null) {
+                localStorage.setItem('first_co', specialItem);
+            }
+            //localStorage.clear()
+            this.$router.push('/');
+        },
     patiente() {
       this.$router.push('/patiente');
     },
@@ -196,24 +225,10 @@ export default {
       this.$router.push('/contact');
     },
     onSubmit() {
-      console.log('clicked');
-      console.log(this);
-      updatePro([
-        this.name,
-        this.surname,
-        this.mail,
-        this.adresse,
-        this.tel,
-        this.abo,
-      ]);
-      console.log(
-        this.name,
-        this.surname,
-        this.mail,
-        this.adresse,
-        this.tel,
-        this.abo
-      );
+            console.log('clicked')
+            console.log(this)
+            updatePro([this.name, this.surname, this.mail, this.adresse, this.tel, this.abo])
+            console.log(this.name, this.surname, this.mail, this.adresse, this.tel, this.abo)
     },
     home() {
       this.$router.push('/home');

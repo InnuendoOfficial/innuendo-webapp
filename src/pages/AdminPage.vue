@@ -108,17 +108,17 @@ export default {
         };
     },
     methods: {
-        onSubmit() {
-            console.log(this.mail, this.abo, this.profession, this.tel, this.age, this.prenom, this.nom)
-            // const res = await axios.post('https://innuendo-webapi.herokuapp.com/pro', {
-            //         "first_name": this.prenom,
-            //         "last_name": this.nom,
-            //         "email": this.mail,
-            //         "phone": this.tel,
-            //         "subscription_type": this.abo
-            // },  {headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},})
-            // console.log(res)
-            setTimeout( () => this.$router.push('/'), 1000);
+        async onSubmit() {
+            console.log(this.mail, this.abo, this.profession, this.tel, this.age, this.prenom, this.nom, typeof(this.tel))
+            const res = await axios.post('https://innuendo-webapi.herokuapp.com/pro', {
+                    "first_name": this.prenom,
+                    "last_name": this.nom,
+                    "email": this.mail,
+                    "phone": parseInt(this.tel),
+                    "subscription_type": this.abo
+            })
+            console.log(res)
+            setTimeout( () => this.$router.push('/'), 5000);
         },
         checkAdmin(){
             if (localStorage.getItem('admin') != 'ok') {

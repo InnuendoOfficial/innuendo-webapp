@@ -139,8 +139,19 @@ export default {
 
     methods: {
         logout() {
-            localStorage.clear()
-            this.$router.push('/');
+          const specialItem = localStorage.getItem('first_co');
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key !== 'first_co') {
+              console.log('item removed')
+              localStorage.removeItem(key);
+            }
+          }
+          if (specialItem !== null) {
+            localStorage.setItem('first_co', specialItem);
+          }
+          //localStorage.clear()
+          this.$router.push('/');
         },
         contact() {
             this.$router.push('/contact');

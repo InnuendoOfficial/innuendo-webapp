@@ -1,30 +1,30 @@
 <template>
   <div class="q-pa-md">
     <q-layout view="lHh lpr lFf" class="shadow-2 rounded-borders">
-      
       <!-- HEADER -->
       <q-header elevated style="height: 100px">
         <q-toolbar>
           <!-- Logo and name -->
           <q-avatar size="90px">
-            <img src="~/assets/logo.png" alt="innuendo logo" />
+            <img src="~/assets/logo.png" class="logo-innuendo shepherd-target" alt="innuendo logo" />
           </q-avatar>
           <q-toolbar-title class="justify-center" style="font-size: xx-large">
             InnuendoPro
           </q-toolbar-title>
           <!-- Manage new patient -->
           <div class="main-right col-2 inner">
-            <q-btn outline rounded label="Nouvelle patiente" @click="toCode" />
+            <q-btn class="new_btn" outline rounded label="Nouvelle patiente" @click="toCode" />
           </div>
           <!-- Settings -->
           <q-breadcrumbs active-color="white" style="font-size: 16px">
             <q-breadcrumbs-el label="Accueil" icon="home" @click="home" />
             <q-breadcrumbs-el
+              class = "patiente_btn"
               label="Mes patientes"
               icon="list"
               @click="patiente"
             />
-            <q-breadcrumbs-el label="Paramètres" icon="person">
+            <q-breadcrumbs-el class = "params_btn" label="Paramètres" icon="person">
               <q-menu transition-show="flip-right" transition-hide="flip-left">
                 <q-list style="min-width: 100px">
                   <q-separator />
@@ -34,7 +34,7 @@
                 </q-list>
               </q-menu> </q-breadcrumbs-el
             >
-            <q-breadcrumbs-el icon="logout" @click="logout" />
+            <q-breadcrumbs-el class = "logout_btn" icon="logout" @click="logout" />
           </q-breadcrumbs>
         </q-toolbar>
       </q-header>
@@ -44,6 +44,7 @@
       <q-page-container>
         <q-page style="" class="q-pa-md">
           <label class="title-style"> {{this.p_name}} {{this.p_sname}}</label>
+          <!-- <label class="title-style">Jane Doe</label> -->
           <label class="text-style"><br />23 ans</label>
           <div class="container column">
             <div class="main col row">
@@ -51,7 +52,7 @@
               <!-- Symptom chart -->
               <div class="middle col column">
                 <canvas
-                  class="mx-auto my-auto chartStyle"
+                  class="mx-auto my-auto chartStyle first_graph"
                   id="myChart"
                 ></canvas>
               </div>
@@ -59,7 +60,7 @@
               <!-- Symptom selection -->
               <div class="main-right col-2 inner" style="margin-right: 5%">
                 <label style="font-size: medium">Douleur</label>
-                <q-select
+                <q-select class="symptom_btn"
                   multiple
                   id="symptome"
                   outlined
@@ -75,7 +76,7 @@
                 <br />
                 <!-- Chart refresh button -->
                 <div class="row justify-center">
-                  <q-btn outline rounded @click="actualisation">
+                  <q-btn id="graphBtn" class="actu_btn" outline rounded @click="actualisation">
                     ACTUALISER LE GRAPHIQUE
                   </q-btn>
                 </div>
@@ -85,7 +86,7 @@
                   <label style="font-size: medium">Choisissez une date</label>
                 </div>
                 <div class="q-pa-md row justify-start">
-                  <q-date
+                  <q-date class="symptom_calendar"
                     v-model="selected_date"
                     range
                     style="width: 30rem; height: 25rem"
@@ -103,7 +104,7 @@
               <template v-slot:before>
                 <div class="col">
                     <div class="q-pa-md symptomStyle">
-                      <q-date
+                      <q-date class="daily_calendar"
                         v-model="date_sympt"
                         :events="events"
                         event-color="red"
@@ -114,18 +115,18 @@
                   </template>
 
                   <template v-slot:after>
-                    <div class="col">
-                      <div class="text-h4 q-mb-md symptomStyle">Symptômes du {{ date_sympt }}</div>
-                      <div class="text-h7 q-mb-md symptomStyle" style="white-space: pre-line">
-                        {{ this.sympt[date_sympt] }}.
+                      <div class="symptome_journalier col ">
+                        <div class="text-h4 q-mb-md symptomStyle">Symptômes du {{ date_sympt }}</div>
+                        <div class="text-h7 q-mb-md symptomStyle" style="white-space: pre-line">
+                          {{ this.sympt[date_sympt] }}.
+                        </div>
+                        <div class="text-h5 q-mb-md symptomStyle">
+                          Symptômes les plus récurrents:
+                        </div>
+                        <div class="text-h7 q-mb-md symptomStyle" style="white-space: pre-line">
+                          {{ this.occ }}
+                        </div>
                       </div>
-                      <div class="text-h5 q-mb-md symptomStyle">
-                        Symptômes les plus récurrents:
-                      </div>
-                      <div class="text-h7 q-mb-md symptomStyle" style="white-space: pre-line">
-                        {{ this.occ }}
-                      </div>
-                    </div>
                   </template>
                 </q-splitter>
           </div>
@@ -138,7 +139,7 @@
               <div class="col">
                 <div class="row justify-center" style="padding-top: 5%;">
                   <!-- Endorscore -->
-                  <div class="circle">{{ moyenne_endo }}</div>
+                  <div class="endo_circle circle">{{ moyenne_endo }}</div>
                   <p class="endoTextCenter text-style">
                     L'endoscore correspond à un “indice d'endométriose” qui
                     permet à la patiente de savoir si elle a une prédisposition
@@ -149,7 +150,7 @@
                     constamment supérieur à 5.
                   </p>
                   <!-- Endoscore chart -->
-                  <div class="chartStyle">
+                  <div class="endo_chart chartStyle">
                     <canvas
                       class=""
                       style="text-align: center;"
@@ -177,7 +178,7 @@
               </div>
 
               <!-- Last contraception -->
-              <div class="row justify-center">
+              <div class="histo_contra row justify-center">
                 <div class="main row">
                   <q-list bordered class="rounded-borders">
                     <q-expansion-item
@@ -205,7 +206,7 @@
             </div>
 
             <!-- Medicine -->
-            <div class="col">
+            <div class="histo_medoc col">
               <div class="row justify-center">
                 <q-icon
                   name="medical_services"
@@ -262,7 +263,8 @@
                 height="20"
                 class="center"
             /></a>
-            <q-btn flat @click="contact">Nous contacter</q-btn>
+            <q-btn flat id="contacBtn" @click="contact">Nous contacter</q-btn>
+            <q-btn flat @click="tuto">Rejouer le tutoriel</q-btn>
           </div>
           <q-toolbar-title></q-toolbar-title>
         </q-toolbar>
@@ -285,9 +287,10 @@ import {
   occurenceSympt,
 } from 'src/data/dataScript';
 import { getSymptome } from 'src/data/chartScript.js';
-const data = JSON.parse(localStorage.getItem('data'));
-// import FooterPage from 'src/components/organisms/FooterPage.vue';
+import Shepherd from 'shepherd.js';
+import 'shepherd.js/dist/css/shepherd.css';
 
+const data = JSON.parse(localStorage.getItem('data'));
 const columns_contraceptions = [
   {
     name: 'nom',
@@ -332,10 +335,17 @@ const columns_med = [
 
 const contraception = getContraception(data.data);
 const rows_med = getMedication(data.data);
-const rows_contraceptions = contraception[0];
+console.log("contrac again", contraception)
+var rows_contraceptions = [];
+if (contraception.length > 0) {
+  rows_contraceptions = contraception[0]
+}
+else {rows_contraceptions = []}
 const d_menstru = getSymptome(['Menstruelle'], '2022/08/15', '2022/09/15');
 const list_endo = getEndo(data.data);
 const daily_sympt = dateSymptome(data.data);
+
+
 
 var labels = ['January', 'February', 'March', 'April', 'May', 'June'];
 
@@ -401,6 +411,7 @@ export default {
   },
   data() {
     return {
+      showDisablePage: false,
       endoChart: undefined,
       myChart: undefined,
       dataLoaded: {},
@@ -410,6 +421,11 @@ export default {
     };
   },
   methods: {
+    tuto() {
+      localStorage.setItem('first_co', 'true')
+      this.$router.go();
+    },
+    
     actualisation() {
       if (this.symptome.length == 0) {
         this.symptome.push('Menstruelle')
@@ -460,11 +476,24 @@ export default {
     },
     
     logout() {
-      localStorage.clear()
+      const specialItem = localStorage.getItem('first_co');
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key !== 'first_co') {
+          console.log('item removed')
+          localStorage.removeItem(key);
+        }
+      }
+      if (specialItem !== null) {
+        localStorage.setItem('first_co', specialItem);
+      }
+      //localStorage.clear()
       this.$router.push('/');
     },
 
     toCode() {
+      localStorage.removeItem('data')
+      localStorage.removeItem('profile')
       this.$router.push('/code');
     },
     contact() {
@@ -488,8 +517,19 @@ export default {
   },
   mounted() {
     let patiente = JSON.parse(localStorage.getItem('profile'))
-    this.p_name = patiente.firstname
-    this.p_sname = patiente.lastname
+    console.log(patiente.firstname.length)
+    if (patiente.hasOwnProperty("firstname")) {
+      this.p_name = patiente.firstname
+    }
+    else {
+      this.p_name = "Jane"
+    }
+    if (patiente.hasOwnProperty("lastname")) {
+      this.p_sname = patiente.lastname
+    }
+    else {
+      this.p_sname = "Doe"
+    }
     let myChart = document.getElementById('myChart');
     let endoChart = document.getElementById('endoChart');
     const graph = document.getElementById('symptome');
@@ -504,7 +544,240 @@ export default {
       data: dataConfigEndo,
       options: {},
     });
+    const tour = new Shepherd.Tour({
+      defaultStepOptions: {
+        //scrollTo: true,
+        arrow: true,
+        showCancelLink: true,
+        classes: 'shadow-md bg-purple-dark',
+        cancelIcon: {
+          enabled: true
+        }
+      }
+      });
+      tour.addSteps(
+        [
+          {
+            title: 'Bienvenur sur Innuendo Pro',
+            text: 'Dans ce tutoriel, nous vous guiderons lors de votre première utilisation de la page de visualisation des données',
+            attachTo: {
+              on: 'center'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          },{
+            title: 'Nouvelle patiente',
+            text: 'En cliquant sur ce bouton, vous pourrez entrer un nouveau code lors de votre consultation avec une nouvelle patiente.',
+            attachTo: {
+              element: '.new_btn',
+              on: 'left'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }, {
+              text: 'Précédent',
+              action: tour.back
+            }
+            ]
+          },
+          {
+            title: 'Onglet \'Patientes\'',
+            text: 'En cliquant sur cet onglet, vous accéderez à la liste de toutes vos patientes utilisant l\'application Innuendo. Vous aurez également accès à leur contacts ainsi qu\'à leur endoscore.',
+            attachTo: {
+              element: '.patiente_btn',
+              on: 'left'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          },{
+            title: 'Onglet \'Paramètres\'',
+            text: 'En cliquant sur cet onglet, vous accéderez à vos paramètres utilisateur où vous pourrez modifier vos informations personnels ainsi que demander à réinitialiser votre mot de passe.',
+            attachTo: {
+              element: '.params_btn',
+              on: 'left'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          }, {
+            title: 'Icône \'Déconnexion\'',
+            text: 'En cliquant sur l\'icône de déconnexion, vous serez déconnecté et redirigez vers la page de connection. Vous n\'aurez plus accès aux données de votre patientes actuelle.',
+            attachTo: {
+              element: '.logout_btn',
+              on: 'left'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          },{
+            title: 'Graphiques des symptômes',
+            text: 'Sur ce graphique, vous pouvez visualiser l\'évolution des différents symptômes de vos patientes. Vous pouvez en sélectionner plusieurs afin de les comparer mais ne vous recommandons de ne pas dépasser les 3.',
+            attachTo: {
+              element: '.first_graph',
+              on: 'right'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          },{
+            title: 'Sélection des symptômes',
+            text: 'Vous pouvez sélectionner et désélectionner les symptômes que vous souhaitez voir apparaître sur le graphique ici.',
+            attachTo: {
+              element: '.symptom_btn',
+              on: 'left'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          },{
+            title: 'Date du graphique',
+            text: 'Avec ce calendrier, vous pouvez sélectionner la période sur laquelle vous souhaitez consulter les données de vos patientes.',
+            attachTo: {
+              element: '.symptom_calendar',
+              on: 'left'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          }, {
+            title: 'Actualisation du graphique',
+            text: 'Cliquez sur ce bouton pour mettre à jour le graphique avec les symptômes et/ou la période sélectioné.e.s.',
+            attachTo: {
+              element: '.actu_btn',
+              on: 'left'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          },
+          {
+            title: 'Calendrier des symptômes journaliers',
+            text: 'En sélectionnant un jour sur ce calendrier, vous pourrez voir les autres symptômes que votre patiente a enregistré ce jour là.',
+            attachTo: {
+              element: '.daily_calendar',
+              on: 'left'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          }, {
+            title: 'Symptômes journaliers',
+            text: 'Vous pouvez voir ici les symptômes de votre patiente du jour sélectionné ainsi que les symptômes les plus récurrents.',
+            attachTo: {
+              element: '.symptome_journalier',
+              on: 'bottom'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          }, {
+            title: 'Endoscore',
+            text: 'L\'endoscore de vos patientes apparaît ici. Il est calculé régulièrement.',
+            attachTo: {
+              element: '.endo_circle',
+              on: 'right'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          }, 
+          {
+            title: 'Graphique de l\'endoscore',
+            text: 'Ce graphique vous permet de suivre l\'évolution de l\'endoscore de votre patiente.',
+            attachTo: {
+              element: '.endo_chart',
+              on: 'bottom'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          }, 
+          {
+            title: 'Historique de contraception',
+            text: 'Vous pouvez consulter ici l\'historique de contraception de votre patiente. Vous y trouverez la contraception, la date de début ainsi que la date de fin s\'il y en a une.',
+            attachTo: {
+              element: '.histo_contra',
+              on: 'left'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.next
+            }
+            ]
+          }, {
+            title: 'Historique de médication',
+            text: 'Vous pouvez consulter ici l\'historique de médication de votre patiente. Vous y trouverez le médicament, la date de prise ainsi que le nombre de prise du médicament.',
+            attachTo: {
+              element: '.histo_medoc',
+              on: 'right'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
+              action: tour.complete
+            }
+            ]
+          }
+          
+        ]
+      );
+      tour.options.scrollToHandler = function (step) {
+        const targetElement = document.querySelector(step.options.attachTo.element);
+    targetElement.style.overflow = 'hidden';
+    targetElement.scrollIntoView();
+      };
+
+      tour.on('complete', () => {
+        localStorage.setItem('first_co', 'false')
+      });
+
+      if (localStorage.getItem('first_co') == 'true')
+        tour.start();
+
   },
+
+
 
 };
 
@@ -514,6 +787,7 @@ export default {
 .bg_innuendo {
   background: #776ccb;
 }
+
 .circle {
   border-radius: 100%;
   width: 150px;
@@ -550,4 +824,21 @@ export default {
 .symptomStyle {
   margin-left: 25%;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 9999;
+}
+/* Style pour mettre en valeur les éléments du tour */
+.highlight {
+  border: 2px solid #FDB813;
+  box-shadow: 0px 0px 10px #FDB813;
+}
+
+
 </style>
