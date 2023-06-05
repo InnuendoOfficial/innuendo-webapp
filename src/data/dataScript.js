@@ -1,3 +1,5 @@
+//remplqce nom contrqception de la bdd par un nom lisible
+//name: nom de la contraception
 function contraceptionName(name) {
     if (name == 'diu_cuivre')
         return 'DIU cuivre'
@@ -19,8 +21,12 @@ function contraceptionName(name) {
         return 'Retrait'
     if (name == 'diu_hormonal')
         return 'DIU hormonal'
+    else
+        return name
 }
 
+//recupération de la contraception avec la date de début et la date de fin
+//data : toutes les données partagees par la patiente
 function getContraception(data) {
     var historic = []
     var debut = []
@@ -29,6 +35,7 @@ function getContraception(data) {
     for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data[i].symptoms.length; j++) {
             if ( data[i].symptoms[j].symptom_type_name == 'contraception') {
+                console.log('contracetpion')
                 if (nom.indexOf(data[i].symptoms[j].value) === -1) {
                     if (i == 0) {
                         nom.push(data[i].symptoms[j].value)
@@ -50,25 +57,30 @@ function getContraception(data) {
             }
         }
     }
-    for (let i = 0; i < nom.length; i++) {
-        if (i == nom.length -1) {
-            historic.push({
-                'nom':contraceptionName(nom[i]),
-                'debut': debut[i],
-                'fin': 'Prise en cours'
-            })
+    if (nom.length > 0) {
+        for (let i = 0; i < nom.length; i++) {
+            if (i == nom.length -1) {
+                historic.push({
+                    'nom':contraceptionName(nom[i]),
+                    'debut': debut[i],
+                    'fin': 'Prise en cours'
+                })
+            }
+            else {
+                historic.push({
+                    'nom':contraceptionName(nom[i]),
+                    'debut': debut[i],
+                    'fin': fin[i]
+                })
+            }
         }
-        else {
-            historic.push({
-                'nom':contraceptionName(nom[i]),
-                'debut': debut[i],
-                'fin': fin[i]
-            })
-        }
+        return [historic, historic[historic.length - 1].nom]
     }
-    return [historic, historic[historic.length - 1].nom]
+    return []
 }
 
+//récupération des medicaments pris, de la date de la prise et du n ombre de prise dans la journée
+//data : toutes les données partagées par la patiente
 function getMedication(data) {
     var historic = []
     const prise = [1, 2, 3, 4]
@@ -95,6 +107,7 @@ function getMedication(data) {
     
 }
 
+//calcul de la moyenne de l'endoscore
 //nb = 1 -> 1 endo || nb == 2 -> en fonction du nombre 
 function moyenneEndo(endoscore) {
     var sum = 0;
@@ -105,6 +118,8 @@ function moyenneEndo(endoscore) {
     return tot
 }
 
+//recuperation des symptomes journaliers pour chaque date
+//data : toutes les données partagées par la patiente
 function dateSymptome(data) {
     var dict = {}
     var date = []
@@ -146,6 +161,8 @@ function dateSymptome(data) {
     return [date, dict]
 }
 
+//generation temporaire d'un score d'endo pour toutes les dates 
+//data : toutes les données partagées par la patiente
 function getEndo(data) {
     var endo = []
     var date = []
@@ -163,15 +180,20 @@ function getEndo(data) {
     return [endo, date]
 }
 
+//enleve les doublons dans le tableau
+//qrr : tableau
 function removeDuplicates(arr) {
     return arr.filter((item, 
         index) => arr.indexOf(item) === index);
 }
 
+//genere un int random entre 0 et max
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
+
+//remplace la valeur numerique d'un mois par son nom
 function getMonth(month) {
     var nb = (month.split('/'))
     var fin = ''
@@ -202,6 +224,8 @@ function getMonth(month) {
     return [fin, nb[0]]
 }
 
+//calcul du nombre d'occurence de chaque symptome journalier
+// et indique quels symptomes sont les plus recurrents
 function occurenceSympt(data, size) {
     console.log(size)
     var sympt = ["Constipation", "Brûlures urinaires", "Présence de sang dans les urines", "Dysurie", "Fréquente envie d'uriner", "Localisation", "Diarrhée", "Douleur lors des rapports", "Présence de sang dans les selles"]

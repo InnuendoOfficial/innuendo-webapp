@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+
+//mise a jour des parametres utilisateur
 async function updatePro(data) {
     var data = JSON.stringify({
         "first_name": data[0],
