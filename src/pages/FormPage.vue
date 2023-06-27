@@ -265,6 +265,14 @@ export default {
   created() {
     this.insertDemande();
   },
+  mounted() {
+    //----------TRACKING-------------
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-XXXXXXXX-X');
+    //----------TRACKING-------------
+  },
 
   methods: {
     async insertDemande() {
