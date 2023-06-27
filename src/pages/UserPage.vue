@@ -180,7 +180,7 @@ export default {
 
   methods: {
     resetPwd() {
-            var data = JSON.stringify({"email": this.mail});
+            var data = JSON.stringify({'email': this.mail});
             var config = {
                 method: 'post',
                 maxBodyLength: Infinity,
