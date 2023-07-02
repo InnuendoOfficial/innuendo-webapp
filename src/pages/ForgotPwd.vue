@@ -67,7 +67,7 @@ export default {
 
     methods: {
         async resetPwd() {
-            var data = JSON.stringify({"email": this.mail});
+            var data = JSON.stringify({'email': this.mail});
             var config = {
                 method: 'post',
                 maxBodyLength: Infinity,
@@ -80,7 +80,7 @@ export default {
             console.log(data)
             axios(config)
             .then(function (response) {
-                console.log("rep = ", JSON.stringify(response.data));
+                console.log('rep = ', JSON.stringify(response.data));
             })
             .catch(function (error) {
                 console.log(error);
