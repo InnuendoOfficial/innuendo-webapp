@@ -111,18 +111,18 @@ export default {
         async onSubmit() {
             console.log(this.mail, this.abo, this.profession, this.tel, this.age, this.prenom, this.nom, typeof(this.tel))
             const res = await axios.post('https://innuendo-webapi.herokuapp.com/pro', {
-                    "first_name": this.prenom,
-                    "last_name": this.nom,
-                    "email": this.mail,
-                    "phone": parseInt(this.tel),
-                    "subscription_type": this.abo
+                    'first_name': this.prenom,
+                    'last_name': this.nom,
+                    'email': this.mail,
+                    'phone': parseInt(this.tel),
+                    'subscription_type': this.abo
             })
             console.log(res)
             setTimeout( () => this.$router.push('/'), 5000);
         },
         checkAdmin(){
             if (localStorage.getItem('admin') != 'ok') {
-                alert("Restricted access");
+                alert('Restricted access');
                 this.$router.push('/');
             }
             else {

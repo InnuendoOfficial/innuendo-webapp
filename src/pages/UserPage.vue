@@ -180,7 +180,7 @@ export default {
 
   methods: {
     resetPwd() {
-            var data = JSON.stringify({"email": this.mail});
+            var data = JSON.stringify({'email': this.mail});
             var config = {
                 method: 'post',
                 maxBodyLength: Infinity,
@@ -254,6 +254,14 @@ export default {
         ? (this.abo = 'monthly')
         : (this.abo = 'annual');
     },
+  },
+  mounted() {
+    //----------TRACKING-------------
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-XXXXXXXX-X');
+    //----------TRACKING-------------
   },
 
   beforeMount() {

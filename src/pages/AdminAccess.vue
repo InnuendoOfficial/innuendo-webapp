@@ -20,19 +20,19 @@
 <script>
 
 export default {
-    name: "PasswordPage",
+    name: 'PasswordPage',
     data() {
         return {
-        password: "",
+        password: '',
         };
     },
     methods: {
         submitPassword() {
-        if (this.password === "motdepasse") {
+        if (this.password === 'motdepasse') {
             localStorage.setItem('admin', 'ok')
             this.$router.push('/acc');
         } else {
-            alert("Accès refusé");
+            alert('Accès refusé');
             this.$router.push('/');
         }
         },
