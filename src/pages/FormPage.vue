@@ -145,6 +145,8 @@
             <!--telephone -->
             <div class="q-gutter-md">
               <q-input
+                type="tel"
+                pattern="[0-9]{10}"
                 name="telephone"
                 filled
                 label-color="white"
@@ -244,7 +246,6 @@
 
 <script>
 import { ref } from 'vue';
-import emailjs from 'emailjs-com';
 import axios from 'axios';
 
 export default {
@@ -262,9 +263,6 @@ export default {
     };
   },
 
-  created() {
-    this.insertDemande();
-  },
   mounted() {
     //----------TRACKING-------------
     window.dataLayer = window.dataLayer || [];
@@ -275,67 +273,40 @@ export default {
   },
 
   methods: {
-    async insertDemande() {
-      console.log('insert demande called');
-      var sql =
-        "INSERT INTO demande_Pro VALUES ('" +
-        this.nom +
-        "', '" +
-        this.prenom +
-        "', '" +
-        this.pro +
-        "', '" +
-        this.age +
-        "', '" +
-        this.tel +
-        "', '" +
-        this.mail +
-        "', '" +
-        this.type +
-        "', '" +
-        this.abo +
-        "'," +
-        this.licence +
-        ', CURDATE());';
-      await axios.post('http://localhost:5000/demande', {
-        data: { sql: sql },
-      });
-    },
-
     onSubmit(e) {
       var date = new Date();
       var dd = String(date.getDate()).padStart(2, '0');
       var mm = String(date.getMonth() + 1).padStart(2, '0');
       var yyyy = date.getFullYear();
       date = dd + '/' + mm + '/' + yyyy;
-      this.insertDemande();
+
+      let data = JSON.stringify({
+      "type": "subscription",
+      "text": 'Le '+ date + '\n\n | Statut : ' + this.type + '\n\n | ' + this.nom + ' ' + this.prenom + '\n\n | Contacts : \n\nEmail : ' + this.mail + '\n | Numéro de téléphone : ' + this.tel + '\n | Nombre de licences désiré : ' + this.licence + '\n\n | Type d\'abonnement souhaité : ' + this.abo
+    });
+      var config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'https://innuendo-webapi.herokuapp.com/mail/send/team',
+          headers: { 
+              'Content-Type': 'application/json'
+          },
+          data : data
+          };
+        
+      axios(config)
+      .then(function (response) {
+          console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+          console.log(error);
+          return
+      });
+
       this.$router.push('/validation');
-      try {
-        emailjs.sendForm(
-          'service_ebnk84t',
-          'template_cfr63fc',
-          e.target,
-          'OU7dvnG78nmA7UwHX',
-          {
-            type: this.type,
-            nom: this.nom,
-            prenom: this.prenom,
-            age: this.age,
-            profession: this.profession,
-            mail: this.mail,
-            telephone: this.telephone,
-            licence: this.licence,
-            abo: this.abo,
-            date: date,
-          }
-        );
-      } catch (error) {
-        console.log({ error });
-      }
     },
 
     onReset() {
-      console.log(this.nom);
       this.nom = null;
       this.age = null;
       this.prenom = null;

@@ -24,16 +24,12 @@
               icon="list"
               @click="patiente"
             />
-            <q-breadcrumbs-el class = "params_btn" label="Paramètres" icon="person">
-              <q-menu transition-show="flip-right" transition-hide="flip-left">
-                <q-list style="min-width: 100px">
-                  <q-separator />
-                  <q-item clickable @click="params">
-                      <q-item-section>Paramètres</q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu> </q-breadcrumbs-el
-            >
+            <q-breadcrumbs-el
+              class = "params_btn"
+              label="Paramètres"
+              icon="person"
+              @click="params"
+            />
             <q-breadcrumbs-el class = "logout_btn" icon="logout" @click="logout" />
           </q-breadcrumbs>
         </q-toolbar>
@@ -45,7 +41,7 @@
         <q-page style="" class="q-pa-md">
           <label class="title-style"> {{this.p_name}} {{this.p_sname}}</label>
           <!-- <label class="title-style">Jane Doe</label> -->
-          <label class="text-style"><br />23 ans</label>
+          <label class="text-style"><br />{{this.has_endo}}<br /><br /></label>
           <div class="container column">
             <div class="main col row">
               <div class="main-left col-1 mr-10 column"></div>
@@ -335,13 +331,12 @@ const columns_med = [
 
 const contraception = getContraception(data.data);
 const rows_med = getMedication(data.data);
-console.log("contrac again", contraception)
 var rows_contraceptions = [];
 if (contraception.length > 0) {
   rows_contraceptions = contraception[0]
 }
 else {rows_contraceptions = []}
-const d_menstru = getSymptome(['Menstruelle'], '2022/08/15', '2022/09/15');
+const d_menstru = getSymptome(['Menstruelle'], '2022/08/15', '2023/09/15');
 const list_endo = getEndo(data.data);
 const daily_sympt = dateSymptome(data.data);
 
@@ -383,6 +378,7 @@ export default {
     return {
       p_name: '',
       p_sname: '',
+      has_endo: undefined,
       sympt: daily_sympt[1],
       occ: occurenceSympt(daily_sympt[1], data.data.length),
       rows,
@@ -406,7 +402,7 @@ export default {
       month_sympt: ref(getMonth(daily_sympt[0][0])),
       events: daily_sympt[0],
       splitterModel: ref(50),
-      selected_date: ref({ from: '2022/08/15', to: '2022/09/15' }),
+      selected_date: ref({ from: '2022/08/15', to: '2023/09/15' }),
     };
   },
   data() {
@@ -435,7 +431,6 @@ export default {
         this.selected_date.from,
         this.selected_date.to
       );
-      console.log(this.symptome);
       this.myChart.destroy();
       var dataConfig = {
         labels: dataset[0][1],
@@ -480,7 +475,6 @@ export default {
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key !== 'first_co') {
-          console.log('item removed')
           localStorage.removeItem(key);
         }
       }
@@ -509,8 +503,6 @@ export default {
       this.$router.push('/params')
     },
     changeData() {
-      console.log(graph.value);
-      console.log(list_dys);
       this.myChart.data.datasets[0].data = list_dys;
       this.myChart.update();
     },
@@ -524,7 +516,14 @@ export default {
     //----------TRACKING-------------
     
     let patiente = JSON.parse(localStorage.getItem('profile'))
-    console.log(patiente.firstname.length)
+    if (patiente.has_endometriosis == true) {
+      this.has_endo = 'Votre patiente est atteinte d\'endométriose'
+    }
+    else if (patiente.has_endometriosis == false) {
+      this.has_endo = 'Votre patiente n\'est pas atteinte d\'endométriose'
+    }
+    else 
+    this.has_endo = 'Votre patiente n\'a pas encore été diagnostiquée pour l\'endométriose'
     if (patiente.hasOwnProperty("firstname")) {
       this.p_name = patiente.firstname
     }

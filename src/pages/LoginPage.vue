@@ -37,6 +37,8 @@ const _router = useRouter();
 async function goForm() {
   _router.push({ name: 'forms' });
 }
+
+localStorage.setItem('admin', 'ko')
 </script>
 
 <style scoped>
