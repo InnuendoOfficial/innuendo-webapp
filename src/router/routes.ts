@@ -79,6 +79,30 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
+    path: '/admin_home',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'admin_home',
+        path: '',
+        component: () => import('src/pages/AdminHome.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/admin_recap',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'admin_recap',
+        path: '',
+        component: () => import('src/pages/UserRecap.vue'),
+      },
+    ],
+  },
+
+  {
     path: '/acc',
     component: () => import('layouts/AuthLayout.vue'),
     children: [
@@ -86,6 +110,42 @@ const routes: RouteRecordRaw[] = [
         name: 'acc',
         path: '',
         component: () => import('src/pages/AdminPage.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/suppok',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'suppok',
+        path: '',
+        component: () => import('src/pages/SuppValidation.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/mobileResetOK',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'mobileResetOK',
+        path: '',
+        component: () => import('src/pages/MobileResetValidation.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/reset',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'reset',
+        path: '',
+        component: () => import('src/pages/ResetMobile.vue'),
       },
     ],
   },

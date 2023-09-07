@@ -125,9 +125,9 @@ export default {
                 alert('Restricted access');
                 this.$router.push('/');
             }
-            else {
-                localStorage.setItem('admin', 'ko')
-            }
+            // else {
+            //     localStorage.setItem('admin', 'ko')
+            // }
         }
     },
     beforeMount() {

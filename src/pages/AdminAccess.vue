@@ -30,7 +30,7 @@ export default {
         submitPassword() {
         if (this.password === 'motdepasse') {
             localStorage.setItem('admin', 'ok')
-            this.$router.push('/acc');
+            this.$router.push('/admin_home');
         } else {
             alert('Accès refusé');
             this.$router.push('/');

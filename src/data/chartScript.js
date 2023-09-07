@@ -31,9 +31,9 @@ function getSymptome(list_sympt, date_f, date_t) {
     //pour chaque rapports
     for (var i = 0; i <= list_sympt.length; i++) {
         if (list_sympt[i] == 'Menstruelle')
-            list_dataset.push(getData('douleur menstruelle', date_range))
+            list_dataset.push(getData('douleur', date_range))
         if (list_sympt[i] == 'Dysmenorrhée')
-            list_dataset.push(getData('dysmenorrhee', date_range))
+            list_dataset.push(getData('dysménorrhée', date_range))
         if (list_sympt[i] == 'Digestion')
             list_dataset.push(getData('douleur digestion', date_range))
         if (list_sympt[i] == 'Défécation')
@@ -49,7 +49,6 @@ function getSymptome(list_sympt, date_f, date_t) {
         if (list_sympt[i] == 'Fatigue')
             list_dataset.push(getData('fatigue', date_range))
     }
-        console.log(list_dataset)
         return list_dataset
 }
 
@@ -81,6 +80,7 @@ function getData(symptome, date_range) {
         }
     }
     date = removeDuplicates(date)
+    console.log(user_data)
     return [user_data, date]
 }
 

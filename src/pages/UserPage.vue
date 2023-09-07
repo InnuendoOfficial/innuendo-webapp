@@ -106,6 +106,19 @@
                     color="primary"
                   />
                 </div>
+                <div>
+                <q-btn @click="showPopup = true" label="Supprimer mon compte" color="red" />
+
+                <!-- Fenêtre popup -->
+                <div v-if="showPopup" class="popup-container">
+                  <div class="popup-content">
+                    <p>Vous êtes sur le point de supprimer définitivement votre compte. Cette action est irréversible.</p>
+                    <p>Êtes-vous sûr.e de vouloir continuer ?</p>
+                    <q-btn color="green" @click="confirmAction">Oui, supprimer mon compte</q-btn>
+                    <q-btn color= "red" @click="showPopup = false">Annuler</q-btn>
+                  </div>
+                </div>
+              </div>
               </q-form>
             </div>
             <div class="col-sm-6">
@@ -167,6 +180,11 @@ import axios from 'axios';
 import { updatePro } from '/src/data/userScript.js';
 
 export default {
+  data() {
+    return {
+      showPopup: false,
+    };
+  },
   setup() {
     return {
       name: ref(null),
@@ -200,6 +218,30 @@ export default {
                 return
             });
         },
+      async  confirmAction() {
+
+          let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: 'https://innuendo-webapi.herokuapp.com/pro',
+            headers: { 
+              Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+          };
+          axios.request(config)
+          .then((response) => {
+            console.log(JSON.stringify(response.data));
+            this.$router.push('/suppok')
+          })
+          .catch((error) => {
+            console.log("une erreur est survenue")
+            console.log(error);
+          });
+
+          console.log('Action confirmée');
+          // Fermez la fenêtre popup
+          this.showPopup = false;
+    },
     params() {
       this.$router.go();
     },
@@ -278,5 +320,28 @@ export default {
 .logo1 {
   margin-top: 150px;
   width: 90%;
+}
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour obscurcir le reste de la page */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Assurez-vous qu'elle est au-dessus du reste du contenu */
+}
+
+.popup-content {
+  background: white;
+  border-radius: 5px;
+  padding: 20px;
+  width: 400px;
+  height: 200px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 </style>

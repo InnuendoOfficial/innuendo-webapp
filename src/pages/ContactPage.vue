@@ -191,18 +191,23 @@
 </template>
 
 <script>
-import emailjs from 'emailjs-com';
+import axios from 'axios'
+
+let user_info = JSON.parse(localStorage.getItem('proData'));
+
 export default {
+
+  
     data() {
     return {
         type: 'abonnement',
-        titre: '',
-        msg: '',
+        titre: null,
+        msg: null,
         type_contact: 'mail',
-        nom: 'NAEJ',
-        prenom: 'Jean',
-        mail: 'jeannaej@mail.com',
-        telephone: '0692012345',
+        nom: user_info.first_name[0].toUpperCase() + user_info.first_name.substring(1),
+        prenom: user_info.last_name[0].toUpperCase() + user_info.last_name.substring(1),
+        mail: user_info.email,
+        telephone: user_info.phone,
     };
     },
     mounted() {
@@ -220,7 +225,6 @@ export default {
           for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (key !== 'first_co') {
-              console.log('item removed')
               localStorage.removeItem(key);
             }
           }
@@ -251,24 +255,28 @@ export default {
             var mm = String(date.getMonth() + 1).padStart(2, '0');
             var yyyy = date.getFullYear();
             date = dd + '/' + mm + '/' + yyyy;
-            try {
-                console.log(this.titre, this.type, this.type_contact, this.msg, date)
-                emailjs.sendForm('service_ebnk84t', 'template_4i9hsh8', e.target,
-                'OU7dvnG78nmA7UwHX', {
-                random: this.type,
-                nom: this.nom,
-                prenom: this.prenom, 
-                mail: this.mail,
-                telephone: this.telephone, 
-                preference: this.type_contact,
-                titre: this.titre,
-                msg: this.msg,
-                date: date
-                })
                 
-            } catch(error) {
-                console.log({error})
-            }
+            let data = JSON.stringify({
+            "type": "contact",
+            "text": 'Le '+ date + '\n\n | Sujet : ' + this.type + '\n\n | ' + this.titre + ' | ' + this.nom + ' ' + this.prenom  + '\n\n | Contacts : \n\nEmail : ' + this.mail + '\n | Numéro de téléphone : ' + this.telephone + '\n | Préférence de contact : ' + this.type_contact + '\n\n | Message : ' + this.msg
+          });
+            var config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'https://innuendo-webapi.herokuapp.com/mail/send/team',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                data : data
+                };
+            axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                console.log(error);
+                return
+            });
         },
 
         onReset() {
