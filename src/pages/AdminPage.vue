@@ -9,6 +9,11 @@
                 <div class="" style="display:inline-block;">
                     <h2 style="color: white">Innuendo Admin</h2>
                 </div>
+                <div>
+                    <q-btn class="back-button" @click="retourPagePrecedente">
+                        <span class="arrow">←</span> Retour
+                    </q-btn>
+                </div>
                 <div class="row absolute-center relative">
                     <!-- formulaire-->
                     <form ref="formulaire" @submit.prevent="onSubmit" @reset="onReset" class="q-gutter-md">
@@ -87,6 +92,18 @@
     width: 30%;
 }
 
+.arrow {
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.back-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 999;
+}
+
 
 </style>
 
@@ -109,7 +126,6 @@ export default {
     },
     methods: {
         async onSubmit() {
-            console.log(this.mail, this.abo, this.profession, this.tel, this.age, this.prenom, this.nom, typeof(this.tel))
             const res = await axios.post('https://innuendo-webapi.herokuapp.com/pro', {
                     'first_name': this.prenom,
                     'last_name': this.nom,
@@ -117,7 +133,6 @@ export default {
                     'phone': parseInt(this.tel),
                     'subscription_type': this.abo
             })
-            console.log(res)
             setTimeout( () => this.$router.push('/'), 5000);
         },
         checkAdmin(){
@@ -128,6 +143,9 @@ export default {
             // else {
             //     localStorage.setItem('admin', 'ko')
             // }
+        },
+        retourPagePrecedente() {
+            this.$router.push('/admin_home')
         }
     },
     beforeMount() {

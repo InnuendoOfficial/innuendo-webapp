@@ -4,7 +4,6 @@
 // si la patiente n'a âs de nom, l'inscrit sous le nom de jeanne doe pour le moment
 function getPatiente() {
     const data = JSON.parse(localStorage.getItem('patientes'))
-    console.log('data = ', data)
     var patiente = []
     for (let i = 0; i < data.length; i++) {
         if (data[i].firstname != null) {

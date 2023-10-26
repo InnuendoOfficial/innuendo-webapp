@@ -4,31 +4,50 @@ import * as fs from 'fs';
 
 export default class APIAuth {
   public constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+   // this.baseUrl = baseUrl;
   }
 
   public async login(login: string, pwd: string) {
-    const res = await axios.post('https://innuendo-webapi.herokuapp.com/pro/login', {
-      'email': login,
-      'password': pwd,
-  }
-  )
-    // throw new Error('Le mot de passe est incorrect.');
-    console.log(login, pwd, res.data.access_token)
+    const mail = await axios.get('https://innuendo-webapi.herokuapp.com/pro/all')
+    let emailFound =  false
+    for (const element of mail.data) {
+      if (element.email === login) {
+        emailFound = true;
+        if (element.is_subscription_valid) {
+          console.log('abo up')
+          const res = await axios.post('https://innuendo-webapi.herokuapp.com/pro/login', {
+            'email': login,
+            'password': pwd,
+            }
+            )
+          // throw new Error('Le mot de passe est incorrect.');
+          console.log(login, pwd, res.data.access_token)
 
-    localStorage.setItem('token', res.data.access_token)
-    const config = {
-      headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+          localStorage.setItem('token', res.data.access_token)
+          const config = {
+            headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+            }
+            const _user = await axios.get('https://innuendo-webapi.herokuapp.com/pro', config)
+            localStorage.setItem('name', _user.data.first_name);
+            localStorage.setItem('surname', _user.data.last_name);
+            if (localStorage.getItem('first_co') == null) {
+              localStorage.setItem('first_co', 'true')
+            }
+            return 0
+        }
+        if (!element.is_subscription_valid) {
+          console.log("abonnement off -> redirection ")
+          return 1
+          // Recharge la page en changeant l'URL vers elle-même
+          // setTimeout(function() {
+          //   window.location.href = window.location.href;
+          // }, 2000);
+        }
       }
-      const _user = await axios.get('https://innuendo-webapi.herokuapp.com/pro', config)
-      localStorage.setItem('name', _user.data.first_name);
-      localStorage.setItem('surname', _user.data.last_name);
-      if (localStorage.getItem('first_co') == null) {
-        localStorage.setItem('first_co', 'true')
-      }
+    }
+    
   };
 
-  
 
   public async verifyCode(code: string) {
     console.log(code)

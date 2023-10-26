@@ -107,18 +107,29 @@
                   />
                 </div>
                 <div>
-                <q-btn @click="showPopup = true" label="Supprimer mon compte" color="red" />
-
-                <!-- Fenêtre popup -->
-                <div v-if="showPopup" class="popup-container">
-                  <div class="popup-content">
-                    <p>Vous êtes sur le point de supprimer définitivement votre compte. Cette action est irréversible.</p>
-                    <p>Êtes-vous sûr.e de vouloir continuer ?</p>
-                    <q-btn color="green" @click="confirmAction">Oui, supprimer mon compte</q-btn>
-                    <q-btn color= "red" @click="showPopup = false">Annuler</q-btn>
+                  <q-btn @click="showPopupResil = true" label="Résillier mon abonement" color="red" />
+                  <div v-if="showPopupResil" class="popup-container">
+                    <div class="popup-content">
+                      <p>Vous êtes sur le point de résillier votre abonnement. Vous pourrez effectuer une nouvelle demande d'abonnement quand vous le shouaitez.</p>
+                      <p>Êtes-vous sûr.e de vouloir continuer ?</p>
+                      <q-btn color="green" @click="confirmactionabo">Oui, résillier mon abonement</q-btn>
+                      <q-btn color= "red" @click="showPopupResil = false">Annuler</q-btn>
+                    </div>
                   </div>
                 </div>
-              </div>
+                <div>
+                  <q-btn @click="showPopup = true" label="Supprimer mon compte" color="red" />
+
+                <!-- Fenêtre popup -->
+                  <div v-if="showPopup" class="popup-container">
+                    <div class="popup-content">
+                      <p>Vous êtes sur le point de supprimer définitivement votre compte. Cette action est irréversible.</p>
+                      <p>Êtes-vous sûr.e de vouloir continuer ?</p>
+                      <q-btn color="green" @click="confirmAction">Oui, supprimer mon compte</q-btn>
+                      <q-btn color= "red" @click="showPopup = false">Annuler</q-btn>
+                    </div>
+                  </div>
+                </div>
               </q-form>
             </div>
             <div class="col-sm-6">
@@ -183,6 +194,7 @@ export default {
   data() {
     return {
       showPopup: false,
+      showPopupResil: false,
     };
   },
   setup() {
@@ -208,7 +220,6 @@ export default {
                 },
                 data : data
                 };
-            console.log(data)
             axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
@@ -238,10 +249,34 @@ export default {
             console.log(error);
           });
 
-          console.log('Action confirmée');
           // Fermez la fenêtre popup
           this.showPopup = false;
+          this.logout()
     },
+      async  confirmactionabo() {
+
+  let config = {
+    method: 'delete',
+    maxBodyLength: Infinity,
+    url: 'https://innuendo-webapi.herokuapp.com//stripe/subscription',
+    headers: { 
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    }
+  };
+  axios.request(config)
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+    this.$router.push('/suppok')
+  })
+  .catch((error) => {
+    console.log("une erreur est survenue")
+    console.log(error);
+  });
+
+  // Fermez la fenêtre popup
+  this.showPopup = false;
+  this.logout()
+  },
     params() {
       this.$router.go();
     },
@@ -250,7 +285,7 @@ export default {
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 if (key !== 'first_co') {
-                console.log('item removed')
+                ('item removed')
                 localStorage.removeItem(key);
                 }
             }
@@ -267,10 +302,7 @@ export default {
       this.$router.push('/contact');
     },
     onSubmit() {
-            console.log('clicked')
-            console.log(this)
             updatePro([this.name, this.surname, this.mail, this.adresse, this.tel, this.abo])
-            console.log(this.name, this.surname, this.mail, this.adresse, this.tel, this.abo)
     },
     home() {
       this.$router.push('/home');
@@ -284,7 +316,6 @@ export default {
         config
       );
       localStorage.setItem('proData', JSON.stringify(_data.data));
-      console.log(localStorage.getItem('proData'));
       let data = JSON.parse(localStorage.getItem('proData'));
       this.name =
         data.first_name[0].toUpperCase() + data.first_name.substring(1);
