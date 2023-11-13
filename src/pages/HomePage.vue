@@ -158,7 +158,6 @@
               </div>
             </div>
           </div>
-          <!-- Medication part -->
           <div class="row justify-center">
             <div class="col">
               <!-- Contraception -->
@@ -200,29 +199,7 @@
                 </div>
               </div>
             </div>
-
-            <!-- Medicine -->
-            <div class="histo_medoc col">
-              <div class="row justify-center">
-                <q-icon
-                  name="medical_services"
-                  class="text-primary"
-                  style="font-size: 32px"
-                ></q-icon>
-                <label class="title-style" style="padding-bottom: 0%;"> Prise de médicament </label>
-              </div>
-              <div class="row justify-center">
-                <div class="q-pa-md">
-                  <q-date
-                    v-model="date_sympt"
-                    :events="events"
-                    event-color="red"
-                    style="width: 50rem; height: 30rem"
-                  />
-                </div>
-              </div>
             </div>
-          </div>
         </QPage>
       </q-page-container>
       <!-- END CONTENT-->
@@ -275,7 +252,6 @@ import Chart from 'chart.js/auto';
 import { ref } from 'vue';
 import {
   getContraception,
-  getMedication,
   moyenneEndo,
   getEndo,
   dateSymptome,
@@ -286,7 +262,26 @@ import { getSymptome } from 'src/data/chartScript.js';
 import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css';
 
+import Hotjar from '@hotjar/browser';
+const siteId = 3709662;
+const hotjarVersion = 6;
+Hotjar.init(siteId, hotjarVersion);
+
 const data = JSON.parse(localStorage.getItem('data'));
+
+const contraception = getContraception(data.data);
+console.log("la contra" , contraception)
+var rows_contraceptions = [];
+if (contraception.length > 0) {
+  rows_contraceptions = contraception[0]
+}
+else {rows_contraceptions = []}
+console.log("row contra", rows_contraceptions)
+console.log("row contra0", rows_contraceptions[0])
+const d_menstru = getSymptome(['Menstruelle'], '2023/08/15', '2023/10/15');
+const list_endo = getEndo(data.data);
+const daily_sympt = dateSymptome(data.data);
+
 const columns_contraceptions = [
   {
     name: 'nom',
@@ -308,41 +303,9 @@ const columns_contraceptions = [
     label: 'Date de fin',
     field: 'fin',
     sortable: true,
-  },
+  }
 ];
 
-const columns_med = [
-  {
-    name: 'nom_med',
-    align: 'center',
-    label: 'Médicament',
-    field: 'nom_med',
-    sortable: true,
-  },
-  {
-    name: 'prise',
-    align: 'center',
-    label: 'Nombre de prise',
-    field: 'prise',
-    sortable: true,
-  },
-  { name: 'date', label: 'Date de prise', field: 'date' },
-];
-
-const contraception = getContraception(data.data);
-const rows_med = getMedication(data.data);
-var rows_contraceptions = [];
-if (contraception.length > 0) {
-  rows_contraceptions = contraception[0]
-}
-else {rows_contraceptions = []}
-const d_menstru = getSymptome(['Menstruelle'], '2022/08/15', '2023/09/15');
-const list_endo = getEndo(data.data);
-const daily_sympt = dateSymptome(data.data);
-
-
-
-var labels = ['January', 'February', 'March', 'April', 'May', 'June'];
 
 var dataConfig = {
   labels: d_menstru[0][1],
@@ -374,15 +337,14 @@ var defaultType = 'line';
 export default {
   setup() {
     const rowCount = ref(4);
-    const rows = ref([...rows_contraceptions]);
+    const rows = ref(rows_contraceptions);
     return {
+      rows,
       p_name: '',
       p_sname: '',
       has_endo: undefined,
       sympt: daily_sympt[1],
       occ: occurenceSympt(daily_sympt[1], data.data.length),
-      rows,
-      rows_med,
       rowCount,
       symptome: ref(['Menstruelle']),
       liste_autre: ref(null),
@@ -394,10 +356,9 @@ export default {
         'Urinaire',
         'Pelvienne',
         'Abdominale',
-        'Flux',
         'Fatigue',
       ],
-      autres: ['Flux', 'Fatigue'],
+      autres: ['Fatigue'],
       date_sympt: ref(daily_sympt[0][0]),
       month_sympt: ref(getMonth(daily_sympt[0][0])),
       events: daily_sympt[0],
@@ -454,10 +415,10 @@ export default {
           label: this.symptome[i],
           data: dataset[i][0],
         };
-        if (this.symptome[i] == 'Flux') {
-          newDataset.yAxisID = 'y1';
+        // if (this.symptome[i] == 'Flux') {
+        //   newDataset.yAxisID = 'y1';
 
-        }
+        // }
         datasets.push(newDataset);
       }
       dataConfig.datasets = datasets;
@@ -584,11 +545,11 @@ export default {
             },
             highlightClass: 'highlight',
             buttons: [ {
-              text: 'Suivant',
-              action: tour.next
-            }, {
               text: 'Précédent',
               action: tour.back
+            }, {
+              text: 'Suivant',
+              action: tour.next
             }
             ]
           },
@@ -600,7 +561,10 @@ export default {
               on: 'left'
             },
             highlightClass: 'highlight',
-            buttons: [ {
+            buttons:  [ {
+              text: 'Précédent',
+              action: tour.back
+            }, {
               text: 'Suivant',
               action: tour.next
             }
@@ -613,7 +577,10 @@ export default {
               on: 'left'
             },
             highlightClass: 'highlight',
-            buttons: [ {
+            buttons:  [ {
+              text: 'Précédent',
+              action: tour.back
+            }, {
               text: 'Suivant',
               action: tour.next
             }
@@ -626,7 +593,10 @@ export default {
               on: 'left'
             },
             highlightClass: 'highlight',
-            buttons: [ {
+            buttons:  [ {
+              text: 'Précédent',
+              action: tour.back
+            }, {
               text: 'Suivant',
               action: tour.next
             }
@@ -639,7 +609,10 @@ export default {
               on: 'right'
             },
             highlightClass: 'highlight',
-            buttons: [ {
+            buttons:  [ {
+              text: 'Précédent',
+              action: tour.back
+            }, {
               text: 'Suivant',
               action: tour.next
             }
@@ -653,6 +626,9 @@ export default {
             },
             highlightClass: 'highlight',
             buttons: [ {
+              text: 'Précédent',
+              action: tour.back
+            }, {
               text: 'Suivant',
               action: tour.next
             }
@@ -665,7 +641,10 @@ export default {
               on: 'left'
             },
             highlightClass: 'highlight',
-            buttons: [ {
+            buttons:  [ {
+              text: 'Précédent',
+              action: tour.back
+            }, {
               text: 'Suivant',
               action: tour.next
             }
@@ -678,7 +657,10 @@ export default {
               on: 'left'
             },
             highlightClass: 'highlight',
-            buttons: [ {
+            buttons:  [ {
+              text: 'Précédent',
+              action: tour.back
+            }, {
               text: 'Suivant',
               action: tour.next
             }
@@ -692,7 +674,10 @@ export default {
               on: 'left'
             },
             highlightClass: 'highlight',
-            buttons: [ {
+            buttons:  [ {
+              text: 'Précédent',
+              action: tour.back
+            }, {
               text: 'Suivant',
               action: tour.next
             }
@@ -705,7 +690,10 @@ export default {
               on: 'bottom'
             },
             highlightClass: 'highlight',
-            buttons: [ {
+            buttons:  [ {
+              text: 'Précédent',
+              action: tour.back
+            }, {
               text: 'Suivant',
               action: tour.next
             }
@@ -718,7 +706,10 @@ export default {
               on: 'right'
             },
             highlightClass: 'highlight',
-            buttons: [ {
+            buttons:  [ {
+              text: 'Précédent',
+              action: tour.back
+            }, {
               text: 'Suivant',
               action: tour.next
             }
@@ -732,12 +723,15 @@ export default {
               on: 'bottom'
             },
             highlightClass: 'highlight',
-            buttons: [ {
-              text: 'Suivant',
+            buttons:  [ {
+              text: 'Précédent',
+              action: tour.back
+            }, {
+              text: 'Terminer',
               action: tour.next
             }
             ]
-          }, 
+          },
           {
             title: 'Historique de contraception',
             text: 'Vous pouvez consulter ici l\'historique de contraception de votre patiente. Vous y trouverez la contraception, la date de début ainsi que la date de fin s\'il y en a une.',
@@ -748,24 +742,10 @@ export default {
             highlightClass: 'highlight',
             buttons: [ {
               text: 'Suivant',
-              action: tour.next
-            }
-            ]
-          }, {
-            title: 'Historique de médication',
-            text: 'Vous pouvez consulter ici l\'historique de médication de votre patiente. Vous y trouverez le médicament, la date de prise ainsi que le nombre de prise du médicament.',
-            attachTo: {
-              element: '.histo_medoc',
-              on: 'right'
-            },
-            highlightClass: 'highlight',
-            buttons: [ {
-              text: 'Suivant',
               action: tour.complete
             }
             ]
           }
-          
         ]
       );
       tour.options.scrollToHandler = function (step) {

@@ -62,7 +62,6 @@
 import axios from 'axios';
 const urlParams = new URLSearchParams(window.location.search);
 const code = urlParams.get('code');
-console.log(code);
 export default {
   data() {
     return {
@@ -78,8 +77,6 @@ export default {
 
     async resetPassword() {
       const code = urlParams.get('code');
-      console.log("ze code +" , code, '+xx')
-      console.log("type", typeof(code))
       if (this.password === this.confirmPassword) {
         let data = JSON.stringify({
         "code": parseInt(code),
@@ -95,7 +92,6 @@ export default {
   },
   data : data
 };
-console.log(config)
 axios.request(config)
 .then((response) => {
   console.log(JSON.stringify(response.data));

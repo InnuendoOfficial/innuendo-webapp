@@ -47,8 +47,8 @@ export default {
     methods: {
         async generateCode() {
             const res = await axios.post('https://innuendo-webapi.herokuapp.com/auth/login', {
-                email: 'miller.natalie@gmail.com',
-                password: 'test'
+                email: 'jeannedoe@gmail.com',
+                password: 'toto974'
             })
             let data = JSON.stringify({
             "preferences": [
@@ -83,18 +83,7 @@ export default {
             .catch((error) => {
                 console.log(error);
             });
-
-           
         }
-        // axios.get('https://api.example.com/code') // Remplacez l'URL par votre endpoint de génération de code
-        //     .then(response => {
-        //     this.code = response.data.code;
-        //     this.showCode = true;
-        //     })
-        //     .catch(error => {
-        //     console.error(error);
-        //     });
-        // }
     }
 };
 </script>

@@ -1,25 +1,3 @@
- // 0 = null, 1 = Spotting, 2 = Léger, 3 = Moyen, 4 = Abondant, 5 = Très abondant
-const flux = [0, 0, 0, 1, 3, 5, 4, 2, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 4, 2, 1, 3, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 1, 3, 2, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 4, 5, 5, 3, 4, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 2, 1, 3, 4, 5, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    3, 3, 3, 2, 2, 1, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 4, 4, 4, 5, 3, 1, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]
-
 //recupere les symptomes dans tous les rapports situés entre la date_f et date_f
 function getSymptome(list_sympt, date_f, date_t) {
     //formatage de la date
@@ -44,8 +22,6 @@ function getSymptome(list_sympt, date_f, date_t) {
             list_dataset.push(getData('douleurs pelviennes', date_range))
         if (list_sympt[i] == 'Abdominale')
             list_dataset.push(getData('douleurs abdominales', date_range))
-        if (list_sympt[i] == 'Flux')
-            list_dataset.push([flux, date_range])
         if (list_sympt[i] == 'Fatigue')
             list_dataset.push(getData('fatigue', date_range))
     }
@@ -80,7 +56,6 @@ function getData(symptome, date_range) {
         }
     }
     date = removeDuplicates(date)
-    console.log(user_data)
     return [user_data, date]
 }
 

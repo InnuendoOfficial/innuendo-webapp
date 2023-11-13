@@ -277,6 +277,7 @@ export default {
                 console.log(error);
                 return
             });
+            this.backHome();
         },
 
         onReset() {

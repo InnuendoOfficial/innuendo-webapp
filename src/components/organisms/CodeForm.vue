@@ -4,7 +4,7 @@
      src="~/assets/logo.png"
      alt="innuendo logo"
     />
-    <h2 class="text-bold q-mb-sm">Nouveau rapport</h2>
+    <h2 class="text-bold q-mb-sm">Code patiente</h2>
     <p class="text-subtitle1 q-mb-xl">Entrez le code d’accès au rapport de votre patiente.</p>
     <div class="row justify-between q-mt-lg">
       <AInput

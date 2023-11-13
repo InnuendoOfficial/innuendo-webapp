@@ -5,6 +5,11 @@
             <img src="~/assets/logo.png" alt="Votre Logo">
             <h1>Innuendo Admin</h1>
         </div>
+        <div>
+            <q-btn class="back-button" @click="retourPagePrecedente">
+                <span class="arrow">←</span> Retour
+            </q-btn>
+        </div>
         <div style="margin-left: 50px; margin-right: 50px;">
 
             <q-table-container>
@@ -52,6 +57,9 @@ export default {
                 alert('Restricted access');
                 this.$router.push('/');
             }
+        },
+        retourPagePrecedente() {
+            this.$router.push('/admin_home')
         }
     },
     data() {
@@ -121,6 +129,7 @@ export default {
                 }
             ]
             };
+            
         },
         beforeMount() {
         this.checkAdmin()
@@ -158,5 +167,16 @@ h1 {
   background-color: rgba(255, 0, 0, 0.5); /* Couleur rouge avec opacité de 50% */
 }
 
+.arrow {
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.back-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 999;
+}
 
 </style>

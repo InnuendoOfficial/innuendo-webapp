@@ -45,6 +45,8 @@
                   color="white"
                   text-color="primary"
                 />
+                <!-- <p v-show="!emailFound" class="errorText">L'adresse e-mail est incorrecte.</p> -->
+
               </div>
             </form>
           </div>
@@ -62,31 +64,43 @@ export default {
   data() {
     return {
       mail: ref(null),
+      emailFound : ref(false)
     };
   },
 
     methods: {
         async resetPwd() {
             var data = JSON.stringify({'email': this.mail});
-            var config = {
-                method: 'post',
-                maxBodyLength: Infinity,
-                url: 'https://innuendo-webapi.herokuapp.com/pro/forgotten_password',
-                headers: { 
-                    'Content-Type': 'application/json'
-                },
-                data : data
+            const mail = await axios.get('https://innuendo-webapi.herokuapp.com/pro/all')
+            console.log(mail.data)
+            for (const element of mail.data) {
+              if (element.email == this.mail) {
+                this.emailFound = true
+                var config = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    url: 'https://innuendo-webapi.herokuapp.com/pro/forgotten_password',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                    },
+                    data : data
                 };
-            console.log(data)
-            axios(config)
-            .then(function (response) {
-                console.log('rep = ', JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-                console.log(error);
-                return
-            });
-            this.$router.push('/validation')
+                    axios(config)
+                    .then(function (response) {
+                        console.log('rep = ', JSON.stringify(response.data));
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        return
+                    });
+                    this.$router.push('/validation')
+                    break; // Si on trouve l'e-mail, on peut sortir de la boucle
+              }
+            }
+            if (this.emailFound == false) {
+              console.log("erreur adresse mail)")
+              this.$router.push('/')
+            }
         }
         },
         mounted() {

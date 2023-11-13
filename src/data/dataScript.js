@@ -28,6 +28,7 @@ function contraceptionName(name) {
 //recupération de la contraception avec la date de début et la date de fin
 //data : toutes les données partagees par la patiente
 function getContraception(data) {
+    console.log(data)
     var historic = []
     var debut = []
     var fin = []

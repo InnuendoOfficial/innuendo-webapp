@@ -17,9 +17,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import CodeForm from 'src/components/organisms/CodeForm.vue';
-//import { useUserStore } from 'src/stores/user';
-
-//const _userStore = useUserStore();
 
 const fullname = computed(() => {
   return `${localStorage.getItem('name')} ${localStorage.getItem('surname')}`;

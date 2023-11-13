@@ -75,7 +75,11 @@ async function login(){
 
     buttonState.loading = false;
    // _userStore.setUser(_res.user);
-    _router.push({name: 'code'});
+    if (_res == 0) {
+      _router.push({name: 'code'});
+    }
+    else 
+    _router.push({name: ''});
   } catch (error: Error) {
     credentials.login = '';
     credentials.password = '';
