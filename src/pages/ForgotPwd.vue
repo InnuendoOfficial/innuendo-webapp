@@ -103,14 +103,6 @@ export default {
             }
         }
         },
-        mounted() {
-    //----------TRACKING-------------
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-XXXXXXXX-X');
-    //----------TRACKING-------------
-  }
     }
 </script>
 
