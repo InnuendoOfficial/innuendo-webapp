@@ -1,3 +1,113 @@
+//remplqce nom contrqception de la bdd par un nom lisible
+//name: nom de la contraception
+function contraceptionName(name) {
+    if (name == 'diu_cuivre')
+        return 'DIU cuivre'
+    if (name == 'patch_contraceptif')
+        return 'Patch contraceptif'
+    if (name == 'spermicide')
+        return 'Spermicide'
+    if (name == 'implant_contraceptif')
+        return 'Implant contraceptif'
+    if (name == 'pillule_microprogestative')
+        return 'Pillule Microprogestative'
+    if (name == 'anneau_vaginal')
+        return 'Anneau vaginal'
+    if (name == 'preservatif')
+        return 'Preservatif'
+    if (name == 'contraception_naturelle')
+        return 'Contraception naturelle'
+    if (name == 'retrait')
+        return 'Retrait'
+    if (name == 'diu_hormonal')
+        return 'DIU hormonal'
+    else
+        return name
+}
+
+//recupération de la contraception avec la date de début et la date de fin
+//data : toutes les données partagees par la patiente
+function getContraception(data) {
+    console.log(data)
+    var historic = []
+    var debut = []
+    var fin = []
+    var nom = []
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].symptoms.length; j++) {
+            if ( data[i].symptoms[j].symptom_type_name == 'contraception') {
+                console.log('contracetpion')
+                if (nom.indexOf(data[i].symptoms[j].value) === -1) {
+                    if (i == 0) {
+                        nom.push(data[i].symptoms[j].value)
+                        var test = new Date(data[i].date)
+                        let MyDateString = ('0' + test.getDate()).slice(-2) + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + test.getFullYear();
+                        debut.push(MyDateString)
+                    }
+                    else {
+                        nom.push(data[i].symptoms[j].value)
+                        var test = new Date(data[i].date)
+                        let MyDateString = ('0' + test.getDate()).slice(-2) + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + test.getFullYear();
+                        var test1 = new Date(data[i - 1].date)
+                        let MyDateString1 = ('0' + test1.getDate()).slice(-2) + '/' + ('0' + (test1.getMonth()+1)).slice(-2) + '/' + test1.getFullYear();
+                        
+                        debut.push(MyDateString)
+                        fin.push(MyDateString1)
+                    }
+                }
+            }
+        }
+    }
+    if (nom.length > 0) {
+        for (let i = 0; i < nom.length; i++) {
+            if (i == nom.length -1) {
+                historic.push({
+                    'nom':contraceptionName(nom[i]),
+                    'debut': debut[i],
+                    'fin': 'Prise en cours'
+                })
+            }
+            else {
+                historic.push({
+                    'nom':contraceptionName(nom[i]),
+                    'debut': debut[i],
+                    'fin': fin[i]
+                })
+            }
+        }
+        return [historic, historic[historic.length - 1].nom]
+    }
+    return []
+}
+
+//récupération des medicaments pris, de la date de la prise et du n ombre de prise dans la journée
+//data : toutes les données partagées par la patiente
+function getMedication(data) {
+    var historic = []
+    const prise = [1, 2, 3, 4]
+    const med = ['Spasfon', 'Doliprane', 'Efferalgan', 'Smecta', 'Fervex', 'Advil'];
+    const add_med = [0, 1, 2, 3]
+    for (let i = 0; i < data.length; i++) {
+        var add = Math.floor(Math.random() * add_med.length);
+        if (add == 2) {
+            var choosen_prise = Math.floor(Math.random() * prise.length);
+            var choosen_med = Math.floor(Math.random() * med.length);
+            if (med[choosen_med] != 'Rien') {
+                var choosen_prise = Math.floor(Math.random() * prise.length);
+                var test = new Date(data[i].date)
+                let MyDateString = ('0' + test.getDate()).slice(-2) + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + test.getFullYear();
+                historic.push({
+                    'Médicament': med[choosen_med],
+                    'Prise': choosen_prise,
+                    'Date': MyDateString
+                })
+            }
+        }
+    }
+    return historic
+    
+}
+
 //calcul de la moyenne de l'endoscore
 //nb = 1 -> 1 endo || nb == 2 -> en fonction du nombre 
 function moyenneEndo(endoscore) {
@@ -118,6 +228,7 @@ function getMonth(month) {
 //calcul du nombre d'occurence de chaque symptome journalier
 // et indique quels symptomes sont les plus recurrents
 function occurenceSympt(data, size) {
+    console.log(size)
     var sympt = ["Constipation", "Brûlures urinaires", "Présence de sang dans les urines", "Dysurie", "Fréquente envie d'uriner", "Localisation", "Diarrhée", "Douleur lors des rapports", "Présence de sang dans les selles"]
     var nb = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     for (let i = 0; i != sympt.length; i++) {
@@ -149,4 +260,4 @@ function occurenceSympt(data, size) {
     return occ
 }
 
-export {    moyenneEndo, getEndo, dateSymptome, getMonth, occurenceSympt}
+export {getContraception, getMedication, moyenneEndo, getEndo, dateSymptome, getMonth, occurenceSympt}

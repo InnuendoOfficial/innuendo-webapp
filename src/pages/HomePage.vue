@@ -158,6 +158,48 @@
               </div>
             </div>
           </div>
+          <div class="row justify-center">
+            <div class="col">
+              <!-- Contraception -->
+              <div class="row justify-center">
+                <q-icon
+                  name="medication"
+                  class="text-primary"
+                  style="font-size: 32px"
+                ></q-icon>
+                <label class="title-style">
+                  Contraception.s utilisée.s : {{ actual_contra }}
+                </label>
+              </div>
+
+              <!-- Last contraception -->
+              <div class="histo_contra row justify-center">
+                <div class="main row">
+                  <q-list bordered class="rounded-borders">
+                    <q-expansion-item
+                      icon="history"
+                      label="Contraception.s passée.s"
+                      caption="Voir l'historique"
+                      style="width: 50rem"
+                    >
+                      <q-card>
+                        <q-card-section>
+                          <div class="q-pa-md">
+                            <q-table
+                              title="Historique de contraception"
+                              :rows="rows"
+                              :columns="columns_contraceptions"
+                              row-key="id"
+                            />
+                          </div>
+                        </q-card-section>
+                      </q-card>
+                    </q-expansion-item>
+                  </q-list>
+                </div>
+              </div>
+            </div>
+            </div>
         </QPage>
       </q-page-container>
       <!-- END CONTENT-->
@@ -209,6 +251,7 @@
 import Chart from 'chart.js/auto';
 import { ref } from 'vue';
 import {
+  getContraception,
   moyenneEndo,
   getEndo,
   dateSymptome,
@@ -225,9 +268,44 @@ const hotjarVersion = 6;
 Hotjar.init(siteId, hotjarVersion);
 
 const data = JSON.parse(localStorage.getItem('data'));
-const d_menstru = getSymptome(['Menstruelle'], '2022/08/15', '2023/09/15');
+
+const contraception = getContraception(data.data);
+console.log("la contra" , contraception)
+var rows_contraceptions = [];
+if (contraception.length > 0) {
+  rows_contraceptions = contraception[0]
+}
+else {rows_contraceptions = []}
+console.log("row contra", rows_contraceptions)
+console.log("row contra0", rows_contraceptions[0])
+const d_menstru = getSymptome(['Menstruelle'], '2023/08/15', '2023/10/15');
 const list_endo = getEndo(data.data);
 const daily_sympt = dateSymptome(data.data);
+
+const columns_contraceptions = [
+  {
+    name: 'nom',
+    align: 'center',
+    label: 'Type de contraception',
+    field: 'nom',
+    sortable: true,
+  },
+  {
+    name: 'debut',
+    align: 'center',
+    label: 'Date de début',
+    field: 'debut',
+    sortable: true,
+  },
+  {
+    name: 'fin',
+    aligne: 'center',
+    label: 'Date de fin',
+    field: 'fin',
+    sortable: true,
+  }
+];
+
 
 var dataConfig = {
   labels: d_menstru[0][1],
@@ -259,7 +337,9 @@ var defaultType = 'line';
 export default {
   setup() {
     const rowCount = ref(4);
+    const rows = ref(rows_contraceptions);
     return {
+      rows,
       p_name: '',
       p_sname: '',
       has_endo: undefined,
@@ -294,6 +374,7 @@ export default {
       dataLoaded: {},
       test: null,
       moyenne_endo: moyenneEndo(list_endo[0]),
+      actual_contra: contraception[1],
     };
   },
   methods: {
@@ -647,6 +728,20 @@ export default {
               action: tour.back
             }, {
               text: 'Terminer',
+              action: tour.next
+            }
+            ]
+          },
+          {
+            title: 'Historique de contraception',
+            text: 'Vous pouvez consulter ici l\'historique de contraception de votre patiente. Vous y trouverez la contraception, la date de début ainsi que la date de fin s\'il y en a une.',
+            attachTo: {
+              element: '.histo_contra',
+              on: 'left'
+            },
+            highlightClass: 'highlight',
+            buttons: [ {
+              text: 'Suivant',
               action: tour.complete
             }
             ]
