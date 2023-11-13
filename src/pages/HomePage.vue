@@ -262,11 +262,6 @@ import { getSymptome } from 'src/data/chartScript.js';
 import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css';
 
-import Hotjar from '@hotjar/browser';
-const siteId = 3709662;
-const hotjarVersion = 6;
-Hotjar.init(siteId, hotjarVersion);
-
 const data = JSON.parse(localStorage.getItem('data'));
 
 const contraception = getContraception(data.data);
