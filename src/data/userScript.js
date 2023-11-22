@@ -30,4 +30,19 @@ async function updatePro(data) {
       });
 }
 
-export {updatePro}
+const daysOfWeek = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+const monthsOfYear = [
+  "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+];
+
+function formatFrenchDate(date) {
+  const dayOfWeek = daysOfWeek[date.getDay()];
+  const dayOfMonth = date.getDate();
+  const month = monthsOfYear[date.getMonth()];
+  const year = date.getFullYear();
+
+  return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
+}
+
+export {updatePro, formatFrenchDate}

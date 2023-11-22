@@ -263,6 +263,7 @@ import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css';
 
 const data = JSON.parse(localStorage.getItem('data'));
+//const endo = JSON.parse(localStorage.getItem('endo'));
 
 const contraception = getContraception(data.data);
 console.log("la contra" , contraception)
@@ -274,7 +275,8 @@ else {rows_contraceptions = []}
 console.log("row contra", rows_contraceptions)
 console.log("row contra0", rows_contraceptions[0])
 const d_menstru = getSymptome(['Menstruelle'], '2023/08/15', '2023/10/15');
-const list_endo = getEndo(data.data);
+//console.log("ze endo ", endo)
+const list_endo = getEndo(data.last_endscore);
 const daily_sympt = dateSymptome(data.data);
 
 const columns_contraceptions = [

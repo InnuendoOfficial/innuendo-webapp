@@ -29,6 +29,16 @@
     />
     <AErrorMessage :message="errorMessage" />
     <q-btn label="Mot de passe oublié ?" type="submit" @click="retrievePwd" text-color="black"/>
+    <q-dialog v-model="errorDialog">
+      <q-card class='text-center' style="width: 300px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <q-card-section>
+          <p class="errorText">Votre abonnement n'est pas ou plus valide. Veuillez faire une demande d'abonnement.</p>
+        </q-card-section>
+        <q-card-actions align="center">
+          <q-btn label="OK" color="primary" @click="errorDialog = false" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -51,6 +61,7 @@ const _userStore = useUserStore();
 const credentials: Credentials = reactive({ login: '', password: '' });
 const buttonState: ButtonState = reactive({ loading: false, disabled: true });
 let errorMessage = ref(undefined);
+let errorDialog = ref(false)
 
 watch(credentials, (newCredentials: Credentials) => {
   if (newCredentials.login.length > 0 && newCredentials.password.length > 0) {
@@ -79,7 +90,7 @@ async function login(){
       _router.push({name: 'code'});
     }
     else 
-    _router.push({name: ''});
+      errorDialog.value = true
   } catch (error: Error) {
     credentials.login = '';
     credentials.password = '';
