@@ -167,6 +167,9 @@ function dateSymptome(data) {
 function getEndo(data) {
     var endo = []
     var date = []
+    let uniqueIndices = [];
+let uniqueA = [];
+let deletedIndices = [];
     for (let i = 0; i < data.length; i++) {
         endo.push((data[i].score).toFixed(2))
         var test = new Date(data[i].created_at)
@@ -175,8 +178,17 @@ function getEndo(data) {
         let year = test.getFullYear();
         date.push( day.toString() + '/' + month.toString() + '/' + year.toString())
     }
-   //date = removeDuplicates(date)
-    return [endo, date]
+    date.forEach((value, index) => {
+        if (!uniqueA.includes(value)) {
+            uniqueA.push(value);
+            uniqueIndices.push(index);
+        } else {
+            deletedIndices.push(index);
+        }
+        });
+    let nendo = endo.filter((_, index) => uniqueIndices.includes(index));
+    console.log(nendo, uniqueIndices)
+    return [nendo.reverse(), uniqueA.reverse()]
 }
 
 //enleve les doublons dans le tableau
