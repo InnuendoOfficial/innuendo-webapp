@@ -133,8 +133,11 @@
           <div class="container">
             <div class="main row ">
               <div class="col">
-                <div class="row justify-center" style="padding-top: 5%;">
-                  <!-- Endorscore -->
+                <!-- Endorscore -->
+                <label class="title-style row justify-center" style="padding-top: 5%;">
+                  Moyenne d'endoscore
+                </label>
+                <div class="row justify-center" >
                   <div class="endo_circle circle">{{ moyenne_endo }}</div>
                   <p class="endoTextCenter text-style">
                     L'endoscore correspond à un “indice d'endométriose” qui
@@ -500,7 +503,11 @@ export default {
     this.endoChart = new Chart(endoChart, {
       type: defaultType,
       data: dataConfigEndo,
-      options: {},
+      options: { scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },},
     });
     const tour = new Shepherd.Tour({
       defaultStepOptions: {
