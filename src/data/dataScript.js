@@ -113,7 +113,7 @@ function getMedication(data) {
 function moyenneEndo(endoscore) {
     var sum = 0;
     endoscore.forEach(function (item) {
-        sum += item;
+        sum += parseFloat(item);
     });
     var tot = (sum / endoscore.length).toFixed(2);
     return tot
@@ -168,16 +168,14 @@ function getEndo(data) {
     var endo = []
     var date = []
     for (let i = 0; i < data.length; i++) {
-        var tmp = getRandomInt(10)
-        tmp += Math.random()
-        endo.push(tmp)
-        var test = new Date(data[i].date)
+        endo.push((data[i].score).toFixed(2))
+        var test = new Date(data[i].created_at)
         let day = test.getDate();
         let month = test.getMonth() + 1;
         let year = test.getFullYear();
-        date.push( day + '/' + month + '/' + year)
+        date.push( day.toString() + '/' + month.toString() + '/' + year.toString())
     }
-    date = removeDuplicates(date)
+   //date = removeDuplicates(date)
     return [endo, date]
 }
 

@@ -10,7 +10,7 @@
                     <h2 style="color: white">Innuendo Admin</h2>
                 </div>
                 <div>
-                    <q-btn class="back-button" @click="retourPagePrecedente">
+                    <q-btn class="back-button" @click="retourPagePrecedente" style="color: #776ccb; background-color: white;">
                         <span class="arrow">←</span> Retour
                     </q-btn>
                 </div>
@@ -47,7 +47,7 @@
                         </q-input>
 
                         <!--telephone -->
-                        <q-input name="telephone" filled label-color="white" v-model="tel" label="Numéro de téléphone">
+                        <q-input name="telephone" filled label-color="white" v-model="tel" label="Numéro de téléphone" mask = "#### ## ## ##">
                             <template v-slot:prepend>
                                 <q-icon name="call" color="white"/>
                             </template>

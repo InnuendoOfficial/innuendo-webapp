@@ -20,7 +20,7 @@
               @submit.prevent="resetPwd"
               class="q-gutter-md"
             >
-            <!-- input mail -->
+              <!-- input mail -->
               <q-input
                 id="inputmail"
                 name="mail"
@@ -45,14 +45,23 @@
                   color="white"
                   text-color="primary"
                 />
-                <!-- <p v-show="!emailFound" class="errorText">L'adresse e-mail est incorrecte.</p> -->
-
               </div>
             </form>
           </div>
         </div>
       </div>
     </q-page>
+    <!-- Popup d'erreur -->
+    <q-dialog v-model="errorDialog">
+      <q-card class='text-center' style="width: 300px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <q-card-section>
+          <p class="errorText">L'adresse e-mail n'existe pas ou est incorrecte.</p>
+        </q-card-section>
+        <q-card-actions align="center">
+          <q-btn label="OK" color="primary" @click="errorDialog = false" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </main>
 </template>
 
@@ -64,55 +73,59 @@ export default {
   data() {
     return {
       mail: ref(null),
-      emailFound : ref(false)
+      emailFound: ref(false),
+      errorDialog: ref(false),
     };
   },
 
-    methods: {
-        async resetPwd() {
-            var data = JSON.stringify({'email': this.mail});
-            const mail = await axios.get('https://innuendo-webapi.herokuapp.com/pro/all')
-            console.log(mail.data)
-            for (const element of mail.data) {
-              if (element.email == this.mail) {
-                this.emailFound = true
-                var config = {
-                    method: 'post',
-                    maxBodyLength: Infinity,
-                    url: 'https://innuendo-webapi.herokuapp.com/pro/forgotten_password',
-                    headers: { 
-                        'Content-Type': 'application/json'
-                    },
-                    data : data
-                };
-                    axios(config)
-                    .then(function (response) {
-                        console.log('rep = ', JSON.stringify(response.data));
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                        return
-                    });
-                    this.$router.push('/validation')
-                    break; // Si on trouve l'e-mail, on peut sortir de la boucle
-              }
-            }
-            if (this.emailFound == false) {
-              console.log("erreur adresse mail)")
-              this.$router.push('/')
-            }
+  methods: {
+    async resetPwd() {
+      var data = JSON.stringify({ email: this.mail });
+      const mail = await axios.get('https://innuendo-webapi.herokuapp.com/pro/all');
+      console.log(mail.data);
+      for (const element of mail.data) {
+        if (element.email == this.mail) {
+          this.emailFound = true;
+          var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'https://innuendo-webapi.herokuapp.com/pro/forgotten_password',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            data: data,
+          };
+          axios(config)
+            .then(function (response) {
+              console.log('rep = ', JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+              console.log(error);
+              return;
+            });
+          this.$router.push('/validation');
+          break;
         }
-        },
-    }
+      }
+      if (!this.emailFound) {
+        this.errorDialog = true;
+        this.mail = ''
+      }
+    },
+  },
+};
 </script>
-
 
 <style lang="postcss" scoped>
 .bg_innuendo {
-    background: #776ccb;
+  background: #776ccb;
 }
 .titleStyle {
   color: white;
   display: inline-block;
+}
+.errorText {
+  color: #534b91;
+  font-weight: bold;
 }
 </style>

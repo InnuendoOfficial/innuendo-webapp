@@ -63,6 +63,8 @@ export default class APIAuth {
     console.log(config, config_patiente)
     const _data = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patient/datas', config)
     localStorage.setItem('data', JSON.stringify(_data.data))
+    //localStorage.setItem('endo', JSON.stringify(_data.last_endscore))
+    //console.log("endo test ", _data.data)
     const _profile = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patient/profile', config)
     localStorage.setItem('profile', JSON.stringify(_profile.data))
     const _patientes = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patients', config_patiente)

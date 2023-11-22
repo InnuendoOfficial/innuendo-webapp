@@ -2,7 +2,12 @@
   <main class="bg_innuendo">
     <q-page>
       <div class="">
-        <div class="row justify-center relative">
+        <div>
+            <q-btn class="back-button" @click="retourPagePrecedente" style="color: #776ccb; background-color: white;">
+                <span class="arrow">←</span> Retour
+            </q-btn>
+        </div>
+      <div class="row justify-center relative">
           <img
             src="~/assets/logo.png"
             alt="innuendo logo"
@@ -152,6 +157,7 @@
                 label-color="white"
                 v-model="tel"
                 label="Numéro de téléphone"
+                mask = "#### ## ## ##"
               >
                 <template v-slot:prepend>
                   <q-icon name="call" color="white" />
@@ -294,9 +300,11 @@ export default {
           console.log(error);
           return
       });
-
       this.$router.push('/validation');
     },
+    retourPagePrecedente() {
+            this.$router.push('/')
+        },
 
     onReset() {
       this.nom = null;

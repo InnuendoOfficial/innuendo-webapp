@@ -19,16 +19,11 @@
               icon="list"
               @click="patiente"
             />
-            <q-breadcrumbs-el label="Paramètres" icon="person">
-              <q-menu transition-show="flip-right" transition-hide="flip-left">
-                <q-list style="min-width: 100px">
-                  <q-separator />
-                  <q-item clickable @click="params">
-                    <q-item-section>Paramètres</q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-breadcrumbs-el>
+            <q-breadcrumbs-el
+              label="Paramètres"
+              icon="person"
+              @click="params"
+            />
             <q-breadcrumbs-el icon="logout" @click="logout" />
           </q-breadcrumbs>
         </q-toolbar>
@@ -59,6 +54,7 @@
                   filled
                   v-model="tel"
                   label="Numéro de téléphone"
+                  mask = "#### ## ## ##"
                 />
 
                 <!-- New pwd button -->
@@ -94,8 +90,8 @@
                     label="Annuel"
                   />
                   <!-- Paiement management -->
-                  <p>Dernier paiement effectué : 01/01/2023</p>
-                  <p>Prochain paiement à venir : 01/02/2023</p>
+                  <p>Dernier paiement effectué : {{last_date }}</p>
+                  <p>Prochain paiement à venir : {{ next_date }}</p>
                 </div>
 
                 <!-- Save information button -->
@@ -107,7 +103,7 @@
                   />
                 </div>
                 <div>
-                  <q-btn @click="showPopupResil = true" label="Résillier mon abonement" color="red" />
+                  <q-btn @click="showPopupResil = true" label="Résillier mon abonnement" color="orange" />
                   <div v-if="showPopupResil" class="popup-container">
                     <div class="popup-content">
                       <p>Vous êtes sur le point de résillier votre abonnement. Vous pourrez effectuer une nouvelle demande d'abonnement quand vous le shouaitez.</p>
@@ -188,7 +184,9 @@
 <script>
 import { ref } from 'vue';
 import axios from 'axios';
-import { updatePro } from '/src/data/userScript.js';
+import { updatePro, formatFrenchDate } from '/src/data/userScript.js';
+
+
 
 export default {
   data() {
@@ -205,6 +203,8 @@ export default {
       adresse: ref('1 rue des Deux'),
       tel: ref(null),
       abo: ref(null),
+      last_date: ref('Inconnue'),
+      next_date: ref('Inconnue'),
     };
   },
 
@@ -254,28 +254,27 @@ export default {
           this.logout()
     },
       async  confirmactionabo() {
+      let config = {
+        method: 'delete',
+        maxBodyLength: Infinity,
+        url: 'https://innuendo-webapi.herokuapp.com/stripe/subscription',
+        headers: { 
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      };
+      axios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        this.$router.push('/suppok')
+      })
+      .catch((error) => {
+        console.log("une erreur est survenue")
+        console.log(error);
+      });
 
-  let config = {
-    method: 'delete',
-    maxBodyLength: Infinity,
-    url: 'https://innuendo-webapi.herokuapp.com//stripe/subscription',
-    headers: { 
-      Authorization: 'Bearer ' + localStorage.getItem('token')
-    }
-  };
-  axios.request(config)
-  .then((response) => {
-    console.log(JSON.stringify(response.data));
-    this.$router.push('/suppok')
-  })
-  .catch((error) => {
-    console.log("une erreur est survenue")
-    console.log(error);
-  });
-
-  // Fermez la fenêtre popup
-  this.showPopup = false;
-  this.logout()
+      // // Fermez la fenêtre popup
+      // this.showPopup = false;
+      // this.logout()
   },
     params() {
       this.$router.go();
@@ -317,12 +316,24 @@ export default {
       );
       localStorage.setItem('proData', JSON.stringify(_data.data));
       let data = JSON.parse(localStorage.getItem('proData'));
+      console.log("ze data" , data)
       this.name =
         data.first_name[0].toUpperCase() + data.first_name.substring(1);
       this.surname =
         data.last_name[0].toUpperCase() + data.last_name.substring(1);
       this.mail = data.email;
       this.tel = data.phone;
+      //next payement date
+      if (data.next_payment_date) {
+        const originalNextDate = new Date(data.next_payment_date);
+        this.next_date = formatFrenchDate(originalNextDate);
+      }
+      //last payement date
+      if (data.last_payment_date) {
+      const originalLastDate = new Date(data.last_payment_date);
+      this.last_date = formatFrenchDate(originalLastDate);
+      }
+
       data.subscription_type == 'monthly'
         ? (this.abo = 'monthly')
         : (this.abo = 'annual');

@@ -6,7 +6,7 @@
             <h1>Innuendo Admin</h1>
         </div>
         <div>
-            <q-btn class="back-button" @click="retourPagePrecedente">
+            <q-btn class="back-button" @click="retourPagePrecedente" style="color: #776ccb; background-color: white;">
                 <span class="arrow">←</span> Retour
             </q-btn>
         </div>
@@ -23,6 +23,16 @@
                     <q-toolbar>
                     <q-toolbar-title>Liste des utilisateurs</q-toolbar-title>
                     </q-toolbar>
+                </template>
+                <template v-slot:body-cell-last_payment_date="props">
+                    <td>
+                        {{ formatDate(props.row.last_payment_date) }}
+                    </td>
+                </template>
+                <template v-slot:body-cell-next_payment_date="props">
+                    <td>
+                        {{ formatDate(props.row.next_payment_date) }}
+                    </td>
                 </template>
                 <template v-slot:body-cell-is_subscription_valid="props">
                     <td v-bind:class="{'bg-positive': props.row.is_subscription_valid, 'bg-negative': !props.row.is_subscription_valid}" >
@@ -60,7 +70,14 @@ export default {
         },
         retourPagePrecedente() {
             this.$router.push('/admin_home')
-        }
+        },
+        formatDate(date) {
+            if (date){
+                const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+                const formattedDate = new Date(date).toLocaleDateString('fr-FR', options);
+                return formattedDate;
+            }
+        },
     },
     data() {
         return {

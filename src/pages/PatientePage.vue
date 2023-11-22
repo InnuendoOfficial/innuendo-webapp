@@ -17,16 +17,11 @@
               icon="list"
               @click="patiente"
             />
-            <q-breadcrumbs-el label="Paramètres" icon="person">
-              <q-menu transition-show="flip-right" transition-hide="flip-left">
-                <q-list style="min-width: 100px">
-                  <q-separator />
-                  <q-item clickable @click="params">
-                      <q-item-section>Paramètres</q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu> </q-breadcrumbs-el
-            >/>
+            <q-breadcrumbs-el
+              label="Paramètres"
+              icon="person"
+              @click="params"
+            />
             <q-breadcrumbs-el icon="logout" @click="logout" />
           </q-breadcrumbs>
         </q-toolbar>
@@ -44,6 +39,11 @@
               :filter="filter"
               :loading="loading"
             >
+            <template v-slot:body-cell-endoscore="props">
+      <q-td :props="props" :class="getClassForEndoscore(props.row.endoscore)">
+        {{ props.row.endoscore }}
+      </q-td>
+    </template>
               <template v-slot:top>
                 <q-space />
                 <q-input dense debounce="300" color="primary" v-model="filter">
@@ -102,24 +102,31 @@
 <script>
 import { ref } from 'vue';
 import { getPatiente } from 'src/data/patienteScript';
-const data = localStorage.getItem('patientes');
-console.log('token from patiente : ' + localStorage.getItem('token'));
+let data = localStorage.getItem('patientes');
+console.log('before', data)
+console.log(typeof data)
+data = JSON.parse(data)
+data.forEach(item => {
+  if (item.endoscores && item.endoscores.length > 0) {
+    item.endoscores.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    item.endoscores = parseFloat(item.endoscores[0].score).toFixed(2);
+  }
+  else {
+    item.endoscores = -1
+  }
+});
 
+console.log('after', data)
 const columns = [
   { name: 'nom', align: 'center', label: 'Nom', field: 'nom', sortable: true },
-  {
-    name: 'prenom',
-    align: 'center',
-    label: 'Prénom',
-    field: 'prenom',
-    sortable: true,
-  },
+  { name: 'prenom', align: 'center', label: 'Prénom', field: 'prenom', sortable: true,},
   { name: 'telephone', label: 'Téléphone', field: 'telephone' },
   { name: 'mail', label: 'Adresse mail', field: 'mail' },
   { name: 'endoscore', label: 'Endoscore', field: 'endoscore', sortable: true },
 ];
 
-const originalRows = getPatiente();
+const originalRows = getPatiente(data);
+
 
 export default {
 
@@ -165,6 +172,18 @@ export default {
         params() {
             this.$router.push('/params')
         },
+        getClassForEndoscore(endoscore) {
+      const value = parseFloat(endoscore);
+
+      if (value < 4 && value >= 0 ) {
+        return 'text-green'; // Ajoutez ici votre classe CSS pour le texte vert
+      } else if (value >= 4 && value < 7) {
+        return 'text-orange'; // Ajoutez ici votre classe CSS pour le texte orange
+      } else if (value >= 7) {
+        return 'text-red'; // Ajoutez ici votre classe CSS pour le texte rouge
+      } else 
+        return 'text-transparent'
+    },
     },
     contact() {
       this.$router.push('/contact');
@@ -179,4 +198,27 @@ export default {
 .bg_innuendo {
   background: #776ccb;
 }
+
+.text-green {
+  color: green;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+.text-orange {
+  color: orange;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+.text-red {
+  color: rgba(228, 22, 22, 0.823);
+  font-weight: bold;
+  font-size: x-large;
+}
+
+.text-transparent {
+  color: rgba(228, 22, 22, 0);
+}
+
 </style>
