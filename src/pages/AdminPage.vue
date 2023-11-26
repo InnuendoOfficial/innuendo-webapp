@@ -64,8 +64,8 @@
                         <div class="q-pa-md text-white">
                             <label style="color:white;font-size: larger;">Type d'abonnement souhaité </label>
                             <div class="q-gutter-sm">
-                                <q-radio id="radio3" name="abo" dark v-model="abo" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="white" val="mensuel" label="Mensuel" />
-                                <q-radio id="radio4" name="abo" dark v-model="abo" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="white" val="annuel" label="Annuel" />
+                                <q-radio id="radio3" name="abo" dark v-model="abo" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="white" val="monthly" label="Mensuel" />
+                                <q-radio id="radio4" name="abo" dark v-model="abo" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="white" val="yearly" label="Annuel" />
                             </div>
                         </div>
 
@@ -126,14 +126,23 @@ export default {
     },
     methods: {
         async onSubmit() {
-            const res = await axios.post('https://innuendo-webapi.herokuapp.com/pro', {
+            const config = {
+                params: {
+                    subscription_type: this.abo
+                }
+            };
+            try {
+                const res = await axios.post('https://innuendo-webapi.herokuapp.com/pro', {
                     'first_name': this.prenom,
                     'last_name': this.nom,
                     'email': this.mail,
                     'phone': parseInt(this.tel),
-                    'subscription_type': this.abo
-            })
-            setTimeout( () => this.$router.push('/'), 5000);
+                }, config)
+                setTimeout( () => this.$router.push('/'), 5000);
+            }
+            catch (error) {
+                console.error(error);
+            }
         },
         checkAdmin(){
             if (localStorage.getItem('admin') != 'ok') {
