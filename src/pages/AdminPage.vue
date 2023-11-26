@@ -126,18 +126,14 @@ export default {
     },
     methods: {
         async onSubmit() {
-            const config = {
-                params: {
-                    subscription_type: this.abo
-                }
-            };
             try {
                 const res = await axios.post('https://innuendo-webapi.herokuapp.com/pro', {
                     'first_name': this.prenom,
                     'last_name': this.nom,
                     'email': this.mail,
                     'phone': parseInt(this.tel),
-                }, config)
+                    'subscription_type': this.abo,
+                })
                 setTimeout( () => this.$router.push('/'), 5000);
             }
             catch (error) {
