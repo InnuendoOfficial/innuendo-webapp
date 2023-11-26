@@ -151,7 +151,6 @@
             <div class="q-gutter-md">
               <q-input
                 type="tel"
-                pattern="[0-9]{10}"
                 name="telephone"
                 filled
                 label-color="white"
