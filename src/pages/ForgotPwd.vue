@@ -81,7 +81,7 @@ export default {
   methods: {
     async resetPwd() {
       var data = JSON.stringify({ email: this.mail });
-      const mail = await axios.get('https://innuendo-webapi.herokuapp.com/pro/all');
+      const mail = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/all');
       console.log(mail.data);
       for (const element of mail.data) {
         if (element.email == this.mail) {
@@ -89,7 +89,7 @@ export default {
           var config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'https://innuendo-webapi.herokuapp.com/pro/forgotten_password',
+            url: 'https://innuendo-api-6c549.ondigitalocean.app/pro/forgotten_password',
             headers: {
               'Content-Type': 'application/json',
             },

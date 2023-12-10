@@ -239,7 +239,7 @@ function getMonth(month) {
 // et indique quels symptomes sont les plus recurrents
 function occurenceSympt(data, size) {
     console.log(size)
-    var sympt = ["Constipation", "Brûlures urinaires", "Présence de sang dans les urines", "Dysurie", "Fréquente envie d'uriner", "Localisation", "Diarrhée", "Douleur lors des rapports", "Présence de sang dans les selles"]
+    var sympt = ['Constipation', 'Brûlures urinaires', 'Présence de sang dans les urines', 'Dysurie', 'Fréquente envie d\'uriner', 'Localisation', 'Diarrhée', 'Douleur lors des rapports', 'Présence de sang dans les selles']
     var nb = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     for (let i = 0; i != sympt.length; i++) {
         for (const [key, value] of Object.entries(data)) {

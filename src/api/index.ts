@@ -9,4 +9,4 @@ class APIWrapper {
   public auth: APIAuth;
 };
 
-export default new APIWrapper('https://innuendo-webapi.herokuapp.com/');
+export default new APIWrapper('https://innuendo-api-6c549.ondigitalocean.app/');

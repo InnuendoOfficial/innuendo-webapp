@@ -53,7 +53,7 @@ import axios from 'axios';
 export default {
     
     created() {
-        axios.get('https://innuendo-webapi.herokuapp.com/pro/all')
+        axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/all')
             .then(response => {
                 this.jsonData = response.data;
             })

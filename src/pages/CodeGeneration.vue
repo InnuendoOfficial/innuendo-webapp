@@ -46,7 +46,7 @@ export default {
     },
     methods: {
         async generateCode() {
-            const res = await axios.post('https://innuendo-webapi.herokuapp.com/auth/login', {
+            const res = await axios.post('https://innuendo-api-6c549.ondigitalocean.app/auth/login', {
                 email: 'jeannedoe@gmail.com',
                 password: 'toto974'
             })
@@ -66,7 +66,7 @@ export default {
             let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'https://innuendo-webapi.herokuapp.com/code',
+            url: 'https://innuendo-api-6c549.ondigitalocean.app/code',
             headers: { 
                 'Content-Type': 'application/json', 
                 'Authorization': 'Bearer ' + res.data.access_token

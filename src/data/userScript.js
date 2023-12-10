@@ -13,7 +13,7 @@ async function updatePro(data) {
     var config = {
         method: 'put',
       maxBodyLength: Infinity,
-        url: 'https://innuendo-webapi.herokuapp.com/pro',
+        url: 'https://innuendo-api-6c549.ondigitalocean.app/pro',
         headers: { 
           'Authorization': 'Bearer ' + localStorage.getItem('token'), 
           'Content-Type': 'application/json'

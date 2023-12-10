@@ -284,7 +284,7 @@ export default {
       var config = {
           method: 'post',
           maxBodyLength: Infinity,
-          url: 'https://innuendo-webapi.herokuapp.com/mail/send/team',
+          url: 'https://innuendo-api-6c549.ondigitalocean.app/mail/send/team',
           headers: { 
               'Content-Type': 'application/json'
           },

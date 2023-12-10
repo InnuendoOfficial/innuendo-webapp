@@ -214,7 +214,7 @@ export default {
             var config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'https://innuendo-webapi.herokuapp.com/pro/forgotten_password',
+                url: 'https://innuendo-api-6c549.ondigitalocean.app/pro/forgotten_password',
                 headers: { 
                     'Content-Type': 'application/json'
                 },
@@ -234,7 +234,7 @@ export default {
           let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: 'https://innuendo-webapi.herokuapp.com/pro',
+            url: 'https://innuendo-api-6c549.ondigitalocean.app/pro',
             headers: { 
               Authorization: 'Bearer ' + localStorage.getItem('token')
             }
@@ -257,7 +257,7 @@ export default {
       let config = {
         method: 'delete',
         maxBodyLength: Infinity,
-        url: 'https://innuendo-webapi.herokuapp.com/stripe/subscription',
+        url: 'https://innuendo-api-6c549.ondigitalocean.app/stripe/subscription',
         headers: { 
           Authorization: 'Bearer ' + localStorage.getItem('token')
         }
@@ -311,7 +311,7 @@ export default {
         headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
       };
       const _data = await axios.get(
-        'https://innuendo-webapi.herokuapp.com/pro',
+        'https://innuendo-api-6c549.ondigitalocean.app/pro',
         config
       );
       localStorage.setItem('proData', JSON.stringify(_data.data));

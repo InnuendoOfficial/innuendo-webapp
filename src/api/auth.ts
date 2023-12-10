@@ -8,14 +8,14 @@ export default class APIAuth {
   }
 
   public async login(login: string, pwd: string) {
-    const mail = await axios.get('https://innuendo-webapi.herokuapp.com/pro/all')
+    const mail = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/all')
     let emailFound =  false
     for (const element of mail.data) {
       if (element.email === login) {
         emailFound = true;
         if (element.is_subscription_valid) {
           console.log('abo up')
-          const res = await axios.post('https://innuendo-webapi.herokuapp.com/pro/login', {
+          const res = await axios.post('https://innuendo-api-6c549.ondigitalocean.app/pro/login', {
             'email': login,
             'password': pwd,
             }
@@ -27,7 +27,7 @@ export default class APIAuth {
           const config = {
             headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
             }
-            const _user = await axios.get('https://innuendo-webapi.herokuapp.com/pro', config)
+            const _user = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro', config)
             localStorage.setItem('name', _user.data.first_name);
             localStorage.setItem('surname', _user.data.last_name);
             if (localStorage.getItem('first_co') == null) {
@@ -61,16 +61,16 @@ export default class APIAuth {
     const config_patiente = {
       headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}}
     console.log(config, config_patiente)
-    const _data = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patient/datas', config)
+    const _data = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/patient/datas', config)
     localStorage.setItem('data', JSON.stringify(_data.data))
     //localStorage.setItem('endo', JSON.stringify(_data.last_endscore))
     //console.log("endo test ", _data.data)
-    const _profile = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patient/profile', config)
+    const _profile = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/patient/profile', config)
     localStorage.setItem('profile', JSON.stringify(_profile.data))
-    const _patientes = await axios.get('https://innuendo-webapi.herokuapp.com/pro/patients', config_patiente)
+    const _patientes = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/patients', config_patiente)
     localStorage.setItem('patientes', JSON.stringify(_patientes.data))
     console.log(_patientes.data)
   }
 
-    private  = 'https://innuendo-webapi.herokuapp.com/';
+    private  = 'https://innuendo-api-6c549.ondigitalocean.app/';
 };

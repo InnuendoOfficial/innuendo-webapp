@@ -132,7 +132,7 @@ export default {
                 }
             };
             try {
-                const res = await axios.post('https://innuendo-webapi.herokuapp.com/pro', {
+                const res = await axios.post('https://innuendo-api-6c549.ondigitalocean.app/pro', {
                     'first_name': this.prenom,
                     'last_name': this.nom,
                     'email': this.mail,
