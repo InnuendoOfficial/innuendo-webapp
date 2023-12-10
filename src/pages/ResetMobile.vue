@@ -73,7 +73,7 @@ export default {
     };
   },
   methods: {
-    // url: 'https://innuendo-webapi.herokuapp.com/user/password/reset',
+    // url: 'https://innuendo-api-6c549.ondigitalocean.app/user/password/reset',
 
     async resetPassword() {
       const code = urlParams.get('code');
@@ -86,7 +86,7 @@ export default {
     let config = {
   method: 'post',
   maxBodyLength: Infinity,
-  url: 'https://innuendo-webapi.herokuapp.com/user/password/reset',
+  url: 'https://innuendo-api-6c549.ondigitalocean.app/user/password/reset',
   headers: { 
     'Content-Type': 'application/json'
   },
