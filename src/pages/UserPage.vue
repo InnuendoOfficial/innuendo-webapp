@@ -148,7 +148,7 @@
               target="_blank"
               href="https://www.instagram.com/innuendo_official/"
               ><img
-                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/instagram-icon-256.png"
+                src="src/assets/insta.png"
                 width="20"
                 height="20"
                 class="center"
@@ -157,7 +157,7 @@
               target="_blank"
               href="https://www.facebook.com/profile.php?id=100076102473105"
               ><img
-                src="https://www.clipartmax.com/png/full/416-4169142_facebook-logo-facebook-white-icon-png-2018.png"
+                src="src/assets/fb.png"
                 width="20"
                 height="20"
                 class="center"
@@ -166,7 +166,7 @@
               target="_blank"
               href="https://www.linkedin.com/company/innuendoeip/"
               ><img
-                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/linkedin-icon-18-256.png"
+                src="src/assets/lk.png"
                 width="20"
                 height="20"
                 class="center"
@@ -241,11 +241,9 @@ export default {
           };
           axios.request(config)
           .then((response) => {
-            console.log(JSON.stringify(response.data));
             this.$router.push('/suppok')
           })
           .catch((error) => {
-            console.log("une erreur est survenue")
             console.log(error);
           });
 
@@ -265,16 +263,13 @@ export default {
       axios.request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        this.$router.push('/suppok')
+        this.$router.push('/resi_va')
       })
       .catch((error) => {
         console.log("une erreur est survenue")
         console.log(error);
       });
 
-      // // Fermez la fenêtre popup
-      // this.showPopup = false;
-      // this.logout()
   },
     params() {
       this.$router.go();
@@ -316,7 +311,6 @@ export default {
       );
       localStorage.setItem('proData', JSON.stringify(_data.data));
       let data = JSON.parse(localStorage.getItem('proData'));
-      console.log("ze data" , data)
       this.name =
         data.first_name[0].toUpperCase() + data.first_name.substring(1);
       this.surname =

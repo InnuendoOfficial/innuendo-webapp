@@ -28,7 +28,6 @@ function contraceptionName(name) {
 //recupération de la contraception avec la date de début et la date de fin
 //data : toutes les données partagees par la patiente
 function getContraception(data) {
-    console.log(data)
     var historic = []
     var debut = []
     var fin = []
@@ -36,7 +35,6 @@ function getContraception(data) {
     for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data[i].symptoms.length; j++) {
             if ( data[i].symptoms[j].symptom_type_name == 'contraception') {
-                console.log('contracetpion')
                 if (nom.indexOf(data[i].symptoms[j].value) === -1) {
                     if (i == 0) {
                         nom.push(data[i].symptoms[j].value)
@@ -187,7 +185,6 @@ let deletedIndices = [];
         }
         });
     let nendo = endo.filter((_, index) => uniqueIndices.includes(index));
-    console.log(nendo, uniqueIndices)
     return [nendo.reverse(), uniqueA.reverse()]
 }
 
@@ -238,7 +235,6 @@ function getMonth(month) {
 //calcul du nombre d'occurence de chaque symptome journalier
 // et indique quels symptomes sont les plus recurrents
 function occurenceSympt(data, size) {
-    console.log(size)
     var sympt = ['Constipation', 'Brûlures urinaires', 'Présence de sang dans les urines', 'Dysurie', 'Fréquente envie d\'uriner', 'Localisation', 'Diarrhée', 'Douleur lors des rapports', 'Présence de sang dans les selles']
     var nb = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     for (let i = 0; i != sympt.length; i++) {
@@ -260,13 +256,19 @@ function occurenceSympt(data, size) {
     for (let i = 0; i != sympt.length; i++) {
         if (sympt[i] == 'Localisation')
             sympt[i] = 'Autre douleur'
-        if ((nb[i] * 100 / size) >= 90)
+        let occ_nb = (nb[i] * 100 / size)
+        if (occ_nb >= 90) {
             occ += ('\n' + (sympt[i]) + ' : quotidien (présent dans au moins 90% des rapports)')
-        if (((nb[i] * 100 / size) > 70) && ((nb[i] * 100 / size) < 90))
+        }
+        if ((occ_nb > 70) && (occ_nb < 90)) {
             occ += ('\n' + (sympt[i]) + ' : très fréquent (présent dans au moins 70% des rapports)')
-        if (((nb[i] * 100 / size) > 30) && ((nb[i] * 100 / size) < 70))
+        }
+        if ((occ_nb > 30) && (occ_nb < 70)) {
             occ += ('\n' + (sympt[i]) + ' : fréquent (présent dans au moins 30% des rapports)')
+        }
     }
+    if (occ.length == 0)
+        occ = 'Pas de récurrence dans les symptômes quotidiens'
     return occ
 }
 

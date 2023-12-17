@@ -82,7 +82,7 @@ async function login(){
   buttonState.loading = true;
   try {
     const _res = await API.auth.login(credentials.login, credentials.password);
-   // console.log(_res)
+    console.log('value of sucsription : ', _res)
 
     buttonState.loading = false;
    // _userStore.setUser(_res.user);

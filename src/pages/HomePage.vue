@@ -216,7 +216,7 @@
               target="_blank"
               href="https://www.instagram.com/innuendo_official/"
               ><img
-                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/instagram-icon-256.png"
+                src="src/assets/insta.png"
                 width="20"
                 height="20"
                 class="center"
@@ -225,7 +225,7 @@
               target="_blank"
               href="https://www.facebook.com/profile.php?id=100076102473105"
               ><img
-                src="https://www.clipartmax.com/png/full/416-4169142_facebook-logo-facebook-white-icon-png-2018.png"
+                src="src/assets/fb.png"
                 width="20"
                 height="20"
                 class="center"
@@ -234,7 +234,7 @@
               target="_blank"
               href="https://www.linkedin.com/company/innuendoeip/"
               ><img
-                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/linkedin-icon-18-256.png"
+                src="src/assets/lk.png"
                 width="20"
                 height="20"
                 class="center"
@@ -266,19 +266,47 @@ import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css';
 
 const data = JSON.parse(localStorage.getItem('data'));
-//const endo = JSON.parse(localStorage.getItem('endo'));
+
+//date picker default
+const today = new Date();
+const sevenDaysAgo = new Date(today);
+sevenDaysAgo.setDate(today.getDate() - 30);
+const fromDate = formatDate(sevenDaysAgo);
+const toDate = formatDate(today);
+const dateRange = { from: fromDate, to: toDate };
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}/${month}/${day}`;
+}
+//end date picker default
+
+//liste symptômes autorisés
+const uniqueSymptomNames = [];
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+data.data.forEach(entry => {
+  entry.symptoms.forEach(symptom => {
+    const capitalizedSymptomName = capitalizeFirstLetter(symptom.symptom_type_name);
+    if (!uniqueSymptomNames.includes(capitalizedSymptomName)) {
+      uniqueSymptomNames.push(capitalizedSymptomName);
+    }
+  });
+});
+
+//fin
 
 const contraception = getContraception(data.data);
-console.log("la contra" , contraception)
 var rows_contraceptions = [];
 if (contraception.length > 0) {
   rows_contraceptions = contraception[0]
 }
 else {rows_contraceptions = []}
-console.log("row contra", rows_contraceptions)
-console.log("row contra0", rows_contraceptions[0])
-const d_menstru = getSymptome(['Menstruelle'], '2023/08/15', '2023/10/15');
-//console.log("ze endo ", endo)
+const d_menstru = getSymptome(['Menstruelle'], fromDate, toDate);
 const list_endo = getEndo(data.last_endscore);
 const daily_sympt = dateSymptome(data.data);
 
@@ -348,22 +376,13 @@ export default {
       rowCount,
       symptome: ref(['Menstruelle']),
       liste_autre: ref(null),
-      douleur: [
-        'Menstruelle',
-        'Dysmenorrhée',
-        'Digestion',
-        'Défécation',
-        'Urinaire',
-        'Pelvienne',
-        'Abdominale',
-        'Fatigue',
-      ],
-      autres: ['Fatigue'],
+      douleur: uniqueSymptomNames,
+     // autres: ['Fatigue'],
       date_sympt: ref(daily_sympt[0][0]),
       month_sympt: ref(getMonth(daily_sympt[0][0])),
       events: daily_sympt[0],
       splitterModel: ref(50),
-      selected_date: ref({ from: '2022/08/15', to: '2023/09/15' }),
+      selected_date: ref({ from: fromDate, to: toDate }),
     };
   },
   data() {
@@ -523,7 +542,7 @@ export default {
       tour.addSteps(
         [
           {
-            title: 'Bienvenur sur Innuendo Pro',
+            title: 'Bienvenue sur Innuendo Pro',
             text: 'Dans ce tutoriel, nous vous guiderons lors de votre première utilisation de la page de visualisation des données',
             attachTo: {
               on: 'center'

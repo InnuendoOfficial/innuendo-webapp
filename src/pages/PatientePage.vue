@@ -66,7 +66,7 @@
               target="_blank"
               href="https://www.instagram.com/innuendo_official/"
               ><img
-                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/instagram-icon-256.png"
+                src="src/assets/insta.png"
                 width="20"
                 height="20"
                 class="center"
@@ -75,7 +75,7 @@
               target="_blank"
               href="https://www.facebook.com/profile.php?id=100076102473105"
               ><img
-                src="https://www.clipartmax.com/png/full/416-4169142_facebook-logo-facebook-white-icon-png-2018.png"
+                src="src/assets/fb.png"
                 width="20"
                 height="20"
                 class="center"
@@ -84,7 +84,7 @@
               target="_blank"
               href="https://www.linkedin.com/company/innuendoeip/"
               ><img
-                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/linkedin-icon-18-256.png"
+                src="src/assets/lk.png"
                 width="20"
                 height="20"
                 class="center"
@@ -103,8 +103,6 @@
 import { ref } from 'vue';
 import { getPatiente } from 'src/data/patienteScript';
 let data = localStorage.getItem('patientes');
-console.log('before', data)
-console.log(typeof data)
 data = JSON.parse(data)
 data.forEach(item => {
   if (item.endoscores && item.endoscores.length > 0) {
@@ -116,7 +114,6 @@ data.forEach(item => {
   }
 });
 
-console.log('after', data)
 const columns = [
   { name: 'nom', align: 'center', label: 'Nom', field: 'nom', sortable: true },
   { name: 'prenom', align: 'center', label: 'Prénom', field: 'prenom', sortable: true,},
@@ -150,7 +147,6 @@ export default {
           for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (key !== 'first_co') {
-              console.log('item removed')
               localStorage.removeItem(key);
             }
           }

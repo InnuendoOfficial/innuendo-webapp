@@ -173,6 +173,17 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/resi_va',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: '',
+        path: '',
+        component: () => import('src/pages/ResillationValidation.vue'),
+      },
+    ],
+  },
 
   {
     path: '/contact',

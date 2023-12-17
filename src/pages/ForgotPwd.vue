@@ -82,7 +82,6 @@ export default {
     async resetPwd() {
       var data = JSON.stringify({ email: this.mail });
       const mail = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/all');
-      console.log(mail.data);
       for (const element of mail.data) {
         if (element.email == this.mail) {
           this.emailFound = true;
