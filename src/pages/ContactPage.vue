@@ -158,7 +158,7 @@
               target="_blank"
               href="https://www.instagram.com/innuendo_official/"
               ><img
-                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/instagram-icon-256.png"
+                src="src/assets/insta.png"
                 width="20"
                 height="20"
                 class="center"
@@ -167,7 +167,7 @@
               target="_blank"
               href="https://www.facebook.com/profile.php?id=100076102473105"
               ><img
-                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/instagram-icon-256.png"
+                src="src/assets/fb.png"
                 width="20"
                 height="20"
                 class="center"
@@ -176,7 +176,7 @@
               target="_blank"
               href="https://www.linkedin.com/company/innuendoeip/"
               ><img
-                src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/linkedin-icon-18-256.png"
+                src="src/assets/lk.png"
                 width="20"
                 height="20"
                 class="center"

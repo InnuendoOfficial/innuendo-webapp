@@ -9,8 +9,10 @@ export default class APIAuth {
 
   public async login(login: string, pwd: string) {
     const mail = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/all')
+    console.log(mail)
     let emailFound =  false
     for (const element of mail.data) {
+      console.log(mail.data, '\n')
       if (element.email === login) {
         emailFound = true;
         if (element.is_subscription_valid) {

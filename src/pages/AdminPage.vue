@@ -132,8 +132,9 @@ export default {
                     'last_name': this.nom,
                     'email': this.mail,
                     'phone': parseInt(this.tel),
-                    'subscription_type': this.abo,
-                })
+                    'subscription_type' : this.abo
+                })//, config)
+
                 setTimeout( () => this.$router.push('/'), 5000);
             }
             catch (error) {

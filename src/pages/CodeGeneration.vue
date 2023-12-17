@@ -76,7 +76,6 @@ export default {
 
             axios.request(config)
             .then((response) => {
-                console.log(JSON.stringify(response.data));
                 this.code = response.data.code;
                 this.showCode = true;
             })
