@@ -7,48 +7,44 @@ export default class APIAuth {
    // this.baseUrl = baseUrl;
   }
 
-  public async login(login: string, pwd: string) {
-    const mail = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/all')
-    console.log(mail)
-    let emailFound =  false
-    for (const element of mail.data) {
-      console.log(mail.data, '\n')
-      if (element.email === login) {
-        emailFound = true;
-        if (element.is_subscription_valid) {
-          console.log('abo up')
-          const res = await axios.post('https://innuendo-api-6c549.ondigitalocean.app/pro/login', {
-            'email': login,
-            'password': pwd,
-            }
-            )
-          // throw new Error('Le mot de passe est incorrect.');
-          console.log(login, pwd, res.data.access_token)
+    public async login(login: string, pwd: string) {
+      const mail = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/all')
+      let emailFound =  false
+      for (const element of mail.data) {
+        if (element.email == login) {
+          emailFound = true;
+          if (element.is_subscription_valid) {
+            console.log('abo up')
+            const res = await axios.post('https://innuendo-api-6c549.ondigitalocean.app/pro/login', {
+              'email': login,
+              'password': pwd,
+              }
+              )
+            // throw new Error('Le mot de passe est incorrect.');
+            console.log(login, pwd, res.data.access_token)
 
-          localStorage.setItem('token', res.data.access_token)
-          const config = {
-            headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
-            }
-            const _user = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro', config)
-            localStorage.setItem('name', _user.data.first_name);
-            localStorage.setItem('surname', _user.data.last_name);
-            if (localStorage.getItem('first_co') == null) {
-              localStorage.setItem('first_co', 'true')
-            }
-            return 0
-        }
-        if (!element.is_subscription_valid) {
-          console.log("abonnement off -> redirection ")
-          return 1
-          // Recharge la page en changeant l'URL vers elle-même
-          // setTimeout(function() {
-          //   window.location.href = window.location.href;
-          // }, 2000);
+            localStorage.setItem('token', res.data.access_token)
+            const config = {
+              headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+              }
+              const _user = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro', config)
+              localStorage.setItem('name', _user.data.first_name);
+              localStorage.setItem('surname', _user.data.last_name);
+              if (localStorage.getItem('first_co') == null) {
+                localStorage.setItem('first_co', 'true')
+              }
+              return 0
+          }
+          if (!element.is_subscription_valid) {
+            console.log("abonnement off -> redirection ")
+            return 1  
+          }
+          else 
+            return -1
         }
       }
-    }
-    
-  };
+      return -1
+    };
 
 
   public async verifyCode(code: string) {

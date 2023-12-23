@@ -47,7 +47,7 @@ export default {
     methods: {
         async generateCode() {
             const res = await axios.post('https://innuendo-api-6c549.ondigitalocean.app/auth/login', {
-                email: 'jeannedoe@gmail.com',
+                email: 'lauradoe@gmail.com',
                 password: 'toto974'
             })
             let data = JSON.stringify({
