@@ -134,6 +134,7 @@ export default {
                     'phone': parseInt(this.tel),
                     'subscription_type' : this.abo
                 })//, config)
+
                 setTimeout( () => this.$router.push('/'), 5000);
             }
             catch (error) {
