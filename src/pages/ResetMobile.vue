@@ -73,7 +73,6 @@ export default {
     };
   },
   methods: {
-    // url: 'https://innuendo-api-6c549.ondigitalocean.app/user/password/reset',
 
     async resetPassword() {
       const code = urlParams.get('code');

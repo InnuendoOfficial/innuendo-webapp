@@ -28,52 +28,54 @@ function contraceptionName(name) {
 //recupération de la contraception avec la date de début et la date de fin
 //data : toutes les données partagees par la patiente
 function getContraception(data) {
-    var historic = []
-    var debut = []
-    var fin = []
-    var nom = []
-    for (let i = 0; i < data.length; i++) {
-        for (let j = 0; j < data[i].symptoms.length; j++) {
-            if ( data[i].symptoms[j].symptom_type_name == 'contraception') {
-                if (nom.indexOf(data[i].symptoms[j].value) === -1) {
-                    if (i == 0) {
-                        nom.push(data[i].symptoms[j].value)
-                        var test = new Date(data[i].date)
-                        let MyDateString = ('0' + test.getDate()).slice(-2) + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + test.getFullYear();
-                        debut.push(MyDateString)
-                    }
-                    else {
-                        nom.push(data[i].symptoms[j].value)
-                        var test = new Date(data[i].date)
-                        let MyDateString = ('0' + test.getDate()).slice(-2) + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + test.getFullYear();
-                        var test1 = new Date(data[i - 1].date)
-                        let MyDateString1 = ('0' + test1.getDate()).slice(-2) + '/' + ('0' + (test1.getMonth()+1)).slice(-2) + '/' + test1.getFullYear();
-                        
-                        debut.push(MyDateString)
-                        fin.push(MyDateString1)
+    if (data.length > 0 ) {
+        var historic = []
+        var debut = []
+        var fin = []
+        var nom = []
+        for (let i = 0; i < data.length; i++) {
+            for (let j = 0; j < data[i].symptoms.length; j++) {
+                if ( data[i].symptoms[j].symptom_type_name == 'contraception') {
+                    if (nom.indexOf(data[i].symptoms[j].value) === -1) {
+                        if (i == 0) {
+                            nom.push(data[i].symptoms[j].value)
+                            var test = new Date(data[i].date)
+                            let MyDateString = ('0' + test.getDate()).slice(-2) + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + test.getFullYear();
+                            debut.push(MyDateString)
+                        }
+                        else {
+                            nom.push(data[i].symptoms[j].value)
+                            var test = new Date(data[i].date)
+                            let MyDateString = ('0' + test.getDate()).slice(-2) + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + test.getFullYear();
+                            var test1 = new Date(data[i - 1].date)
+                            let MyDateString1 = ('0' + test1.getDate()).slice(-2) + '/' + ('0' + (test1.getMonth()+1)).slice(-2) + '/' + test1.getFullYear();
+                            
+                            debut.push(MyDateString)
+                            fin.push(MyDateString1)
+                        }
                     }
                 }
             }
         }
-    }
-    if (nom.length > 0) {
-        for (let i = 0; i < nom.length; i++) {
-            if (i == nom.length -1) {
-                historic.push({
-                    'nom':contraceptionName(nom[i]),
-                    'debut': debut[i],
-                    'fin': 'Prise en cours'
-                })
-            }
-            else {
-                historic.push({
-                    'nom':contraceptionName(nom[i]),
+        if (nom.length > 0) {
+            for (let i = 0; i < nom.length; i++) {
+                if (i == nom.length -1) {
+                    historic.push({
+                        'nom':contraceptionName(nom[i]),
+                        'debut': debut[i],
+                        'fin': 'Prise en cours'
+                    })
+                }
+                else {
+                    historic.push({
+                        'nom':contraceptionName(nom[i]),
                     'debut': debut[i],
                     'fin': fin[i]
                 })
             }
         }
         return [historic, historic[historic.length - 1].nom]
+        }
     }
     return []
 }
@@ -156,6 +158,7 @@ function dateSymptome(data) {
             dict[MyDateString] = tmp_sympt
         }
     }
+    console.log('date : ', date)
     date = removeDuplicates(date)
     return [date, dict]
 }
@@ -166,8 +169,8 @@ function getEndo(data) {
     var endo = []
     var date = []
     let uniqueIndices = [];
-let uniqueA = [];
-let deletedIndices = [];
+    let uniqueA = [];
+    let deletedIndices = [];
     for (let i = 0; i < data.length; i++) {
         endo.push((data[i].score).toFixed(2))
         var test = new Date(data[i].created_at)

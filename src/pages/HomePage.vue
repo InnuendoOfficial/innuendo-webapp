@@ -212,7 +212,7 @@
         <q-toolbar>
           <div style="text-align: center">
             <QSpace> </QSpace>
-            <a
+              <a
               target="_blank"
               href="https://www.instagram.com/innuendo_official/"
               ><img
@@ -266,6 +266,7 @@ import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css';
 
 const data = JSON.parse(localStorage.getItem('data'));
+//const endo = JSON.parse(localStorage.getItem('endo'));
 
 //date picker default
 const today = new Date();
@@ -298,6 +299,7 @@ data.data.forEach(entry => {
   });
 });
 
+console.log('symp name= :', uniqueSymptomNames);
 //fin
 
 const contraception = getContraception(data.data);
@@ -378,9 +380,9 @@ export default {
       liste_autre: ref(null),
       douleur: uniqueSymptomNames,
      // autres: ['Fatigue'],
-      date_sympt: ref(daily_sympt[0][0]),
-      month_sympt: ref(getMonth(daily_sympt[0][0])),
-      events: daily_sympt[0],
+      date_sympt: ref(daily_sympt.length > 0 ? daily_sympt[0][0] : null),
+     // month_sympt: '01',   //ref(daily_sympt.length > 0 ? getMonth(daily_sympt[0][0]) : null),
+      events: daily_sympt.length > 0 ? daily_sympt[0] : [],
       splitterModel: ref(50),
       selected_date: ref({ from: fromDate, to: toDate }),
     };

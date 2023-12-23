@@ -149,6 +149,30 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  
+  {
+    path: '/sup',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'sup',
+        path: '',
+        component: () => import('src/pages/SuppMobile.vue'),
+      },
+    ],
+  },
+
+  {
+    path: '/mobileSuppOK',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [
+      {
+        name: 'reset',
+        path: '',
+        component: () => import('src/pages/SuppMobileOK.vue'),
+      },
+    ],
+  },
 
   {
     path: '/forgot_pwd',

@@ -43,20 +43,24 @@ function getData(symptome, date_range) {
     const data = JSON.parse(localStorage.getItem('data')).data
     var user_data = []
     var date = []
-    for (let i = 0; i < data.length; i++) {
-        for (let j = 0; j < data[i].symptoms.length; j++) {
-            var test = new Date(data[i].date)
-            let MyDateString = test.getFullYear() + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + ('0' + test.getDate()).slice(-2);
-            if ( data[i].symptoms[j].symptom_type_name == symptome) {
-                if (date_range.includes(MyDateString)) {
-                    user_data.push(data[i].symptoms[j].value)
-                    date.push(MyDateString)
+    if (data.length > 0 ) {
+
+        for (let i = 0; i < data.length; i++) {
+            for (let j = 0; j < data[i].symptoms.length; j++) {
+                var test = new Date(data[i].date)
+                let MyDateString = test.getFullYear() + '/' + ('0' + (test.getMonth()+1)).slice(-2) + '/' + ('0' + test.getDate()).slice(-2);
+                if ( data[i].symptoms[j].symptom_type_name == symptome) {
+                    if (date_range.includes(MyDateString)) {
+                        user_data.push(data[i].symptoms[j].value)
+                        date.push(MyDateString)
+                    }
                 }
             }
         }
+        date = removeDuplicates(date)
+        return [user_data, date]
     }
-    date = removeDuplicates(date)
-    return [user_data, date]
+    return []
 }
 
 //used to remove duplicate value in an array
