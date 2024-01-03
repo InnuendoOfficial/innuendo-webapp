@@ -150,7 +150,6 @@
         </q-page>
       </q-page-container>
 
-      <!-- <FooterPage></FooterPage> -->
       <q-footer elevated>
         <q-toolbar>
           <div style="text-align: center">

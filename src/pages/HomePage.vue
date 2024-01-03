@@ -299,7 +299,6 @@ data.data.forEach(entry => {
   });
 });
 
-console.log('symp name= :', uniqueSymptomNames);
 //fin
 
 const contraception = getContraception(data.data);
@@ -500,17 +499,17 @@ export default {
     }
     else 
     this.has_endo = 'Votre patiente n\'a pas encore été diagnostiquée pour l\'endométriose'
-    if (patiente.hasOwnProperty("firstname")) {
+    if (patiente.hasOwnProperty('firstname')) {
       this.p_name = patiente.firstname
     }
     else {
-      this.p_name = "Jane"
+      this.p_name = 'Jane'
     }
-    if (patiente.hasOwnProperty("lastname")) {
+    if (patiente.hasOwnProperty('lastname')) {
       this.p_sname = patiente.lastname
     }
     else {
-      this.p_sname = "Doe"
+      this.p_sname = 'Doe'
     }
     let myChart = document.getElementById('myChart');
     let endoChart = document.getElementById('endoChart');

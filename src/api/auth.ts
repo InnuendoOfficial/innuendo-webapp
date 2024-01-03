@@ -1,6 +1,4 @@
 import axios from 'axios'
-import * as fs from 'fs';
-
 
 export default class APIAuth {
   public constructor(baseUrl: string) {
@@ -14,14 +12,12 @@ export default class APIAuth {
         if (element.email == login) {
           emailFound = true;
           if (element.is_subscription_valid) {
-            console.log('abo up')
             const res = await axios.post('https://innuendo-api-6c549.ondigitalocean.app/pro/login', {
               'email': login,
               'password': pwd,
               }
               )
             // throw new Error('Le mot de passe est incorrect.');
-            console.log(login, pwd, res.data.access_token)
 
             localStorage.setItem('token', res.data.access_token)
             const config = {
@@ -36,7 +32,6 @@ export default class APIAuth {
               return 0
           }
           if (!element.is_subscription_valid) {
-            console.log("abonnement off -> redirection ")
             return 1  
           }
           else 
@@ -48,7 +43,6 @@ export default class APIAuth {
 
 
   public async verifyCode(code: string) {
-    console.log(code)
     // throw new Error('Le code a expiré.');
     const config = {
       headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
@@ -58,16 +52,12 @@ export default class APIAuth {
     }
     const config_patiente = {
       headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}}
-    console.log(config, config_patiente)
     const _data = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/patient/datas', config)
     localStorage.setItem('data', JSON.stringify(_data.data))
-    //localStorage.setItem('endo', JSON.stringify(_data.last_endscore))
-    //console.log("endo test ", _data.data)
     const _profile = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/patient/profile', config)
     localStorage.setItem('profile', JSON.stringify(_profile.data))
     const _patientes = await axios.get('https://innuendo-api-6c549.ondigitalocean.app/pro/patients', config_patiente)
     localStorage.setItem('patientes', JSON.stringify(_patientes.data))
-    console.log(_patientes.data)
   }
 
     private  = 'https://innuendo-api-6c549.ondigitalocean.app/';

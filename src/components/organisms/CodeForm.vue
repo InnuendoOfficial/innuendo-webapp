@@ -12,6 +12,7 @@
         v-model="codeString"
         placeholder="0000"
         type="number"
+        @keydown.enter="handleEnterKey"
       />
       <AButton
         @click="verifyCode"
@@ -40,8 +41,6 @@ const _router = useRouter();
 const buttonState: ButtonState = reactive({ loading: false, disabled: true });
 const codeString = ref('');
 const errorMessage = ref(undefined);
-let data = []
-
 
 watch(codeString, (newCodeString: string) => {
   if (newCodeString.length != 0) {
@@ -50,6 +49,13 @@ watch(codeString, (newCodeString: string) => {
     buttonState.disabled = true;
   }
 });
+
+function handleEnterKey(event: KeyboardEvent) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    verifyCode();
+  }
+}
 
 async function verifyCode() {
   if (buttonState.disabled) return;
