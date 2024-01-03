@@ -65,7 +65,7 @@
               target="_blank"
               href="https://www.instagram.com/innuendo_official/"
               ><img
-                src="src/assets/insta.png"
+                src="https://www.edigitalagency.com.au/wp-content/uploads/new-Instagram-logo-white-glyph.png"
                 width="20"
                 height="20"
                 class="center"
@@ -74,7 +74,7 @@
               target="_blank"
               href="https://www.facebook.com/profile.php?id=100076102473105"
               ><img
-                src="src/assets/fb.png"
+                src="https://www.edigitalagency.com.au/wp-content/uploads/facebook-icon-white-png.png"
                 width="20"
                 height="20"
                 class="center"
@@ -83,7 +83,7 @@
               target="_blank"
               href="https://www.linkedin.com/company/innuendoeip/"
               ><img
-                src="src/assets/lk.png"
+                src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/linkedin-app-white-icon.png"
                 width="20"
                 height="20"
                 class="center"
