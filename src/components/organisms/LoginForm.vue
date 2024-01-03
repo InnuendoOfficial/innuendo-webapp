@@ -6,6 +6,7 @@
     />
     <h2 class="text-bold q-mb-sm">Connexion</h2>
     <p class="text-subtitle1 q-mb-xl">Connectez vous avec vos accès professionnels.</p>
+    <form @submit.prevent="login" @keydown.enter="handleEnterKey">
     <InputControl
       class="q-my-lg"
       label="Email"
@@ -27,6 +28,7 @@
       size="lg"
       dense
     />
+  </form>
     <AErrorMessage :message="errorMessage" />
     <q-btn label="Mot de passe oublié ?" type="submit" @click="retrievePwd" text-color="black"/>
     <q-dialog v-model="errorDialog">
@@ -71,6 +73,13 @@ watch(credentials, (newCredentials: Credentials) => {
   }
 });
 
+function handleEnterKey(event: KeyboardEvent) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    login();
+  }
+}
+
 async function retrievePwd(){
     _router.push({name: 'forgot_pwd'});
 }
@@ -82,7 +91,6 @@ async function login(){
   buttonState.loading = true;
   try {
     const _res = await API.auth.login(credentials.login, credentials.password);
-    console.log('value of sucsription : ', _res)
 
     buttonState.loading = false;
    // _userStore.setUser(_res.user);

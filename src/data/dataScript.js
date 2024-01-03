@@ -158,7 +158,6 @@ function dateSymptome(data) {
             dict[MyDateString] = tmp_sympt
         }
     }
-    console.log('date : ', date)
     date = removeDuplicates(date)
     return [date, dict]
 }

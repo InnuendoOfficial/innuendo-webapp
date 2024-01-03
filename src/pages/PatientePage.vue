@@ -27,7 +27,6 @@
         </q-toolbar>
       </q-header>
       <!-- END HEADER -->
-      <!-- <HeaderPage></HeaderPage> -->
       <q-page-container>
         <q-page style="" class="q-pa-md">
           <div class="q-pa-md">

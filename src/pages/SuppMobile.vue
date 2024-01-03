@@ -29,10 +29,10 @@
       <q-btn color= "orange" @click="showPopup = false">Ok</q-btn>
     </div>
                   </div>
-  <div class="col-sm-6">
+  <div class='col-sm-6'>
             <img
-              class="logo1"
-              src="~/assets/mobile_reset.svg"
+              class='logo1'
+              src='~/assets/mobile_reset.svg'
               alt="infos illustration"
             />
           </div>
@@ -44,7 +44,6 @@
 import axios from 'axios';
 const urlParams = new URLSearchParams(window.location.search);
 const token = urlParams.get('token');
-console.log('token = ', token)
 export default {
     data() {
     return {
@@ -55,7 +54,7 @@ methods: {
 
   async deleteAccount() {
       let data = JSON.stringify({
-      "desactivate": false,
+      'desactivate': false,
     });
 
   let config = {
