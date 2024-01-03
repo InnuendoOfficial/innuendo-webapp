@@ -1,58 +1,155 @@
 <template>
   <div class="q-pa-md">
-    <q-layout view="lHh lpr lFf" class="shadow-2 rounded-borders">
+    <q-layout view="hHh Lpr lff" class="shadow-2 rounded-borders">
       <!-- HEADER -->
-      <q-header elevated style="height: 100px">
-        <q-toolbar>
-          <!-- Logo and name -->
-          <q-avatar size="90px">
-            <img src="~/assets/logo.png" class="logo-innuendo shepherd-target" alt="innuendo logo" />
-          </q-avatar>
-          <q-toolbar-title class="justify-center" style="font-size: xx-large">
-            InnuendoPro
-          </q-toolbar-title>
-          <!-- Manage new patient -->
-          <div class="main-right col-2 inner">
-            <q-btn class="new_btn" outline rounded label="Nouvelle patiente" @click="toCode" />
+      <!-- <q-layout view="hHh Lpr lff" container style="height: 300px" class="shadow-2 rounded-borders"> -->
+      <q-header elevated style="height: 100rem; width: 15rem; position: fixed;">
+        <q-toolbar style="position: fixed; top: 0; z-index: 1000;">
+          <div class="col">
+            <div class="row">
+              <!-- Logo and name -->
+              <q-avatar size="90px">
+                <img src="~/assets/logo.png" class="logo-innuendo shepherd-target" alt="innuendo logo" />
+              </q-avatar>
+            </div>
+            <div class="row">
+              <q-toolbar-title class="justify-center" style="font-size: xx-large">
+                Innuendo <br> PRO
+              </q-toolbar-title>
+            </div>
+            <div class="row">
+              <!-- Manage new patient -->
+              <div class="main-right">
+                <q-btn class="new_btn" outline rounded label="Nouvelle patiente" @click="toCode" />
+              </div>
+            </div>
+            <!-- Settings -->
+            <q-breadcrumbs active-color="white" style="font-size: 16px">
+              <div class="row">
+                <q-breadcrumbs-el label="Accueil" icon="home" @click="home" />
+              </div>
+              <div class="row">
+                <q-breadcrumbs-el
+                  class = "patiente_btn"
+                  label="Mes patientes"
+                  icon="list"
+                  @click="patiente"
+                />
+              </div>
+              <div class="row">
+                <q-breadcrumbs-el
+                  class = "params_btn"
+                  label="Paramètres"
+                  icon="person"
+                  @click="params"
+                />
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <q-breadcrumbs-el class = "logout_btn" icon="logout" @click="logout" />
+                </div>
+              </div>
+            </q-breadcrumbs>
+            <div style="text-align: center">
+              <div class="row">
+                <q-btn flat id="contacBtn" @click="contact">Nous contacter</q-btn>
+              </div>
+              <div class="row">
+                <q-btn flat @click="tuto">Rejouer le tutoriel</q-btn>
+              </div>
+              <div class="row">
+                <QSpace> </QSpace>
+                <div class="col">
+                  <a
+                  target="_blank"
+                  href="https://www.instagram.com/innuendo_official/"
+                  ><img
+                    src="src/assets/insta.png"
+                    width="20"
+                    height="20"
+                    class="center"
+                  />
+                  </a>
+                </div>
+                <div class="col">
+                  <a
+                    target="_blank"
+                    href="https://www.facebook.com/profile.php?id=100076102473105"
+                    ><img
+                      src="src/assets/fb.png"
+                      width="20"
+                      height="20"
+                      class="center"
+                  /></a>
+                </div>
+                <div class="col">
+                  <a
+                    target="_blank"
+                    href="https://www.linkedin.com/company/innuendoeip/"
+                    ><img
+                      src="src/assets/lk.png"
+                      width="20"
+                      height="20"
+                      class="center"
+                  /></a>
+                </div>
+              </div>
+            </div>
           </div>
-          <!-- Settings -->
-          <q-breadcrumbs active-color="white" style="font-size: 16px">
-            <q-breadcrumbs-el label="Accueil" icon="home" @click="home" />
-            <q-breadcrumbs-el
-              class = "patiente_btn"
-              label="Mes patientes"
-              icon="list"
-              @click="patiente"
-            />
-            <q-breadcrumbs-el
-              class = "params_btn"
-              label="Paramètres"
-              icon="person"
-              @click="params"
-            />
-            <q-breadcrumbs-el class = "logout_btn" icon="logout" @click="logout" />
-          </q-breadcrumbs>
         </q-toolbar>
       </q-header>
       <!-- END HEADER -->
+      <q-drawer
+        v-model="drawer"
+        show-if-above
+        :width="200"
+        :breakpoint="500"
+        bordered
+        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+      >
+      <q-scroll-area class="fit">
+          <q-list>
+
+            <template v-for="(menuItem, index) in menuList" :key="index">
+              <q-item clickable :active="menuItem.label === 'Outbox'" v-ripple>
+                <q-item-section avatar>
+                  <q-icon :name="menuItem.icon" />
+                </q-item-section>
+                <q-item-section>
+                  {{ menuItem.label }}
+                </q-item-section>
+              </q-item>
+              <q-separator :key="'sep' + index"  v-if="menuItem.separator" />
+            </template>
+
+          </q-list>
+        </q-scroll-area>
+      </q-drawer>
       
       <!-- CONTENT-->
       <q-page-container>
         <q-page style="" class="q-pa-md">
-          <label class="title-style"> {{this.p_name}} {{this.p_sname}}</label>
-          <!-- <label class="title-style">Jane Doe</label> -->
-          <label class="text-style"><br />{{this.has_endo}}<br /><br /></label>
+          <div class="container column">
+            <label class="title-style"> {{this.p_name}} {{this.p_sname}}</label>
+            <label class="text-style"><br />{{this.has_endo}}<br /><br /></label>
+          </div>
           <div class="container column">
             <div class="main col row">
               <div class="main-left col-1 mr-10 column"></div>
               <!-- Symptom chart -->
-              <div class="middle col column">
-                <canvas
-                  class="mx-auto my-auto chartStyle first_graph"
-                  id="myChart"
-                ></canvas>
+              <div class="q-pa-md row items-start q-gutter-md">
+                <q-card class="my-card">
+                  <q-card-section>
+                    <div class="middle col column">
+                      <canvas
+                        class="mx-auto my-auto chartStyle first_graph"
+                        id="myChart"
+                      ></canvas>
+                    </div>
+                    <div class="main-left col-1 mr-10 column"></div>
+                  </q-card-section>
+                </q-card>
               </div>
-              <div class="main-left col-1 mr-10 column"></div>
               <!-- Symptom selection -->
               <div class="main-right col-2 inner" style="margin-right: 5%">
                 <label style="font-size: medium">Douleur</label>
@@ -133,11 +230,28 @@
           <div class="container">
             <div class="main row ">
               <div class="col">
+                <div class="q-pa-md row items-start q-gutter-md">
+                  <q-card class="my-card">
+                    <q-card-section>
+                      <!-- Endorscore -->
+                      <div class="row align-items-center">
+                        <div class="col">
+                          <label class="title-style row">
+                            Endoscore
+                          </label>
+                        </div>
+                        <div class="col">
+                          <div class="endo_circle circle">{{ moyenne_endo }}</div>
+                        </div>
+                      </div>
+                    </q-card-section>
+                  </q-card>
+                </div>
                 <!-- Endorscore -->
-                <label class="title-style row justify-center" style="padding-top: 5%;">
+                <!-- <label class="title-style row justify-center" style="padding-top: 5%;">
                   Moyenne d'endoscore
-                </label>
-                <div class="row justify-center" >
+                </label> -->
+                <!-- <div class="row justify-center" >
                   <div class="endo_circle circle">{{ moyenne_endo }}</div>
                   <p class="endoTextCenter text-style">
                     L'endoscore correspond à un “indice d'endométriose” qui
@@ -147,9 +261,9 @@
                     récurrents au cours de son cycle. Il leur est vivement
                     conseillé de consulter un spécialiste lorsque le score est
                     constamment supérieur à 5.
-                  </p>
+                  </p> -->
                   <!-- Endoscore chart -->
-                  <div class="endo_chart chartStyle">
+                  <!-- <div class="endo_chart chartStyle">
                     <canvas
                       class=""
                       style="text-align: center;"
@@ -157,7 +271,7 @@
                     >
                     </canvas>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -208,7 +322,7 @@
       <!-- END CONTENT-->
 
       <!-- FOOTER -->
-      <q-footer elevated>
+      <!-- <q-footer elevated>
         <q-toolbar>
           <div style="text-align: center">
             <QSpace> </QSpace>
@@ -244,7 +358,7 @@
           </div>
           <q-toolbar-title></q-toolbar-title>
         </q-toolbar>
-      </q-footer>
+      </q-footer> -->
       <!-- END FOOTER -->
     </q-layout>
   </div>
@@ -262,8 +376,8 @@ import {
   occurenceSympt,
 } from 'src/data/dataScript';
 import { getSymptome } from 'src/data/chartScript.js';
-import Shepherd from 'shepherd.js';
-import 'shepherd.js/dist/css/shepherd.css';
+//import Shepherd from 'shepherd.js';
+//import 'shepherd.js/dist/css/shepherd.css';
 
 const data = JSON.parse(localStorage.getItem('data'));
 //const endo = JSON.parse(localStorage.getItem('endo'));
@@ -814,6 +928,9 @@ export default {
   font-size: x-large;
   color: darkslateblue;
   padding-bottom: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .endoTextCenter {
   position: relative;
