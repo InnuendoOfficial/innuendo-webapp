@@ -2,7 +2,7 @@
   <div>
     <q-layout view="hHh Lpr lff" class="shadow-2 rounded-borders">
       <!-- HEADER -->
-      <q-drawer bordered show-if-above :breakpoint="400" :width="300" style="background-color: #776ccb; color: white;">
+      <q-drawer bordered show-if-above :breakpoint="400" :width="250" style="background-color: #776ccb; color: white;">
         <q-scroll-area class="fit">
           <q-list>
             <q-item v-ripple>
@@ -44,13 +44,13 @@
               </q-item-section>
               <q-item-section>Déconnexion</q-item-section>
             </q-item>
-            <q-item clickable v-ripple>
+            <q-item clickable v-ripple @click="contact">
               <q-item-section avatar>
                 <q-icon name="chat" />
               </q-item-section>
               <q-item-section>Nous contacter</q-item-section>
             </q-item>
-            <q-item clickable v-ripple>
+            <q-item clickable v-ripple @click="tuto">
               <q-item-section avatar>
                 <q-icon name="replay" />
               </q-item-section>
@@ -76,92 +76,118 @@
       </q-drawer>
 
       <q-page-container>
-        <q-page class="q-gutter-md">
-          <div class="title-style">
-            <div class="text-h3">{{ p_name }} {{ p_sname }}</div>
+        <q-page class="q-pa-md">
+
+          <div class="row">
+            <div class="title-style">
+              <div class="text-h3">{{ p_name }} {{ p_sname }}</div>
+            </div>
           </div>
-          <q-card class="dashboard-card">
-            <q-card-section class="row justify-center items-center">
-              <div class="card-content">
-                <div class="text-h4">
-                  Endoscore
+
+          <div class="row q-gutter-sm">
+            <div class="col-sm-4 q-gutter-sm">
+              <div class="row q-gutter-sm">
+                <q-card class="dashboard-card">
+                  <q-card-section class="row justify-center items-center">
+                    <div class="card-content">
+                      <div class="text-h4">
+                        Endoscore
+                      </div>
+                      <div class="circle endo_circle">{{ moyenne_endo }}</div>
+                    </div>
+                  </q-card-section>
+                </q-card>
+                <div class="row q-gutter-sm">
                 </div>
-                <div class="circle endo_circle">{{ moyenne_endo }}</div>
-              </div>
-            </q-card-section>
-          </q-card>
+                <q-card class="dashboard-card">
+                  <q-card-section class="row justify-center">
+                    <div class="text-h4">
+                      Symptômes
+                    </div>
+                  </q-card-section>
 
-          <q-card class="dashboard-card">
-            <q-card-section class="row justify-center">
-              <div class="text-h4">
-                Symptômes
-              </div>
-            </q-card-section>
+                  <q-card-section class="row justify-center items-center">
+                    <div class="q-pa-md symptomStyle">
+                      <q-date class="daily_calendar" v-model="date_sympt" :events="events" event-color="red" />
+                    </div>
+                  </q-card-section>
 
-            <q-card-section class="row justify-center items-center">
-              <div class="q-pa-md symptomStyle">
-                <q-date class="daily_calendar" v-model="date_sympt" :events="events" event-color="red" />
+                  <q-card-section class="symptome_journalier">
+                    <div class="text-h6">
+                      Symptômes du {{ date_sympt }}
+                    </div>
+                    <div class="text-h7">
+                      {{ this.sympt[date_sympt] }}.
+                    </div>
+                  </q-card-section>
+                </q-card>
               </div>
-            </q-card-section>
+            </div>
 
-            <q-card-section>
-              <div class="text-h6">
-                Symptômes du {{ date_sympt }}
+            <div class="col-sm-7 q-gutter-sm">
+              <div class="row q-gutter-sm">
+                <div class="col-sm-11">
+                  <q-card class="dashboard-card">
+                    <q-card-section class="row justify-center">
+                      <div class="text-h4">
+                        Evolution des symptômes
+                      </div>
+                    </q-card-section>
+                    <q-card-section class="row justify-around">
+                      <div class="col-sm-7 text-center q-gutter-sm">
+                        <div class="row justify-center ">
+                          <q-select class="symptom_btn" multiple id="symptome" outlined name="symptome" stack-label
+                            use-chips v-model="symptome" :options="douleur" label="Sélectionnez le type de symptôme"
+                            style="width: 100%;" />
+                        </div>
+                        <div class="row">
+                          <canvas class="mx-auto my-auto chartStyle symptomsChart" id="symptomsChart"></canvas>
+                        </div>
+                        <div class="row justify-center">
+                          <q-btn id="graphBtn" class="actu_btn" outline rounded @click="actualisation">
+                            ACTUALISER LE GRAPHIQUE
+                          </q-btn>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <q-date class="symptom_calendar q-mt-sm" v-model="selected_date" range />
+                      </div>
+                    </q-card-section>
+                  </q-card>
+                </div>
               </div>
-              <div class="text-h7">
-                {{ this.sympt[date_sympt] }}.
-              </div>
-            </q-card-section>
-          </q-card>
 
-          <q-card class="dashboard-card">
-            <q-card-section class="row justify-center">
-              <div class="text-h4">
-                Contraception
+              <div class="row q-gutter-sm">
+                <div class="col-sm-5">
+                  <q-card class="dashboard-card">
+                    <q-card-section class="row justify-center">
+                      <div class="text-h4">
+                        Contraception
+                      </div>
+                    </q-card-section>
+                    <q-card-section>
+                      <div class="q-pa-md">
+                        <q-table class="histo_contra" :rows="rows" row-key="id" />
+                      </div>
+                    </q-card-section>
+                  </q-card>
+                </div>
+                <div class="col-sm-6">
+                  <q-card class="dashboard-card">
+                    <q-card-section class="row justify-center">
+                      <div class="text-h4">
+                        Evolution de l'endoscore
+                      </div>
+                    </q-card-section>
+                    <q-card-section>
+                      <canvas class="endo_chart" style="text-align: center;" id="endoChart">
+                      </canvas>
+                    </q-card-section>
+                  </q-card>
+                </div>
               </div>
-            </q-card-section>
-            <q-card-section>
-              <div class="q-pa-md">
-                <q-table class="histo_contra" :rows="rows" :columns="columns_contraceptions" row-key="id" />
-              </div>
-            </q-card-section>
-          </q-card>
-
-          <q-card class="dashboard-card">
-            <q-card-section class="row justify-center">
-              <div class="text-h4">
-                Evolution de l'endoscore
-              </div>
-            </q-card-section>
-            <q-card-section>
-              <canvas class="endo_chart" style="text-align: center;" id="endoChart">
-              </canvas>
-            </q-card-section>
-          </q-card>
-
-          <q-card class="dashboard-card">
-            <q-card-section class="row justify-center">
-              <div class="text-h4">
-                Evolution des symptômes
-              </div>
-            </q-card-section>
-            <q-card-section>
-              <canvas class="mx-auto my-auto chartStyle symptomsChart" id="symptomsChart"></canvas>
-            </q-card-section>
-            <q-card-section>
-              <q-select class="symptom_btn" multiple id="symptome" outlined name="symptome" stack-label use-chips
-                v-model="symptome" :options="douleur" style="width: 15vw" label="Sélectionnez le type de symptôme" />
-            </q-card-section>
-            <q-card-section>
-              <q-btn id="graphBtn" class="actu_btn" outline rounded @click="actualisation">
-                ACTUALISER LE GRAPHIQUE
-              </q-btn>
-            </q-card-section>
-            <q-card-section>
-              <q-date class="symptom_calendar" v-model="selected_date" range style="width: 30rem; height: 25rem" />
-            </q-card-section>
-
-          </q-card>
+            </div>
+          </div>
         </q-page>
       </q-page-container>
 
@@ -212,30 +238,6 @@ if (contraception.length > 0) {
 }
 else { rows_contraceptions = [] }
 
-const columns_contraceptions = [
-  {
-    name: 'nom',
-    align: 'center',
-    label: 'Type de contraception',
-    field: 'nom',
-    sortable: true,
-  },
-  {
-    name: 'debut',
-    align: 'center',
-    label: 'Date de début',
-    field: 'debut',
-    sortable: true,
-  },
-  {
-    name: 'fin',
-    aligne: 'center',
-    label: 'Date de fin',
-    field: 'fin',
-    sortable: true,
-  }
-];
-
 var dataConfigSymptoms = {
   labels: d_menstru[0][1],
   datasets: [
@@ -284,7 +286,6 @@ export default {
     return {
       rows,
       rowCount,
-      columns_contraceptions,
       sympt: daily_sympt[1],
       date_sympt: ref(daily_sympt.length > 0 ? daily_sympt[0][0] : null),
       events: daily_sympt.length > 0 ? daily_sympt[0] : [],
@@ -403,7 +404,7 @@ export default {
         options: {},
       });
     },
-    load_patiente() {
+    loadPatiente() {
       let patiente = JSON.parse(localStorage.getItem('profile'))
       if (patiente.has_endometriosis == true) {
         this.has_endo = 'Votre patiente est atteinte d\'endométriose'
@@ -680,7 +681,7 @@ export default {
     },
   },
   mounted() {
-    this.load_patiente();
+    this.loadPatiente();
     this.renderCharts();
     this.tutorial();
   },
@@ -705,7 +706,7 @@ export default {
 }
 
 .dashboard-card {
-  width: auto;
+  width: 100%;
   max-width: 100%;
 }
 
@@ -729,7 +730,16 @@ export default {
 }
 
 .daily_calendar {
-  width: 50rem;
-  height: 30rem;
+  width: 100%;
+}
+
+.symptom_calendar {
+  width: 100%;
+}
+
+/* Style pour mettre en valeur les éléments du tour */
+.highlight {
+  border: 2px solid #FDB813;
+  box-shadow: 0px 0px 10px #FDB813;
 }
 </style>
