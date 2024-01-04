@@ -396,9 +396,9 @@ export default {
         datasets.push(newDataset);
       }
       dataConfigSymptoms.datasets = datasets;
-      let cnv = document.getElementById('myChart');
+      let cnv = document.getElementById('symptomsChart');
       let ctx = cnv.getContext('2d');
-      this.myChart = new Chart(ctx, {
+      this.symptomsChart = new Chart(ctx, {
         type: "line",
         data: dataConfigSymptoms,
         options: {},
