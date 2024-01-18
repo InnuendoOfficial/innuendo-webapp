@@ -167,7 +167,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/AuthLayout.vue'),
     children: [
       {
-        name: 'reset',
+        name: 'mobileSuppOK',
         path: '',
         component: () => import('src/pages/SuppMobileOK.vue'),
       },
